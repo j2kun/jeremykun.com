@@ -1,0 +1,26 @@
+---
+author: jeremykun
+date: 2011-07-07 21:14:06+00:00
+draft: false
+title: False Proof - 31.5 = 32.5
+type: post
+url: /2011/07/07/false-proof-31-5-32-5/
+categories:
+- Geometry
+- Proof Gallery
+tags:
+- false proof
+- mathematics
+- proofs without words
+---
+
+**Problem**: Show 31.5 = 32.5.
+
+**"Solution"**:
+
+[![](http://jeremykun.files.wordpress.com/2011/07/31equals32.png)
+](http://jeremykun.files.wordpress.com/2011/07/31equals32.png)**Explanation**: It appears that by shifting around the pieces of one triangle, we have constructed a second figure which covers less area! Since the first triangle has base length 13 and height 5, its area is 32.5. Clearly, the second figure has the same area minus a square of area 1, giving the second figure area 31.5.
+
+In fact, by counting up the squares in each component, we do see that it is simply a shifting of pieces, so the areas of the two figures must be the same. Therefore, the fault lies in our first assumption: that the first figure is actually a triangle. Looking more closely, we see that the slope of the hypotenuse of the red component is $3/8$, while the blue triangle as slope $2/5$. If the first figure were a triangle, then the slope of the hypotenuse would be uniform. Since $2/5 \neq 3/8$, the first figure is not a triangle, and hence its area is not 32.5. In fact, counting up the area of each component, the areas of both figures are actually 32.
+
+This false proof accentuates the need to question one's intuition. In fact, nothing false was said by the picture alone. The two figures do truly have the same area. The falsity is entirely in the viewer's interpretation of what the picture says (and the questionably moral intent of a trickster mathematician). So the lesson is: while intuition can be a useful and essential guide, it is often not rigorous enough to be proof, and it can create very dangerous false positives.

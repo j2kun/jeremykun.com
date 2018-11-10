@@ -1,0 +1,23 @@
+---
+author: jeremykun
+date: 2011-10-02 21:16:47+00:00
+draft: false
+title: N Choose 2 is the Sum of the First N-1 Integers
+type: post
+url: /2011/10/02/n-choose-2/
+categories:
+- Combinatorics
+- Number Theory
+- Proof Gallery
+tags:
+- proofs without words
+---
+
+**Problem:** Determine an arithmetic expression for $\binom{n}{2}$.
+
+**Solution:** The following picture describes a bijection between the set of yellow dots and the set of pairs of purple dots:
+
+[![](http://jeremykun.files.wordpress.com/2011/10/nchoose2.png)
+](http://jeremykun.files.wordpress.com/2011/10/nchoose2.png)In particular, selecting any yellow dots and travelling downward along diagonals gives a unique pair of blue dots. Conversely, picking any pair of blue dots gives a unique yellow dot which is the meeting point (the "peak") of the inward diagonals. If we say the bottom row has $n$ elements, then the number of yellow dots is clearly $1 + 2 + \dots + (n-1)$, and the number of pairs in the last row is just $\binom{n}{2}$.
+
+This proof is typical of the most elegant combinatorial proofs: come up with a bijection between one set of objects whose size is unknown and another set of objects whose size is easy to determine. Such a method of proof is ubiquitous in elementary combinatorics, and it extends even further to [determine things about infinite sets](http://jeremykun.wordpress.com/2011/07/09/set-theory-a-primer/). In higher mathematics, bijections are quite frequently used (along with other structure-preserving conditions) to determine when two things should be deemed equivalent. This concept is called _isomorphism_, and much of mathematics is devoted to classifying all objects in a category up to an appropriate notion of isomorphism. One particularly long instance of this is the [classification of finite simple groups](http://en.wikipedia.org/wiki/Classification_of_finite_simple_groups), but one which is easier to understand, and studied extensively by mathematicians since time immemorial, is the classification of Euclidean isometries (see [here](http://en.wikipedia.org/wiki/Euclidean_plane_isometry#Classification_of_Euclidean_plane_isometries) for the case of $\mathbb{R}^2$).

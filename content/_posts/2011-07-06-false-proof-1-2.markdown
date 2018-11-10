@@ -1,0 +1,25 @@
+---
+author: jeremykun
+date: 2011-07-06 01:36:09+00:00
+draft: false
+title: False Proof - 1 = 2
+type: post
+url: /2011/07/05/false-proof-1-2/
+categories:
+- Proof Gallery
+tags:
+- algebra
+- division by zero
+- false proof
+- mathematics
+---
+
+_This is the first in a series of "false proofs." Despite their falsity, they will be part of the [Proof Gallery](http://jeremykun.wordpress.com/proof-gallery/). The reason for putting them there is that often times a false proof gives insight into the nature of the problem domain. We will be careful to choose problems which do so._**Problem**: Show 1 = 2.
+
+**"Solution"**: Let $a=b \neq 0$. Then $a^2 = ab$, and $a^2 - b^2 = ab - b^2$. Factoring gives us $(a+b)(a-b) = b(a-b)$. Canceling both sides, we have $a+b = b$, but remember that $a = b$, so $2b = b$. Since $b$ is nonzero, we may divide both sides to obtain $2=1$, as desired.
+
+**Explanation**: This statement, had we actually proved it, would imply that all numbers are equal, since subtracting 1 from both sides gives $0=1$ and hence $a=0$ for all real numbers $a$. Obviously this is ridiculous.
+
+Digging into the algebraic mess, we see that the division by $a-b$ is invalid, because $a=b$ and hence $a-b = 0$.
+
+Division by zero, although meaningless, is nevertheless interesting to think about. [Much advanced mathematics](http://en.wikipedia.org/wiki/Division_by_zero#In_higher_mathematics) deals with it on a very deep and fundamental level, either by extending the number system to include such values as $\frac{1}{0}$ (which still gives rise to other problems, such as $\frac{0}{0}$ and $0 \cdot \infty$), or by sidestepping the problem by inventing "pseudo" operations (linear algebra) and limiting calculations (calculus).
