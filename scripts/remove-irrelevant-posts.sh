@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# not sure what these files are doing here. They seem to be identical copies
-rm content/_posts/*markdown--
-
 # remove posts that are no longer relevant (nobody would want to read them today)
 rm content/_posts/2012-07-17-blog-referral-economics-arbitrage-schemes-and-team-fortress-2.markdown
 rm content/_posts/2012-12-30-2012-in-review-at-math-e288a9-programming.markdown
