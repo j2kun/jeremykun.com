@@ -33,4 +33,17 @@ $2^{\pi(n)}\sqrt{n} \geq n$
 The rest is algebra: divide by $\sqrt{n}$ and take logarithms to see that $\pi(n) \geq \frac{1}{2} \log(n)$. Since $\log(n)$ is unbounded as $n$ grows, so must $\pi(n)$. Hence, there are infinitely many primes.
 
 
-**Discussion:** This is a classic analytical argument originally discovered by [P](http://en.wikipedia.org/wiki/Paul_Erd%C5%91s)**[aul Erdős](http://en.wikipedia.org/wiki/Paul_Erd%C5%91s). **One of the classical ways to investigate the properties of prime numbers is to try to estimate $\pi(n)$. In fact, much of the work of the famous number theorists of the past involved giving [good approximations](http://en.wikipedia.org/wiki/Prime_number_theorem) of $\pi(n)$ in terms of logarithms. This usually involved finding good upper bounds and lower bounds and limits. Erdős's proof is entirely in this spirit, although there are [much closer and more accurate](http://en.wikipedia.org/wiki/Prime_number_theorem#Bounds_on_the_prime-counting_function) lower and upper bounds. In this proof we include a lot of values which are not actually valid factorizations (many larger choices of $r, s^2$ will have their product larger than $n$). But for the purposes of proving there are infinitely many primes, this bound is about as elegant as one can find.
+**Discussion:** This is a classic analytical argument originally discovered by
+[Paul Erdős](http://en.wikipedia.org/wiki/Paul_Erd%C5%91s). One of the
+classical ways to investigate the properties of prime numbers is to try to
+estimate $\pi(n)$. In fact, much of the work of the famous number theorists of
+the past involved giving [good
+approximations](http://en.wikipedia.org/wiki/Prime_number_theorem) of $\pi(n)$
+in terms of logarithms. This usually involved finding good upper bounds and
+lower bounds and limits. Erdős's proof is entirely in this spirit, although
+there are [much closer and more
+accurate](http://en.wikipedia.org/wiki/Prime_number_theorem#Bounds_on_the_prime-counting_function)
+lower and upper bounds. In this proof we include a lot of values which are not
+actually valid factorizations (many larger choices of $r, s^2$ will have their
+product larger than $n$). But for the purposes of proving there are infinitely
+many primes, this bound is about as elegant as one can find.
