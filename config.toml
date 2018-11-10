@@ -1,3 +1,4 @@
 baseURL = "http://jeremykun.com/"
 languageCode = "en-us"
 title = "Math ∩ Programming"
+theme = "tale"
