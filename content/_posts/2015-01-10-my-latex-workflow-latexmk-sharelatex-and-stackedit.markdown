@@ -40,7 +40,7 @@ I haven't found a better tool than [StackEdit](https://stackedit.io/).
 
 
 	  * **In class notes:** where I need to type **fast** and can sacrifice on prettiness.** **Any other workflow besides Markdown with TeX support is just awfully slow, because the boilerplate of LaTeX proper involves so much typing (\begin{theorem} \end{theorem}, etc.)
-	  * **Notes during talks: **these notes usually have fewer formulas and more sentences, but the ability to use notation when I want it really helps.
+	  * **Notes during talks:** these notes usually have fewer formulas and more sentences, but the ability to use notation when I want it really helps.
 	  * **Short drafts of proofs:** when I want to send something technical yet informal to a colleague, but it's in such a draft phase that I'm more concerned about the idea being right—and on paper—than whether it looks good.
 
 **Awesome features:** I can access documents from Google Drive. Integration with Dropbox (which they have) is not enough because I don't have Dropbox on every computer I use (Chromebook, public/friends' computers). Also, you can configure Google Drive to open markdown files with StackEdit by default (otherwise Drive can't open them at all).

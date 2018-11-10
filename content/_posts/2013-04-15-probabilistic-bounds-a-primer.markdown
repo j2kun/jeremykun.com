@@ -125,7 +125,7 @@ If we know everything about $\textup{Var}(X)$, however, we can get more informed
 
 
 
-**Theorem: **If $\textup{E}(X) \neq 0$, then $\displaystyle \textup{P}(X = 0) \leq \frac{\textup{Var}(X)}{\textup{E}(X)^2}$.
+**Theorem:** If $\textup{E}(X) \neq 0$, then $\displaystyle \textup{P}(X = 0) \leq \frac{\textup{Var}(X)}{\textup{E}(X)^2}$.
 
 
 

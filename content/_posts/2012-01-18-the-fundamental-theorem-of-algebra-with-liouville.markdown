@@ -24,7 +24,7 @@ The fundamental theorem of algebra has quite a few number of proofs (enough to f
 
 **Problem:** Let $p(x)$ be a non-constant polynomial with coefficients in $\mathbb{C}$. Prove $p(x)$ has a root in $\mathbb{C}$.
 
-**Solution: **First, we note that Liouville's theorem states that any bounded entire function (has infinitely many derivatives, is analytic/holomorphic) $\mathbb{C} \to \mathbb{C}$ is constant. In other words, if we can find a number $M$ such that $|f(z)| < M$ for all $z \in \mathbb{C}$, then $f(z) = c$ for some constant $c$. The proof of this follows from [Cauchy's integral formula](http://en.wikipedia.org/wiki/Cauchy%27s_integral_formula), and we take it for granted here.
+**Solution:** First, we note that Liouville's theorem states that any bounded entire function (has infinitely many derivatives, is analytic/holomorphic) $\mathbb{C} \to \mathbb{C}$ is constant. In other words, if we can find a number $M$ such that $|f(z)| < M$ for all $z \in \mathbb{C}$, then $f(z) = c$ for some constant $c$. The proof of this follows from [Cauchy's integral formula](http://en.wikipedia.org/wiki/Cauchy%27s_integral_formula), and we take it for granted here.
 
 Suppose to the contrary that $p(x)$ is non-constant and has no roots. Then the function $f(z) = \frac{1}{p(z)}$ is defined everywhere on $\mathbb{C}$ and is analytic (the denominator is never zero by assumption). Now if
 

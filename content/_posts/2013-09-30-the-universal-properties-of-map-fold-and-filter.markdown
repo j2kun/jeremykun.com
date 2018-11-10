@@ -75,7 +75,7 @@ We encounter simple monoids every day in programming which elucidate this defini
 
 Integers also form a monoid, with addition as the operation and zero as the identity element. However, the list and string monoids have an extra special property that integers do not. For a number $n$ you can always find $-n$ so that $n + (-n) = 0$ is the identity element. But for lists, the only way to concatenate two lists and get the empty list is if both of the lists were empty to begin with. A monoid with this property is called _free, _and to fully understand it we should make a definition which won't seem to mean anything at first.
 
-**Definition: **Let $\mathbf{C}$ be a category. Given a set $A$, the _free object_ over $A$, denoted $F(A)$, is an object of $\mathbf{C}$ which is universal with respect to set-maps $A \to B$ for any object $B$ in $\mathbf{C}$.
+**Definition:** Let $\mathbf{C}$ be a category. Given a set $A$, the _free object_ over $A$, denoted $F(A)$, is an object of $\mathbf{C}$ which is universal with respect to set-maps $A \to B$ for any object $B$ in $\mathbf{C}$.
 
 As usual with a definition by universal property, we should elaborate as to exactly what's going on. Let $\mathbf{C}$ be a category whose objects are sets and let $A$ a set, possibly not in this category. We can construct a new category, $\mathbf{C}_{A \to X}$ whose objects are set-maps
 

@@ -10,7 +10,7 @@ categories:
 - Proof Gallery
 ---
 
-**Problem: **Prove that for all $n,k \in \mathbb{N}, k > 1$, we have
+**Problem:** Prove that for all $n,k \in \mathbb{N}, k > 1$, we have
 
 
 $\sum \limits_{i=0}^{n} k^i = \frac{k^{n+1}-1}{k-1}$

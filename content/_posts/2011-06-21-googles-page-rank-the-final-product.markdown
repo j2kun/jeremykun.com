@@ -36,7 +36,7 @@ We will fix both of these problems in one fell swoop: by adjusting the link matr
 
 The motivation for this comes from the knowledge of a particular theorem, called the Perron-Frobenius Theorem. While the [general statement](http://en.wikipedia.org/wiki/Perron%E2%80%93Frobenius_theorem#Positive_matrices) says a great deal, here are the parts we need:
 
-**Theorem: **Let $A$ be a positive, column-stochastic matrix. Then there exists a maximal eigenvalue $0 < \lambda \leq 1$ such that all other eigenvalues are strictly smaller in magnitude. Further, the eigenspace associated to $\lambda$ has dimension 1. This unique eigenvalue and eigenvector (up to scaling) are called the _Perron eigenvalue and eigenvector_.
+**Theorem:** Let $A$ be a positive, column-stochastic matrix. Then there exists a maximal eigenvalue $0 < \lambda \leq 1$ such that all other eigenvalues are strictly smaller in magnitude. Further, the eigenspace associated to $\lambda$ has dimension 1. This unique eigenvalue and eigenvector (up to scaling) are called the _Perron eigenvalue and eigenvector_.
 
 We won't prove this theorem, because it requires a lot of additional background. But we will use it to make life great. All we need is a positive attitude.
 

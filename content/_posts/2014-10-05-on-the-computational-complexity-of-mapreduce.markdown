@@ -251,7 +251,7 @@ To prove this we take 3-SAT and give it [exponential padding](http://en.wikipe
 
 
 
-**Corollary: **If $\textup{MRC}[\textup{poly}(n), 1] \subsetneq \textup{MRC}[\textup{poly}(n), \textup{poly}(n)]$, then L is different from P.
+**Corollary:** If $\textup{MRC}[\textup{poly}(n), 1] \subsetneq \textup{MRC}[\textup{poly}(n), \textup{poly}(n)]$, then L is different from P.
 
 
 

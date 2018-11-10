@@ -18,7 +18,7 @@ tags:
 
 $\displaystyle |\left \langle v, w \right \rangle | \leq \| v \| \| w \|$
 
-**Solution: **There is an elementary proof of the Cauchy-Schwarz inequality (see [the Wikipedia article](http://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality#Proof)), and this proof is essentially the same. What makes this proof stand out is its insightful technique, which I first read about on [Terry Tao's blog](http://terrytao.wordpress.com/2007/09/05/amplification-arbitrage-and-the-tensor-power-trick/). He calls it "textbook," and maybe it is for an analyst, but it's still very elegant.
+**Solution:** There is an elementary proof of the Cauchy-Schwarz inequality (see [the Wikipedia article](http://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality#Proof)), and this proof is essentially the same. What makes this proof stand out is its insightful technique, which I first read about on [Terry Tao's blog](http://terrytao.wordpress.com/2007/09/05/amplification-arbitrage-and-the-tensor-power-trick/). He calls it "textbook," and maybe it is for an analyst, but it's still very elegant.
 
 We start by observing another inequality we know to be true, that $\| v - w \|^2 = \left \langle v - w, v - w \right \rangle \geq 0$, since norms are by definition nonnegative. By the properties of a complex inner product we can expand to get
 

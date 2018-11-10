@@ -24,7 +24,7 @@ tags:
 - wasserstein metric
 ---
 
-**Problem: **Compute distance between points with uncertain locations (given by samples, or differing observations, or clusters).
+**Problem:** Compute distance between points with uncertain locations (given by samples, or differing observations, or clusters).
 
 For example, if I have the following three "points" in the plane, as indicated by their colors, which is closer, blue to green, or blue to red?
 
@@ -95,7 +95,7 @@ def earthmover_distance(p1, p2):
     return objective.Value()
 {{< /highlight >}}
 
-**Discussion: **I've heard about this metric many times as a way to compare probability distributions. For example, it shows up in an influential paper about [fairness in machine learning](https://arxiv.org/abs/1104.3913), and a few other CS theory papers related to distribution testing.
+**Discussion:** I've heard about this metric many times as a way to compare probability distributions. For example, it shows up in an influential paper about [fairness in machine learning](https://arxiv.org/abs/1104.3913), and a few other CS theory papers related to distribution testing.
 
 One might ask: why not use other measures of dissimilarity for probability distributions (Chi-squared statistic, Kullback-Leibler divergence, etc.)? One answer is that these other measures only give useful information for pairs of distributions with the same support. An example from a talk of Justin Solomon succinctly clarifies what Earthmover distance achieves
 

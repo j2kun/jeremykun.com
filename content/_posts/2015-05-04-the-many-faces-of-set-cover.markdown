@@ -28,7 +28,7 @@ The set cover problem shows up in other places, too. If you have a database of i
 
 If you know what a set is (just think of the "set" or "hash set" type from your favorite programming language), then set cover has a simple definition.
 
-**Definition (The Set Cover Problem): **You are given a finite set $U$ called a "universe" and sets $S_1, \dots, S_n$ each of which is a subset of $U$. You choose some of the $S_i$ to ensure that every $x \in U$ is in one of your chosen sets, and you want to minimize the number of $S_i$ you picked.
+**Definition (The Set Cover Problem):** You are given a finite set $U$ called a "universe" and sets $S_1, \dots, S_n$ each of which is a subset of $U$. You choose some of the $S_i$ to ensure that every $x \in U$ is in one of your chosen sets, and you want to minimize the number of $S_i$ you picked.
 
 It's called a "cover" because the sets you pick "cover" every element of $U$. Let's do a simple. Let $U = \{ 1,2,3,4,5 \}$ and
 

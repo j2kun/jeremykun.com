@@ -100,7 +100,7 @@ Any algorithm and choice of reward vectors induces a probability distribution ov
 
 
 
-An obvious question we might ask is: **why can't the adversary just make all the payoffs zero? (or negative!)** In this event the player won't get any reward, but he can emotionally and psychologically accept this fate. If he never stood a chance to get any reward in the first place, why should he feel bad about the inevitable result? What a truly cruel adversary wants is, at the end of the game, to show the player what he_ could have won_, and have it far exceed what he actually won. In this way the player feels regret for not using a more sensible strategy, and likely turns to binge eating cookie dough ice cream. Or more likely he returns to the casino to lose more money. The trick that the player has up his sleeve is precisely the randomness in his choice of actions, and he can use its objectivity to partially overcome even the nastiest of adversaries.
+An obvious question we might ask is:** why can't the adversary just make all the payoffs zero? (or negative!)** In this event the player won't get any reward, but he can emotionally and psychologically accept this fate. If he never stood a chance to get any reward in the first place, why should he feel bad about the inevitable result? What a truly cruel adversary wants is, at the end of the game, to show the player what he_ could have won_, and have it far exceed what he actually won. In this way the player feels regret for not using a more sensible strategy, and likely turns to binge eating cookie dough ice cream. Or more likely he returns to the casino to lose more money. The trick that the player has up his sleeve is precisely the randomness in his choice of actions, and he can use its objectivity to partially overcome even the nastiest of adversaries.
 
 
 
@@ -231,7 +231,7 @@ $\square$
 
 We can get a version of this theorem that is easier to analyze by picking a suitable choice of $\gamma$.
 
-**Corollary: **Assume that $G_{\textup{max}}(T)$ is bounded by $g$, and that Exp3 is run with
+**Corollary:** Assume that $G_{\textup{max}}(T)$ is bounded by $g$, and that Exp3 is run with
 
 
 $\displaystyle \gamma = \min \left ( 1, \sqrt{\frac{K \log K}{(e-1)g}} \right )$

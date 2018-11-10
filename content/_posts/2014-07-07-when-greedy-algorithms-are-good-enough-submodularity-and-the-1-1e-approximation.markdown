@@ -88,7 +88,7 @@ Here's the algorithmic setup. I give you a finite set $X$ and an efficient black
 
 In general this problem is NP-hard, meaning you're not going to find a solution that works in the worst case (if you do, don't call me; just claim your [million dollar prize](http://www.claymath.org/millenium-problems/p-vs-np-problem)). So how well can we _approximate_ the optimal value for $f(S)$ by a different set of size $k$? The beauty is that, if your function is monotone and submodular, you can guarantee to get within 63% of the optimum. The hope (and reality) is that in practice it will often perform much better, but still this is pretty good! More formally,
 
-**Theorem: **Let $f$ be a monotone, submodular, non-negative function on $X$. The greedy algorithm, which starts with $S$ as the empty set and at every step picks an element $x$ which maximizes the marginal benefit $f(S \cup \{ x \}) - f(S)$, provides a set $S$ that achieves a $(1- 1/e)$-approximation of the optimum.
+**Theorem:** Let $f$ be a monotone, submodular, non-negative function on $X$. The greedy algorithm, which starts with $S$ as the empty set and at every step picks an element $x$ which maximizes the marginal benefit $f(S \cup \{ x \}) - f(S)$, provides a set $S$ that achieves a $(1- 1/e)$-approximation of the optimum.
 
 We'll prove this in just a little bit more generality, and the generality is quite useful. If we call $S_1, S_2, \dots, S_l$ the sets chosen by the greedy algorithm (where now we might run the greedy algorithm for $l > k$ steps), then for all $l, k$, we have
 

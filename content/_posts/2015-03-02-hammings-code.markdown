@@ -85,13 +85,13 @@ A code is called _linear_ if it can be identified with a linear subspace of som
 
 Linear codes are the simplest kinds of codes, but already they give a rich variety of things to study. The benefit of linear codes is that you can describe them in a lot of different and useful ways besides just describing the encoding function. We'll use two that we define here. The idea is simple: you can describe everything about a linear subspace by giving a basis for the space.
 
-**Definition: **A _generator matrix _of a $(n,k,d)_q$-code $C$ is a $k \times n$ matrix $G$ whose rows form a basis for $C$.
+**Definition:** A _generator matrix _of a $(n,k,d)_q$-code $C$ is a $k \times n$ matrix $G$ whose rows form a basis for $C$.
 
 There are a lot of equivalent generator matrices for a linear code (we'll come back to this later), but the main benefit is that having a generator matrix allows one to encode messages $x \in \{0,1 \}^k$ by left multiplication $xG$. Intuitively, we can think of the bits of $x$ as describing the coefficients of the chosen linear combination of the rows of $G$, which uniquely describes an element of the subspace. Note that because a $k$-dimensional subspace of $\{ 0,1 \}^n$ has $2^k$ elements, we're not abusing notation by calling $k = \log |C|$ both the message length and the dimension.
 
 For the second description of $C$, we'll remind the reader that every linear subspace $C$ has a unique _orthogonal complement_ $C^\perp$, which is the subspace of vectors that are orthogonal to vectors in $C$.
 
-**Definition: **Let $H^T$ be a generator matrix for $C^\perp$. Then $H$ is called a _parity check_ matrix.
+**Definition:** Let $H^T$ be a generator matrix for $C^\perp$. Then $H$ is called a _parity check_ matrix.
 
 Note $H$ has the basis for $C^\perp$ as _columns. _This means it has dimensions $n \times (n-k)$. Moreover, it has the property that $x \in C$ _if and only if_ the left multiplication $xH = 0$. Having zero dot product with all columns of $H$ characterizes membership in $C$.
 
@@ -177,7 +177,7 @@ The obvious follow-up question is whether there are any other perfect codes. The
 
 
 
-**Theorem [van Lint '71, Tietavainen '73]: **Let $C$ be a nontrivial perfect $(n,d,k)_q$ code. Then the parameters must either be that of a Hamming code, or one of the two:
+**Theorem [van Lint '71, Tietavainen '73]:** Let $C$ be a nontrivial perfect $(n,d,k)_q$ code. Then the parameters must either be that of a Hamming code, or one of the two:
 
 
 

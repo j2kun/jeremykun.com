@@ -65,7 +65,7 @@ _Proof_. Let $f: R \to S$ be a ring homomorphism, and let $I = \textup{ker}(f)$.
 
 In fact the correspondence is one-to-one: _every_ ideal is the kernel of a ring homomorphism and every ring homomorphism's kernel is an ideal. This is not surprising as it was the case for groups, and the story starts here with quotients, too.
 
-**Definition: **Let $R$ be a ring and $I$ an ideal of $R$. The quotient group $R/I$ forms a ring called the _quotient_ ring, and is still denoted by $R / I$.
+**Definition:** Let $R$ be a ring and $I$ an ideal of $R$. The quotient group $R/I$ forms a ring called the _quotient_ ring, and is still denoted by $R / I$.
 
 To show this definition makes any sense requires some thought: what are the operations of this new ring? Are they well-defined on coset representatives?
 

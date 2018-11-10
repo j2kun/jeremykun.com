@@ -80,7 +80,7 @@ So with the recognition of how similar these notions of independence are, we a
 
 So far we've seen two kinds of independence: "sets of edges with no cycles" (also called _forests_) and "sets of linearly independent vectors." Both of these share two trivial properties: there are always nonempty independent sets, and every subset of an independent set is independent. We will call any family of subsets with this property an _independence system_.
 
-**Definition: **Let $X$ be a finite set. An _independence system _over $X$ is a family $\mathscr{I}$ of subsets of $X$ with the following two properties.  1. $\mathscr{I}$ is nonempty.  2. If $I \in \mathscr{I}$, then so is every subset of $I$.
+**Definition:** Let $X$ be a finite set. An _independence system _over $X$ is a family $\mathscr{I}$ of subsets of $X$ with the following two properties.  1. $\mathscr{I}$ is nonempty.  2. If $I \in \mathscr{I}$, then so is every subset of $I$.
 
 This is too general to characterize greedy algorithms, so we need one more property shared by our examples. There are a few things we do, but here's one nice property that turns out to be enough.
 

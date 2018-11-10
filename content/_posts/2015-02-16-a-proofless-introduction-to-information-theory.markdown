@@ -42,7 +42,7 @@ Claude Shannon. Image credit: [Wikipedia](http://en.wikipedia.org/wiki/Claude_Sh
 
 Before we can state Shannon's theorems we have to define entropy.
 
-**Definition: **Suppose $D$ is a distribution on a finite set $X$, and I'll use $D(x)$ to denote the probability of drawing $x$ from $D$. The _entropy _of $D$, denoted $H(D)$ is defined as
+**Definition:** Suppose $D$ is a distribution on a finite set $X$, and I'll use $D(x)$ to denote the probability of drawing $x$ from $D$. The _entropy _of $D$, denoted $H(D)$ is defined as
 
 
 $H(D) = \sum_{x \in X} D(x) \log \frac{1}{D(x)}$

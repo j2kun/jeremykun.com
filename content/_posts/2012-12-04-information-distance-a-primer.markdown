@@ -216,7 +216,7 @@ We will prove two theorems about this function:
 
 
 
-**Theorem 1: **(Metric Axioms) $d(x,y)$ satisfies the metric axioms up to additive $O(1/M)$ precision, where $M$ is the _maximum_ of the Kolmogorov complexities of the strings involved in the (in)equality.
+**Theorem 1:** (Metric Axioms) $d(x,y)$ satisfies the metric axioms up to additive $O(1/M)$ precision, where $M$ is the _maximum_ of the Kolmogorov complexities of the strings involved in the (in)equality.
 
 
 

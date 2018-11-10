@@ -57,7 +57,7 @@ Even in advanced, purely theoretical mathematics, objects are commonly represent
 
 The setting for all of linear algebra is in some vector space. Intuitively this is just a collection of objects, which we call _vectors_, with some rules on how you can combine vectors to get other vectors. This treatment wouldn't do that idea justice without an axiomatic definition, so here it is.
 
-**Definition: **A _vector space_ is a quadruple $(V, F, +, \cdot)$, where $V$ is a set of vectors (points in our space), $F$ is a scalar field (coefficients), $+:V \times V \to V$ is a commutative, associative operation to combine vectors, and $\cdot: F \times V \to V$ is an operation to "scale" vectors. In addition, we need the following properties to hold:
+**Definition:** A _vector space_ is a quadruple $(V, F, +, \cdot)$, where $V$ is a set of vectors (points in our space), $F$ is a scalar field (coefficients), $+:V \times V \to V$ is a commutative, associative operation to combine vectors, and $\cdot: F \times V \to V$ is an operation to "scale" vectors. In addition, we need the following properties to hold:
 
 
 
@@ -77,7 +77,7 @@ This is a lot to swallow at first, but it is general for a good reason: there ar
 
 Hopefully this is much more familiar to what we think of as "vectors," and with the understanding that we are viewing it as a vector space, we just call it $\mathbb{R}^n$. The closure of operations gives us a nice way to characterize "any combination" of vectors in a vector space.
 
-**Definition: **A _linear combination_ of vectors in a vector space $V$ is the vector
+**Definition:** A _linear combination_ of vectors in a vector space $V$ is the vector
 
 
 $a_1v_1 + a_2v_2 + \dots + a_kv_k$
@@ -97,7 +97,7 @@ As usual, we may describe _subspaces_ of a vector space, which are just subsets
 
 One of the first things we want to ask about a vector space is "how big is it?" While most instances of vector spaces we will see have uncountably many elements, we can characterize "size" in terms of a different metric: the size of a basis.
 
-**Definition: **A list of vectors $(v_1, v_2, \dots v_n)$ is a _basis_ for $V$ if its elements are linearly independent, and their span is $V$. The _dimension_ of a vector space is the length of any basis.
+**Definition:** A list of vectors $(v_1, v_2, \dots v_n)$ is a _basis_ for $V$ if its elements are linearly independent, and their span is $V$. The _dimension_ of a vector space is the length of any basis.
 
 For $\mathbb{R}^n$, and similarly all finite-dimensional vector spaces, it is easy to prove that all bases have the same length, and hence dimension is well-defined. Further, $\mathbb{R}^n$ admits a very natural basis, often called the _standard basis_:
 

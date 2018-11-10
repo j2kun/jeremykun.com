@@ -145,7 +145,7 @@ And that's it. Note that we're being super stateful here: the empirical means $x
 
 Before we implement and test this algorithm, let's go ahead and prove that it achieves nearly optimal regret. The reader uninterested in mathematical details should skip the proof, but the discussion of the theorem itself is important. If one wants to use this algorithm in real life, one needs to understand the guarantees it provides in order to adequately quantify the risk involved in using it.
 
-**Theorem: **Suppose that UCB1 is run on the bandit game with $K$ actions, each of whose reward distribution $X_{i,t}$ has values in [0,1]. Then its expected cumulative regret after $T$ rounds is at most $O(\sqrt{KT \log T})$.
+**Theorem:** Suppose that UCB1 is run on the bandit game with $K$ actions, each of whose reward distribution $X_{i,t}$ has values in [0,1]. Then its expected cumulative regret after $T$ rounds is at most $O(\sqrt{KT \log T})$.
 
 Actually, we'll prove a more specific theorem. Let $\Delta_i$ be the difference $\mu^* - \mu_i$, where $\mu^*$ is the expected payoff of the best action, and let $\Delta$ be the minimal nonzero $\Delta_i$. That is, $\Delta_i$ represents how suboptimal an action is and $\Delta$ is the suboptimality of the second best action. These constants are called _problem-dependent constants. _The theorem we'll actually prove is:
 

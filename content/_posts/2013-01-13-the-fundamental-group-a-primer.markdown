@@ -145,7 +145,7 @@ And now we turn to the main theorem of this post.
 
 Instead of looking at paths, we will work with loops with a fixed basepoint. The amazing thing that happens is that the set of equivalence classes of loops (with respect to homotopy) forms a group.
 
-**Definition: **Let $X$ be a topological space and fix a point $x_0 \in X$. Define by $\pi_1(X,x_0)$ the set of equivalence classes of loops with basepoint $x_0$. This set is called the _fundamental group of _$X$ (although we have not yet proved it is a group), or the _first homotopy group of _$X$.
+**Definition:** Let $X$ be a topological space and fix a point $x_0 \in X$. Define by $\pi_1(X,x_0)$ the set of equivalence classes of loops with basepoint $x_0$. This set is called the _fundamental group of _$X$ (although we have not yet proved it is a group), or the _first homotopy group of _$X$.
 
 **Theorem: **The fundamental group is a group with respect to the operation of path composition.
 

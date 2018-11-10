@@ -79,7 +79,7 @@ Another bit of notation for brevity:
 
 
 
-**Definition: **Let $V$ be a $\mathbb{R}$-vector space. The _dual vector space_ for $V$, denoted $V^*$, is $\textup{Hom}(V, \mathbb{R})$.
+**Definition:** Let $V$ be a $\mathbb{R}$-vector space. The _dual vector space_ for $V$, denoted $V^*$, is $\textup{Hom}(V, \mathbb{R})$.
 
 
 

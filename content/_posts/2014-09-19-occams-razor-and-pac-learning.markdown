@@ -25,7 +25,7 @@ So far our discussion of learning theory has been seeing the [definition of PAC-
 
 One tool we will need in this post, which shows up all across learning theory, is the Chernoff-Hoeffding bound. We covered this famous inequality in detail [previously on this blog](http://jeremykun.com/2013/04/15/probabilistic-bounds-a-primer/), but the part of that post we need is the following theorem that says, informally, that if you average a bunch of bounded random variables, then the probability this average random variable deviates from its expectation is exponentially small in the amount of deviation. Here's the slightly simplified version we'll use:
 
-**Theorem: **Let $X_1, \dots, X_m$ be independent random variables whose values are in the range $[0,1]$. Call $\mu_i = \mathbf{E}[X_i]$, $X = \sum_i X_i$, and $\mu = \mathbf{E}[X] = \sum_i \mu_i$. Then for all $t > 0$,
+**Theorem:** Let $X_1, \dots, X_m$ be independent random variables whose values are in the range $[0,1]$. Call $\mu_i = \mathbf{E}[X_i]$, $X = \sum_i X_i$, and $\mu = \mathbf{E}[X] = \sum_i \mu_i$. Then for all $t > 0$,
 
 
 $\displaystyle \Pr(|X-\mu| > t) \leq 2e^{-2t^2 / m}$

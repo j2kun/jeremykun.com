@@ -18,7 +18,7 @@ tags:
 - polynomial interpolation
 ---
 
-**Problem: **Alice chooses a secret polynomial $p(x)$ with nonnegative integer coefficients. Bob wants to discover this polynomial by querying Alice for the value of $p(x)$ for some integer $x$ of Bob's choice. What is the minimal number of queries Bob needs to determine $p(x)$ exactly?
+**Problem:** Alice chooses a secret polynomial $p(x)$ with nonnegative integer coefficients. Bob wants to discover this polynomial by querying Alice for the value of $p(x)$ for some integer $x$ of Bob's choice. What is the minimal number of queries Bob needs to determine $p(x)$ exactly?
 
 **Solution: **Two queries. The first is $p(1)$, and if we call $N = p(1) + 1$, then the second query is $p(N)$.
 

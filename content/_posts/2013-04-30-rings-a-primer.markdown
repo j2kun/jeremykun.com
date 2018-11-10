@@ -168,7 +168,7 @@ Let us formally define the polynomial ring.
 
 We will often replace $x$ by some other letter representing an "indeterminate" variable, such as $t$, or $y$, or multiple indexed variables as in the following definition.
 
-**Definition: **Let $R$ be a commutative ring. The ring $R[x_1, x_2, \dots, x_n]$ is the set of all polynomials in the $n$ variables with the usual addition and multiplication of polynomials.
+**Definition:** Let $R$ be a commutative ring. The ring $R[x_1, x_2, \dots, x_n]$ is the set of all polynomials in the $n$ variables with the usual addition and multiplication of polynomials.
 
 What can we say about the polynomial ring in one variable $R[x]$? It's additive and multiplicative identities are clear: the constant 0 and 1 polynomials, respectively. Other than that, we can't quite get much more. There are some very bizarre features of polynomial rings with bizarre coefficient rings, such as multiplication decreasing degree.
 
@@ -209,7 +209,7 @@ We haven't quite yet talked about isomorphisms of rings (we will next time), but
 
 
 
-**Theorem: **If $R$ is a UFD, so is $R[x_1, \dots, x_n]$.
+**Theorem:** If $R$ is a UFD, so is $R[x_1, \dots, x_n]$.
 
 
 

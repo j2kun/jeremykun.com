@@ -87,7 +87,7 @@ And so the clustering problem is formalized.
 
 
 
-**Definition: **Let $(X,d)$ be a metric space with metric $d$, and let $S \subset (X,d)$ be a finite subset. The _centroid __clustering_ problem is the problem of finding for any positive integer $k$ a partition $\left \{ A_1 ,\dots A_k \right \}$ of $S$ so that the following quantity is minimized:
+**Definition:** Let $(X,d)$ be a metric space with metric $d$, and let $S \subset (X,d)$ be a finite subset. The _centroid __clustering_ problem is the problem of finding for any positive integer $k$ a partition $\left \{ A_1 ,\dots A_k \right \}$ of $S$ so that the following quantity is minimized:
 
 
 

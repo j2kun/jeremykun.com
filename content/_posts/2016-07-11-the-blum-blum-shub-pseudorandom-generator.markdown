@@ -12,7 +12,7 @@ categories:
 - Program Gallery
 ---
 
-**Problem: **Design a random number generator that is computationally indistinguishable from a truly random number generator.
+**Problem:** Design a random number generator that is computationally indistinguishable from a truly random number generator.
 
 **Solution (in Python): **note this solution uses the [Miller-Rabin primality tester](http://jeremykun.com/2013/06/16/miller-rabin-primality-test/), though any primality test will do. See [the github repository](https://github.com/j2kun/program-gallery) for the referenced implementation.
 

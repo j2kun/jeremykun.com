@@ -52,7 +52,7 @@ Instead of taking the long and winding road, we'll just state the important fact
 
 The simples kind of finite field is the set of integers modulo a prime. We've dealt with this number field extensively on this blog (in [groups](http://jeremykun.com/2012/12/08/groups-a-primer/), [rings](http://jeremykun.com/2013/04/30/rings-a-primer/), [fields](http://jeremykun.com/2014/02/26/finite-fields-a-primer/), with [RSA](http://jeremykun.com/2011/07/29/encryption-rsa/), etc.), but let's recall what it is. The _modulo_ operator $\mod$ (in programming it's often denoted %) is a binary operation on integers such that $x \mod y$ is the unique positive remainder of $x$ when divided by $y$.
 
-**Definition: **Let $p$ be a prime number. The set $\mathbb{Z}/p$ consists of the numbers $\left \{ 0, 1, \dots, p-1 \right \}$. If you endow it with the operations of addition (mod $p$) and multiplication (mod $p$), it forms a [field](http://jeremykun.com/2014/02/26/finite-fields-a-primer/).
+**Definition:** Let $p$ be a prime number. The set $\mathbb{Z}/p$ consists of the numbers $\left \{ 0, 1, \dots, p-1 \right \}$. If you endow it with the operations of addition (mod $p$) and multiplication (mod $p$), it forms a [field](http://jeremykun.com/2014/02/26/finite-fields-a-primer/).
 
 To say it's a field is just to say that arithmetic more or less behaves the way we expect it to, and in particular that every nonzero element has a (unique) multiplicative inverse. Making a number type for $\mathbb{Z}/p$ in Python is quite simple.
 

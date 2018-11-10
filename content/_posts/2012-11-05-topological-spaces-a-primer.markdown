@@ -71,7 +71,7 @@ So we just found that our intuition for open sets breaks down if we allow for in
 
 
 
-**Definition: **Let $X$ be a metric space with metric $d$. An _open set in _$X$ is either:
+**Definition:** Let $X$ be a metric space with metric $d$. An _open set in _$X$ is either:
 
 
 

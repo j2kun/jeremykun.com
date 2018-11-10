@@ -23,7 +23,7 @@ tags:
 
 **Update 2017-01-09: **[Laci claims](http://people.cs.uchicago.edu/~laci/update.html) to have found a workaround to the previously posted error, and the claim is again quasipolynoimal time! Updated arXiv paper to follow.
 
-**Update 2017-01-04: **Laci has [posted an update](http://people.cs.uchicago.edu/~laci/update.html) on his paper. The short version is that one small step of his analysis was not quite correct, and the result is that his algorithm is [sub-exponential](https://en.wikipedia.org/wiki/Time_complexity#Sub-exponential_time), but not quasipolynomial time. The fact that this took over a year to sort out is a testament to the difficulty of the mathematics and the skill of the mathematicians involved. Even the revised result is still a huge step forward in the analysis of graph isomorphism. Finally, this should reinforce how we should think about progress in mathematics: it comes in fits and starts, with occasional steps backward.
+**Update 2017-01-04:** Laci has [posted an update](http://people.cs.uchicago.edu/~laci/update.html) on his paper. The short version is that one small step of his analysis was not quite correct, and the result is that his algorithm is [sub-exponential](https://en.wikipedia.org/wiki/Time_complexity#Sub-exponential_time), but not quasipolynomial time. The fact that this took over a year to sort out is a testament to the difficulty of the mathematics and the skill of the mathematicians involved. Even the revised result is still a huge step forward in the analysis of graph isomorphism. Finally, this should reinforce how we should think about progress in mathematics: it comes in fits and starts, with occasional steps backward.
 
 **Update 2015-12-13:** Laci has posted a [preprint on arXiv](http://arxiv.org/abs/1512.03547). It's quite terse, but anyone who is comfortable with the details sketched in this article should have a fine time (albeit a long time) ** **reading it.
 
@@ -94,7 +94,7 @@ It is not completely obvious that GI reduces to the automorphism problem, but I
 
 [Eugene Luks](http://ix.cs.uoregon.edu/~luks/) was the first person to incorporate "serious group theory" (Babai's words) into the study of graph isomorphism. Why would group theory help in a question about graphs? Let me explain with a lemma.
 
-**Lemma: **GI is polynomial-time reducible to the problem of computing, given a graph $X$, a list of generators for the automorphism group of $G$, denoted $\textup{Aut}(X)$.
+**Lemma:** GI is polynomial-time reducible to the problem of computing, given a graph $X$, a list of generators for the automorphism group of $G$, denoted $\textup{Aut}(X)$.
 
 _Proof. _Without loss of generality suppose $X_1, X_2$ are connected graphs. If we want to decide whether $X_1, X_2$ are isomorphic, we may form the disjoint union $X = X_1 \cup X_2$. It is easy to see that $X_1$ and $X_2$ are isomorphic if and only if some $\sigma \in \textup{Aut}(X)$ swaps $X_1$ and $X_2$. Indeed, if any automorphism with this property exists, every generating set of $\textup{Aut}(G)$ must contain one.
 
@@ -176,7 +176,7 @@ The central tool in Babai's algorithm is the dichotomy between points that are a
 
 There is one deep theorem he uses that relates affected points to giant homomorphisms:
 
-**Theorem (Unaffected Stabilizer Theorem): **Let $\varphi: G \to S_m$ be a giant homomorphism and $U \subset G$ the set of unaffected elements. Let $G_{(U)}$ be the pointwise stabilizer of $U$, and suppose that $m > \textup{max}(8, 2 + \log_2 n)$. Then the restriction $\varphi : G_{(U)} \to S_m$ is still giant.
+**Theorem (Unaffected Stabilizer Theorem):** Let $\varphi: G \to S_m$ be a giant homomorphism and $U \subset G$ the set of unaffected elements. Let $G_{(U)}$ be the pointwise stabilizer of $U$, and suppose that $m > \textup{max}(8, 2 + \log_2 n)$. Then the restriction $\varphi : G_{(U)} \to S_m$ is still giant.
 
 Babai claimed this was a nontrivial theorem, not because the proof is particularly difficult, but because it depends on the classification of finite simple groups. He claimed it was a relatively straightforward corollary, but it appears that this does not factor into the actual GI algorithm constructively, but only as an assumption that a certain loop invariant will hold.
 

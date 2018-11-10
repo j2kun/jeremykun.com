@@ -143,7 +143,7 @@ Another way to say this is that if $z$ is an extreme point then whenever $z$ c
 
 Indeed we want a characterization of extreme points that's specific to linear programs in standard form, "$\max \langle c, x \rangle \textup{ s.t. } Ax=b, x \geq 0$." And here is one.
 
-**Definition: **Let $A$ be an $m \times n$ matrix with $n \geq m$. A solution $x$ to $Ax=b$ is called _basic_ if at most $m$ of its entries are nonzero.
+**Definition:** Let $A$ be an $m \times n$ matrix with $n \geq m$. A solution $x$ to $Ax=b$ is called _basic_ if at most $m$ of its entries are nonzero.
 
 The reason we call it "basic" is because, under some mild assumptions we describe below, a basic solution corresponds to a vector space basis of $\mathbb{R}^m$. Which basis? The one given by the $m$ columns of $A$ used in the basic solution. We don't need to talk about bases like this, though, so in the event of a headache just think of the basis as a set $B \subset \{ 1, 2, \dots, n \}$ of size $m$ corresponding to the nonzero entries of the basic solution.
 
@@ -151,7 +151,7 @@ Indeed, what we're doing here is looking at the matrix $A_B$ formed by taking th
 
 Moreover, we'll assume that every basic solution has _exactly_ $m$ nonzero variables. A basic solution which doesn't satisfy this assumption is called _degenerate_, and they'll essentially be special corner cases in the simplex algorithm. Finally, we call a basic solution _feasible _if (in addition to satisfying $Ax=b$) it satisfies $x \geq 0$. Now that we've made all these assumptions it's easy to see that choosing $m$ nonzero variables uniquely determines a basic feasible solution. Again calling the sub-matrix $A_B$ for a basis $B$, it's just $x_B = A_B^{-1}b$. Now to finish our characterization, we just have to show that under the same assumptions basic feasible solutions are exactly the extremal points of the feasible region.
 
-**Proposition: **A vector $x$ is a basic feasible solution if and only if it's an extreme point of the set $\{ x : Ax = b, x \geq 0 \}$.
+**Proposition:** A vector $x$ is a basic feasible solution if and only if it's an extreme point of the set $\{ x : Ax = b, x \geq 0 \}$.
 
 _Proof._ For one direction, suppose you have a basic feasible solution $x$, and say we write it as $x = \delta y + (1-\delta) z$ for some $0 < \delta < 1$. We want to show that this implies $y = z$. Since all of these points are in the feasible region, all of their coordinates are nonnegative. So whenever a coordinate $x_i = 0$ it must be that both $y_i = z_i = 0$. Since $x$ has exactly $n-m$ zero entries, it must be that $y, z$ both have at least $n-m$ zero entries, and hence $y,z$ are both basic. By our non-degeneracy assumption they both then have exactly $m$ nonzero entries. Let $B$ be the set of the nonzero indices of $x$. Because $Ay = Az = b$, we have $A(y-z) = 0$. Now $y-z$ has all of its nonzero entries in $B$, and because the columns of $A_B$ are linearly independent, the fact that $A_B(y-z) = 0$ implies $y-z = 0$.
 

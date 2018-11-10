@@ -91,7 +91,7 @@ If we do this for $t$ steps we get $2^t$ subrectangles. A crucial fact is that a
 
 So naturally one expects the communication complexity of $f$ would require as many steps as there are steps in the _best_ decomposition, that is, the decomposition with the fewest levels of subdivision. Indeed, we'll prove this and introduce some notation to make the discourse less clumsy.
 
-**Definition: **For an $m \times n$ matrix $M$, a _rectangle_ is a submatrix $A \times B$ where $A \subset \{ 1, \dots m \}, B \subset \{ 1, \dots, n \}$. A rectangle is called monochromatic if all entires in the corresponding submatrix $\left.M\right|_{A \times B}$ are the same. A _monochromatic tiling_ of $M$ is a partition of $M$ into disjoint monochromatic rectangles. Define $\chi(f)$ to be the minimum number of rectangles in any monochromatic tiling of $M(f)$.
+**Definition:** For an $m \times n$ matrix $M$, a _rectangle_ is a submatrix $A \times B$ where $A \subset \{ 1, \dots m \}, B \subset \{ 1, \dots, n \}$. A rectangle is called monochromatic if all entires in the corresponding submatrix $\left.M\right|_{A \times B}$ are the same. A _monochromatic tiling_ of $M$ is a partition of $M$ into disjoint monochromatic rectangles. Define $\chi(f)$ to be the minimum number of rectangles in any monochromatic tiling of $M(f)$.
 
 As we said, if there are $t$ steps in a valid communication protocol for $f$, then there are $2^t$ rectangles in the corresponding monochromatic tiling of $M(f)$. Here is an easy consequence of this.
 

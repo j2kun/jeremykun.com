@@ -201,7 +201,7 @@ On the other hand, you can also prove the strong duality theorem by inventing 
 
 In fact, you can do a bit better than the strong duality theorem, in terms of coming up with a stopping condition for a linear programming algorithm. You can observe that an optimal solution implies further constraints on the relationship between the primal and the dual problems. In particular, this is called the _complementary slackness conditions_, and they essentially say that if an optimal solution to the primal has a positive variable then the corresponding constraint in the dual problem must be _tight_ (is an equality) to get an optimal solution to the dual. The contrapositive says that if some constraint is _slack_, or a strict inequality, then either the corresponding variable is zero or else the solution is not optimal. More formally,
 
-**Theorem (Complementary Slackness Conditions): **Let $A, c, b$ be the data of the primal form of a linear program, "minimize $\left \langle c, x \right \rangle$ subject to $Ax \geq b, x \geq 0$." Then $x^*, y^*$ are optimal solutions to the primal and dual problems if any only if all of the following conditions hold.
+**Theorem (Complementary Slackness Conditions):** Let $A, c, b$ be the data of the primal form of a linear program, "minimize $\left \langle c, x \right \rangle$ subject to $Ax \geq b, x \geq 0$." Then $x^*, y^*$ are optimal solutions to the primal and dual problems if any only if all of the following conditions hold.
 
 
 

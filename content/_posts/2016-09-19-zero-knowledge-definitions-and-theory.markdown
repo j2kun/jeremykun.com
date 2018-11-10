@@ -216,7 +216,7 @@ So the entire "gotcha" content of this post, which we had to worry about with p
 
 On another front, people are relatively convinced that perfect zero-knowledge is too restrictive to be useful. This comes from the following theorem [due to Fortnow](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.42.5483&rep=rep1&type=pdf)
 
-**Theorem: **If an NP-complete problem has a statistical zero-knowledge proof, then the [polynomial hierarchy](https://en.wikipedia.org/wiki/Polynomial_hierarchy) collapses.
+**Theorem:** If an NP-complete problem has a statistical zero-knowledge proof, then the [polynomial hierarchy](https://en.wikipedia.org/wiki/Polynomial_hierarchy) collapses.
 
 Without going into detail about what the polynomial hierarchy is, suffice it to say that most people believe it's unlikely. And because this means that SZK probably does not contain all of NP, we can ask natural followup questions like, can problems in SZK be solved by polynomial-time _quantum_ algorithms? It's also open whether these can solve NP-complete problems.
 

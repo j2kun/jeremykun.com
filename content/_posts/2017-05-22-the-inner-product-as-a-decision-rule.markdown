@@ -122,7 +122,7 @@ More technically said: Let $x, y \in \mathbb{R}^n$ be two vectors, and $\langle 
 
 
 
-**Theorem: **Geometrically, $\text{proj}_y(x)$ is the projection of $x$ onto the line spanned by $y$.
+**Theorem:** Geometrically, $\text{proj}_y(x)$ is the projection of $x$ onto the line spanned by $y$.
 
 
 

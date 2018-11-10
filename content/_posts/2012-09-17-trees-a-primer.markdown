@@ -28,7 +28,7 @@ This post comes in preparation for [a post on decision trees](http://jeremykun.c
 
 Mathematically, a tree can be described in a very simple way.
 
-**Definition: **A path $(v_1, e_1, v_2, e_2, \dots, v_n)$ in a graph $G$ is called a _cycle_ if $v_1 = v_n$. Here we assume no vertex is repeated in a path (we use the term _trail_ for a path which allows repeated vertices or edges).
+**Definition:** A path $(v_1, e_1, v_2, e_2, \dots, v_n)$ in a graph $G$ is called a _cycle_ if $v_1 = v_n$. Here we assume no vertex is repeated in a path (we use the term _trail_ for a path which allows repeated vertices or edges).
 
 **Definition:** A graph $G$ is called _connected_ if every pair of vertices has a path between them. Otherwise it is called _disconnected_.
 

@@ -17,7 +17,7 @@ tags:
 
 _Note, while the problem below arose in ring theory (specifically, Euclidean domains), the proof itself is elementary, and so the title should not scare away any viewers. In fact, we boil the problem down to something which requires no knowledge of abstract algebra at all._
 
-**Problem: **Show that the ring $\mathbb{Z}[\sqrt{2}]$ has infinitely many units.
+**Problem:** Show that the ring $\mathbb{Z}[\sqrt{2}]$ has infinitely many units.
 
 **Solution:** An element of $\mathbb{Z}[\sqrt{2}]$ has the form $a+b\sqrt{2}$ for integers $a, b$, and there is a function $N: \mathbb{Z}[\sqrt{2}] \to \mathbb{Z}$ defined by $N(a+b\sqrt{2}) = a^2 - 2b^2$ satisfying $N(uv) = N(u)N(v)$, and from this it's easy to see $u$ is a unit if and only if $N(u) = \pm 1$.
 

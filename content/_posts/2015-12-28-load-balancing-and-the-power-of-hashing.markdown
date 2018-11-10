@@ -141,7 +141,7 @@ In more detail, the idea is that you start by picking _two _random hash functi
 
 This has the disadvantage of requiring bidirectional talk between the load balancer and the server, rather than obliviously forwarding requests. But the advantage is an _exponential_ decrease in the worst-case maximum load. In particular, the following theorem holds for the case where the hashes are fully random.
 
-**Theorem: **Suppose one places $m$ balls into $n$ bins in order according to the following procedure: for each ball pick two uniformly random and independent integers $1 \leq i,j \leq n$, and place the ball into the bin with the smallest current size. If there are ties pick the bin with the smaller index. Then with high probability the largest bin has no more than $\Theta(m/n) + O(\log \log (n))$ balls.
+**Theorem:** Suppose one places $m$ balls into $n$ bins in order according to the following procedure: for each ball pick two uniformly random and independent integers $1 \leq i,j \leq n$, and place the ball into the bin with the smallest current size. If there are ties pick the bin with the smaller index. Then with high probability the largest bin has no more than $\Theta(m/n) + O(\log \log (n))$ balls.
 
 This theorem appears to have been proved in a few different forms, with the best analysis being by [Berenbrink et al](http://www.cc.gatech.edu/~vigoda/RandAlgs/BCSV.pdf). You can improve the constant on the $\log \log n$ by computing more than 2 hashes. How does this relate to a good family of hash functions, which is not quite fully random? Let's explore the answer by implementing the algorithm in python.
 
@@ -155,7 +155,7 @@ In order to implement the load balancer, we need to have some good hash functio
 
 This family of hash functions is 2-universal.
 
-**Theorem: **For every $x \neq y \in \{0, \dots, p\}$,
+**Theorem:** For every $x \neq y \in \{0, \dots, p\}$,
 
 
 $\Pr_{h \in \mathscr{H}}[h(x) = h(y)] \leq 1/p$

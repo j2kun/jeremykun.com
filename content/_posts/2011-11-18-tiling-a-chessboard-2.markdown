@@ -18,7 +18,7 @@ tags:
 
 This is a natural follow-up to our first gallery entry on [the impossibility of tiling certain chessboards with dominoes](http://jeremykun.wordpress.com/2011/06/26/tiling-a-chessboard/).
 
-**Problem: **Suppose we remove two squares from a chessboard which have opposite color. Is it possible to tile the remaining squares with 2-by-1 dominoes?
+**Problem:** Suppose we remove two squares from a chessboard which have opposite color. Is it possible to tile the remaining squares with 2-by-1 dominoes?
 
 **Solution**:
 

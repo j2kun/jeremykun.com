@@ -43,7 +43,7 @@ Of course, the point of this entire post is that all of the facts we proved abou
 
 There is a very nice theorem about classical Fourier transforms that has to do with reconstructing a function from a discrete sample of its points. Since we do not actually need this theorem for anything other than motivation, we will not prove it here. Instead, we'll introduce the definitions needed to state it, and see why it motivates a good definition for the discrete "approximation" to a function. For a much more thorough treatment of the sampling theorem and the other issues we glaze over in this post, see [these lecture notes](http://www.stanford.edu/class/ee261/reader/chapter5.pdf).
 
-**Definition: **A function $f$ is _time limited_ if it has bounded support. A function $f$ is _bandlimited_ if its Fourier transform has bounded support. That is, if there is some $B$ so that the Fourier transform of $f$ is only nonzero when $|s|<B$. We call $B$ the _bandwidth_ of $f$.
+**Definition:** A function $f$ is _time limited_ if it has bounded support. A function $f$ is _bandlimited_ if its Fourier transform has bounded support. That is, if there is some $B$ so that the Fourier transform of $f$ is only nonzero when $|s|<B$. We call $B$ the _bandwidth_ of $f$.
 
 To be honest, before seeing a mathematical treatment of signal processing, this author had no idea what bandwidth actually referred to. It's nice to finally solve those life mysteries.
 

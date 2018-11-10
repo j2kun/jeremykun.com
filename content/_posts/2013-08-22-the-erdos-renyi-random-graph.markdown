@@ -259,7 +259,7 @@ Again it's too hard to see, so let's zoom in.
 This one looks like the transition starts at 0.002 and ends at 0.01. This is a 5-fold decrease from the previous one, and we increased the number of vertices by 5. Could this be a pattern? Here's a conjecture to formalize it:
 
 
-**Conjecture: **The random graph $G(n,p)$ enters a phase transition at $p=1/n$ and becomes connected almost surely at $p=5/n$.
+**Conjecture:** The random graph $G(n,p)$ enters a phase transition at $p=1/n$ and becomes connected almost surely at $p=5/n$.
 
 
 This is not quite rigorous enough to be a true conjecture, but it sums up our intuition that we've learned so far. Just to back this up even further, here's an animation showing the progression of the phase transition as $n = 20 \dots 500$ in steps of twenty. Note that the $p$ range is changing to maintain our conjectured window.

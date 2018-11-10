@@ -203,7 +203,7 @@ The proof of this theorem is beyond the scope of this blog, but any standard alg
 
 A quick application of this theorem is as follows:
 
-**Corollary: **Let $G$ be a finitely generated abelian group which has no elements of finite order. Then $G$ has no nontrivial relators except for those enforcing commutativity.
+**Corollary:** Let $G$ be a finitely generated abelian group which has no elements of finite order. Then $G$ has no nontrivial relators except for those enforcing commutativity.
 
 _Proof. _Indeed, $G \cong \mathbb{Z}^m$ for some $m$, and it has a presentation  $\left \langle x_1, x_1, \dots, x_m | x_ix_jx_i^{-1}x_j^{-1}, i \neq j \right \rangle$, which has no nontrivial relators. $\square$
 

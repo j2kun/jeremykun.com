@@ -19,7 +19,7 @@ The second reason we've included this proof is because much of important mathema
 
 Finally, note that in the details we assume a high level of familiarity with group theory, and in particular the terminology of [group actions](http://en.wikipedia.org/wiki/Group_action). In any case, the reader may glaze over the details of the proofs and notice how we methodically rule out numbers with special factorizations to achieve the final result.
 
-**Problem: **Classify all simple groups of order less than 60.
+**Problem:** Classify all simple groups of order less than 60.
 
 **Solution:** Recall that a group $G$ is _simple_ if its only normal subgroups are the trivial group and the group itself. Wielding the Sylow theorems like a machete, we will hack our way through the following list of numbers to find all of the possible orders of a simple group $G$:
 

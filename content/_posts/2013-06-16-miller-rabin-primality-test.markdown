@@ -23,7 +23,7 @@ tags:
 
 **Problem: **Determine if a number is prime, with an acceptably small error rate.
 
-**Solution: **(in Python)
+**Solution:** (in Python)
 
 {{< highlight python >}}
 import random
