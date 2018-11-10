@@ -58,7 +58,7 @@ And hence $2=4$, as desired. $\square$
 
 
 
-**Explanation****:** The issue here is relatively subtle, but one trained in real analysis should have no trouble spotting the problem.
+**Explanation:** The issue here is relatively subtle, but one trained in real analysis should have no trouble spotting the problem.
 
 
 

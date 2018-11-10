@@ -43,13 +43,13 @@ Of course, the point of this entire post is that all of the facts we proved abou
 
 There is a very nice theorem about classical Fourier transforms that has to do with reconstructing a function from a discrete sample of its points. Since we do not actually need this theorem for anything other than motivation, we will not prove it here. Instead, we'll introduce the definitions needed to state it, and see why it motivates a good definition for the discrete "approximation" to a function. For a much more thorough treatment of the sampling theorem and the other issues we glaze over in this post, see [these lecture notes](http://www.stanford.edu/class/ee261/reader/chapter5.pdf).
 
-**Definition****: **A function $f$ is _time limited_ if it has bounded support. A function $f$ is _bandlimited_ if its Fourier transform has bounded support. That is, if there is some $B$ so that the Fourier transform of $f$ is only nonzero when $|s|<B$. We call $B$ the _bandwidth_ of $f$.
+**Definition: **A function $f$ is _time limited_ if it has bounded support. A function $f$ is _bandlimited_ if its Fourier transform has bounded support. That is, if there is some $B$ so that the Fourier transform of $f$ is only nonzero when $|s|<B$. We call $B$ the _bandwidth_ of $f$.
 
 To be honest, before seeing a mathematical treatment of signal processing, this author had no idea what bandwidth actually referred to. It's nice to finally solve those life mysteries.
 
 In any case, it often occurs that one has a signal $f$ for which one can only measure values, but one doesn't have access to an exact description of $f$. The sampling theorem allows us to reconstruct $f$ _exactly_ by choosing certain sample points. In a simplified form, the theorem is as follows:
 
-**Theorem****: **Suppose $f$ is a function of bandwidth $B$. Then one can reconstruct $f$ exactly from the set of points $(k/2B, f(k/2B))$ as $k$ ranges over $\mathbb{Z}$ (that is, the sampling rate is at least $1/2B$).
+**Theorem: **Suppose $f$ is a function of bandwidth $B$. Then one can reconstruct $f$ exactly from the set of points $(k/2B, f(k/2B))$ as $k$ ranges over $\mathbb{Z}$ (that is, the sampling rate is at least $1/2B$).
 
 Unsurprisingly, the proof uses the Fourier transform in a nontrivial way. Moreover, there is a similar theorem for the Fourier transform $\mathscr{F}f$, which can be reconstructed exactly from its samples if the sampling rate is at least $1/L$, where $L/2$ bounds the support of $f$. Note that the sampling rate in one domain is determined by the limitations on the _other_ domain.
 
@@ -134,7 +134,7 @@ In other words, we can finally boil all of this discussion down to the following
 
 
 
-**Definition****: **Let $f = (f[1], \dots f[n])$ be a vector in $\mathbb{R}^n$. Then the _discrete Fourier transform _of $f$ is defined by the vector $(\mathscr{F}f[1], \dots, \mathscr{F}f[n])$, where
+**Definition: **Let $f = (f[1], \dots f[n])$ be a vector in $\mathbb{R}^n$. Then the _discrete Fourier transform _of $f$ is defined by the vector $(\mathscr{F}f[1], \dots, \mathscr{F}f[n])$, where
 
 
 

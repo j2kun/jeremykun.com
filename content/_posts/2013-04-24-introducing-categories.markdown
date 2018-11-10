@@ -244,7 +244,7 @@ But indeed, going left to right in the above equation, each transition from one 
 If it feels like we didn't actually do any work there (aside from unravelling exactly what the diagrams mean), then you're already starting to see the benefits of category theory. It can often feel like a cycle: commutative diagrams make it easy to argue about other commutative diagrams, and one can easily get lost in the wilderness of arrows. But more often than not, devoting a relatively small amount of time up front to show one diagram commutes will make a wealth of facts and theorems follow with no extra work. This is part of the reason category theory is affectionately referred to as "abstract nonsense."
 
 
-******Diagram Categories**
+**Diagram Categories**
 
 
 Speaking of abstract nonsense: next up is a very abstract example, but thinking about it will reinforce the ideas we've put forth in this post while giving a sneak peek to our treatment of universal properties. Fix an object $A$ in an arbitrary category $\mathbf{C}$. Define the category $\mathbf{C}_A$ whose objects are _morphisms_ with source $A$. That is, an object of $\mathbf{C}_A$ looks like

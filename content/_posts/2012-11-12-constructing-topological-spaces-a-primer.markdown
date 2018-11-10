@@ -46,7 +46,7 @@ And as the union $\cup_i U_i$ is open in $X$, the right hand side is in $T'$. A 
 Now there are two important spaces we need to define (as subspaces of Euclidean space) which will form the building blocks for all of our constructions. The first is the generalization of a sphere to any dimension.
 
 
-**Definition****: **The set of points $S^1 = \left \{ (x,y) \in \mathbb{R}^2 : x^2 + y^2 = 1 \right \}$ is called the _circle_, or the _1-sphere_, and is a topological space with the subspace topology of $\mathbb{R}^2$.
+**Definition: **The set of points $S^1 = \left \{ (x,y) \in \mathbb{R}^2 : x^2 + y^2 = 1 \right \}$ is called the _circle_, or the _1-sphere_, and is a topological space with the subspace topology of $\mathbb{R}^2$.
 
 Similarly, define $S^n = \left \{ (x_1, \dots, x_{n+1}) \in \mathbb{R}^{n+1} : x_1^2 + \dots + x_{n+1}^2 = 1 \right \}$ to be the $n$_-sphere, _a topological space when endowed with the subspace topology from $\mathbb{R}^{n+1}$.
 

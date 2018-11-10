@@ -384,7 +384,7 @@ Just to get a taste of where else proof by direct implication can show up, we wi
 
 **Definition: **Let $f$ be a function in a programming language. We call $f$ _injective_ if different inputs to $f$ produce different outputs (and every input produces some output). For the sake of this post, we assume the method of comparing things for equality is fixed across all objects in the language (say, via Java's object comparison method equals(), or Python's overloadable == operator).
 
-**Proposition****: **If $f, g$ are injective functions which can be composed (all outputs of $f$ are valid inputs to $g$), then the composition $gf$ defined by $gf(x) = g(f(x))$ is injective.
+**Proposition: **If $f, g$ are injective functions which can be composed (all outputs of $f$ are valid inputs to $g$), then the composition $gf$ defined by $gf(x) = g(f(x))$ is injective.
 
 _Proof._ Let $x,y$ be two different inputs to $f$. They are also inputs to $gf$. Then the values $f(x), f(y)$ are different, and they are also inputs to $g$. So $g(f(x))$ and $g(f(y))$ are different, proving $gf$ is injective. $\square$
 

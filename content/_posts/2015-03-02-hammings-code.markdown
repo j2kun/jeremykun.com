@@ -177,7 +177,7 @@ The obvious follow-up question is whether there are any other perfect codes. The
 
 
 
-**Theorem [van Lint '71, Tietavainen '****73]: **Let $C$ be a nontrivial perfect $(n,d,k)_q$ code. Then the parameters must either be that of a Hamming code, or one of the two:
+**Theorem [van Lint '71, Tietavainen '73]: **Let $C$ be a nontrivial perfect $(n,d,k)_q$ code. Then the parameters must either be that of a Hamming code, or one of the two:
 
 
 

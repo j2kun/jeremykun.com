@@ -91,19 +91,19 @@ In fact, this characterization of open sets is so good that we can redefine a bu
 
 There is an essential switch in going from metric spaces to topological spaces that one must take, and it involves the concepts of neighborhoods.
 
-**Definition****:** Let $x \in X$ be a point in a metric space $X$. A _neighborhood of_ $x$ is any open set $U$ containing $x$. More specifically, we can distinguish between an _open neighborhood_ and a _closed neighborhood_, but without qualifiers we will always mean an open neighborhood.
+**Definition:** Let $x \in X$ be a point in a metric space $X$. A _neighborhood of_ $x$ is any open set $U$ containing $x$. More specifically, we can distinguish between an _open neighborhood_ and a _closed neighborhood_, but without qualifiers we will always mean an open neighborhood.
 
 In particular, the concept of a neighborhood will completely replace the idea of a metric. We will say things like, "for any neighborhood..." and "there exists a neighborhood...", which will translate in the case of metric spaces to, "for any sufficiently close point..." and "there exists a sufficiently close point..." The main point for this discussion, however, is that if open sets were defined in some other way, the definition would still apply.
 
 Perhaps the simplest example of such a definition is that of a sequence converging. Recall the classical definition in terms of metrics:
 
-**Definition****: **Let $X$ be a metric space with metric $d$, and let $a_n$ be a sequence of elements in $X$. We say $a_n$ _converges to _$a \in X$ if for any $\varepsilon > 0$, there is some sufficiently large $N$ so that the distance $d(a_n, a) < \varepsilon$ whenever $n > N$.
+**Definition: **Let $X$ be a metric space with metric $d$, and let $a_n$ be a sequence of elements in $X$. We say $a_n$ _converges to _$a \in X$ if for any $\varepsilon > 0$, there is some sufficiently large $N$ so that the distance $d(a_n, a) < \varepsilon$ whenever $n > N$.
 
 In other words, after the $N$-th point in the sequence, the values will always stay within a tiny distance of $a$, and we can pick that tiny distance (\varepsilon) arbitrarily close to $a$. So the sequence must converge to $a$.
 
 This naturally gives rise to a definition in terms of open neighborhoods of $a$:
 
-**Definition****: **Let $X, a_n, a$ be as in the previous definition. We say that $a_n$ _converges to _$a$ if for any open neighborhood $U$ of $a$, there is some sufficiently large $N$ so that $a_n \in U$ for all $n > N$.
+**Definition: **Let $X, a_n, a$ be as in the previous definition. We say that $a_n$ _converges to _$a$ if for any open neighborhood $U$ of $a$, there is some sufficiently large $N$ so that $a_n \in U$ for all $n > N$.
 
 In particular, these two definitions are equivalent. Before we give the proof, the reader should be warned that pictures will make this proof obvious (but not rigorous), so we encourage the reader to follow along with a piece of paper. Open balls are drawn as circles despite the dimension of the space, and open neighborhoods are usually just drawn as "blobs" containing a certain point.
 

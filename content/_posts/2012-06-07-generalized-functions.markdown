@@ -179,7 +179,7 @@ But notice that the final form of our expression for $(\mathscr{F}T)(\varphi)$ d
 
 
 
-**Definition****: **The _Fourier transform of a generalized function_ $T$ is defined by $(\mathscr{F}T)(f) = T(\mathscr{F}f)$. Similarly, the _inverse Fourier transform_ is defined by $(\mathscr{F}^{-1}T)(f) = T(\mathscr{F}^{-1}f)$.
+**Definition: **The _Fourier transform of a generalized function_ $T$ is defined by $(\mathscr{F}T)(f) = T(\mathscr{F}f)$. Similarly, the _inverse Fourier transform_ is defined by $(\mathscr{F}^{-1}T)(f) = T(\mathscr{F}^{-1}f)$.
 
 
 
@@ -277,7 +277,7 @@ On the other hand, if one restricts to tempered distributions, one can compute t
 
 Continuing with the same derivation philosophy, we can define the derivative of a tempered distribution $T$:
 
-**Definition****:** The _derivative_ of a tempered distribution $T$, denoted $T'$, is defined by $T'(\varphi) = -T(\varphi')$.
+**Definition:** The _derivative_ of a tempered distribution $T$, denoted $T'$, is defined by $T'(\varphi) = -T(\varphi')$.
 
 A special case of this occurs when $T$ is the delta function; we have $f\delta = f(0)\delta$ as tempered distributions. Moreover, from this definition it is easy to reprove the classical identities $\mathscr{F}T' = (2\pi is)\mathscr{F}T$, and $(\mathscr{F}T)' = \mathscr{F}(-2\pi it T)$.
 

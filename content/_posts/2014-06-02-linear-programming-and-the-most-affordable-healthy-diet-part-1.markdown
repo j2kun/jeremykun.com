@@ -168,7 +168,7 @@ Now say you're given the data of a linear program for minimization, that is the
 
 Now we can actually _prove_ that the objective function for the dual provides a bound on the objective function for the original problem. It's obvious from the work we've done, which is why it's called the _weak_ duality theorem.
 
-**Weak Duality Theorem****:** Let $c, A, b$ be the data of a linear program in the primal form (the minimization problem) whose objective function is $\left \langle c, x \right \rangle$. Recall that the objective function of the dual (maximization) problem is $\left \langle b, y \right \rangle$. If $x,y$ are feasible solutions (satisfy the constraints of their respective problems), then
+**Weak Duality Theorem:** Let $c, A, b$ be the data of a linear program in the primal form (the minimization problem) whose objective function is $\left \langle c, x \right \rangle$. Recall that the objective function of the dual (maximization) problem is $\left \langle b, y \right \rangle$. If $x,y$ are feasible solutions (satisfy the constraints of their respective problems), then
 
 
 $\left \langle b, y \right \rangle \leq \left \langle c, x \right \rangle$

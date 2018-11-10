@@ -178,7 +178,7 @@ Of course there is an analogue to the theorem of total probability lurking here.
 
 And so instead of simply summing the expectation, we need to take an expectation over the values of $Y$. Thinking again of $X | Y=y$ as a random variable based on values of $Y$, it makes sense mathematically to take expectation. To distinguish between the two types of expectation, we will subscript the variable being "expected," as in $\textup{E}_X(X|Y)$. That is, we have the following theorem.
 
-**Theorem****: **The expected value of $X$ satisfies
+**Theorem: **The expected value of $X$ satisfies
 
 
 $\textup{E}_X(X) = \textup{E}_Y(\textup{E}_X(X|Y))$

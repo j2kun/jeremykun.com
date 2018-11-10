@@ -128,7 +128,7 @@ As we will see shortly, these properties _characterize_ what it means to have s
 
 Now that we've seen two examples of symmetry groups, it's time to get abstract. The three properties of symmetries we mentioned above will form the basis for our definition:
 
-**Definition****:** A _group_ $G$ is a set with a specified binary operation (denoted here by a $\cdot$), so that the following properties hold:
+**Definition:** A _group_ $G$ is a set with a specified binary operation (denoted here by a $\cdot$), so that the following properties hold:
 
 
 
@@ -186,7 +186,7 @@ These groups $\mathbb{Z}$ and $\mathbb{Z}/n\mathbb{Z}$ share something else in c
 
 
 
-**Definition****: **A group $G$ is called _abelian_ (pronounced, uh-BEE-lee-un) if its group operation is commutative.
+**Definition: **A group $G$ is called _abelian_ (pronounced, uh-BEE-lee-un) if its group operation is commutative.
 
 
 

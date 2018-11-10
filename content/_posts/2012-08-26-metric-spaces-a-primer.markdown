@@ -214,7 +214,7 @@ We call the first term the _projection of _$u$ _onto _$v$. The second term i
 
 
 
-**Theorem****:** (The Cauchy-Schwarz Inequality). For all $u,v \in V$,
+**Theorem:** (The Cauchy-Schwarz Inequality). For all $u,v \in V$,
 
 
 

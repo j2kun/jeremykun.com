@@ -22,7 +22,7 @@ tags:
 
 **Problem:** Compute a reasonable approximation to a "streaming median" of a potentially infinite sequence of integers.
 
-**Solution****:** (in Python)
+**Solution:** (in Python)
 
 {{< highlight python >}}
 def streamingMedian(seq):
@@ -38,7 +38,7 @@ def streamingMedian(seq):
       yield m
 {{< /highlight >}}
 
-**Discussion****: **Before we discuss the details of the Python implementation above, we should note a few things.
+**Discussion: **Before we discuss the details of the Python implementation above, we should note a few things.
 
 First, because the input sequence is potentially infinite, we can't store any amount of information that is increasing in the length of the sequence. Even though storing something like $O(\log(n))$ integers would be reasonable for the real world (note that the log of a petabyte is about 60 bytes), we should not let that stop us from shooting for the ideal $O(1)$ space bound, and exploring what sorts of solutions arise under that constraint. For the record, I don't know of any algorithms to compute the true streaming median which require $O(\log(n))$ space, and I would be very interested to see one.
 

@@ -48,7 +48,7 @@ def dynamicTimeWarp(seqA, seqB, d = lambda x,y: abs(x-y)):
     return cost[-1][-1]
 {{< /highlight >}}
 
-**Discussion****: **Comparing sequences of numbers can be tricky business. The simplest way to do so is simply component-wise. However, this will often disregard more abstract features of a sequence that we intuitively understand as "shape."
+**Discussion: **Comparing sequences of numbers can be tricky business. The simplest way to do so is simply component-wise. However, this will often disregard more abstract features of a sequence that we intuitively understand as "shape."
 
 For example, consider the following two sequences.
 
