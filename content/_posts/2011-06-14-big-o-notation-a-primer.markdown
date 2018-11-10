@@ -21,7 +21,6 @@ tags:
 
 ## The Quest to Capture Speed
 
-
 Companies and researchers spend hundreds of millions of dollars for the fruits of their algorithms. Whether one is indexing websites on the internet for search, folding proteins, or figuring out which warehouse is the most cost-effective to ship a product from, improvements in algorithm speed save immense amounts of money.
 
 It's no surprise then, that a similarly immense amount of money has gone into the mathematics behind algorithm analysis. Arguably the roughest and most succinct measurement of how fast an algorithm runs is called _order of complexity_ of an algorithm. There are two commonly used measures of order of complexity, namely Big-O notation and the more nuanced Big-Theta notation. We begin with the former.
@@ -35,8 +34,6 @@ Here is a simple, pedantic example:
 Consider an algorithm which accepts as its input a list of numbers and adds together all of the numbers in that list. Given a list of size $n$, we might count up the number of steps taken by our algorithm to arrive at $f(n) = 5(n-1)$, because there are $n-1$ additions being performed, and for each add there is an instruction fetch, a pointer reference to follow, a value in memory to load, the addition to perform, and the resulting value to store in a register, each for simplicity taking one step. We characterize this algorithm as $O(n)$, because for any $n > 1$, we have $M = 5$ giving $|f(n)| = |5n-5| < 5|n| = M|g(n)|$.
 
 Of course, such a detailed analysis is rarely performed. Generally, we'd say there is an addition to be performed for each element in the list, giving $n$ additions and an order of complexity of $O(n)$. Typically, the goal is to have the $g$ function be as simple as possible, giving a small number of commonly used orders which facilitate over-the-table discussions about algorithms:
-
-
 
 	  * $O(1)$: the **constant time** algorithm which always takes a fixed number of steps for any input. For example, looking up a key in a hash table.
 	  * $O(\log n)$: **logarithmic time**, where at each step of the algorithm the problem size is reduced by a fixed factor. This is common to "divide and conquer" algorithms.

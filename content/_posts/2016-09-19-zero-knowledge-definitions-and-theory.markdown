@@ -11,32 +11,15 @@ categories:
 
 <blockquote>_The next Monday, when the fathers were all back at work, we kids were playing in a field. One kid says to me, “See that bird? What kind of bird is that?” I said, “I haven’t the slightest idea what kind of a bird it is.” He says, “It’s a brown-throated thrush. Your father doesn’t teach you anything!” But it was the opposite. He had already taught me: “See that bird?” he says. “It’s a Spencer’s warbler.” (I knew he didn’t know the real name.) “Well, in Italian, it’s a Chutto Lapittida. In Portuguese, it’s a Bom da Peida. In Chinese, it’s a Chung-long-tah, and in Japanese, it’s a Katano Tekeda. You can know the name of that bird in all the languages of the world, but when you’re finished, you’ll know absolutely nothing whatever about the bird. You’ll only know about humans in different places, and what they call the bird. So let’s look at the bird and see what it’s doing—that’s what counts.” I learned very early the difference between knowing the name of something and knowing something._</blockquote>
 
-
-
-
 In the [first post in this series](http://jeremykun.com/2016/07/05/zero-knowledge-proofs-a-primer/), we defined and implemented a simple zero-knowledge proof for graph isomorphism. In [the second post](http://jeremykun.com/2016/08/01/zero-knowledge-proofs-for-np/), we saw a different protocol with a much heftier tagline: it gives a zero knowledge proof for any problem in the class NP. These two protocols used the same underlying framework—an interaction between a prover and a verifier—but they were actually very different.
-
-
-
 
 Indeed, the graph isomorphism proof was "perfect" in two senses. First, it didn't require any assumptions about cryptography. Nobody knows how to prove the Blum-Blum-Shub function is actually a one-way permutation (at the least, this would imply $\textup{P} \neq \textup{NP}$, so it's probably hard to prove).
 
-
-
-
 Second, in the graph isomorphism proof, the simulator produced transcripts of the protocol that came from the _exact_ same distribution as the true transcripts created by the prover and verifier. This is why we called it zero-knowledge; anything the verifier can do with the output of the protocol, the simulator could do too. The verifier can't be making use of the prover's secret knowledge, since that information isn't even in the simulator's universe but the simulator can still compute what the verifier can.
-
-
-
 
 But I didn't tell you precisely why the 3-coloring protocol is a zero-knowledge proof, and in particular why it's different from the graph isomorphism protocol. I also hinted that I had been misleading you, dear reader, as to the full 3-coloring proof of zero-knowledge. So in this post we'll get into those nitty-gritty definitions that make the math rigorous. We'll give a short sketch of the proof of zero-knowledge (the full proof would take many pages, not because it's hard but because there are a lot of annoying details). And then we'll give an overview of the landscape of theorems and conjectures about zero knowledge.
 
-
-
-
-
 ## Information vs. knowledge
-
 
 You can't understand where the following definitions come from without the crucial distinction between _information_ and _knowledge_ from the computer scientist's perspective. _Information_ concerns how many essential bits are encoded in a message, and nothing more. In particular, information is not the same as _computational complexity_, the required amount of computational resources required to actually do something. _Knowledge,_ on the other hand, refers to the computational abilities you gain with the information provided.
 
@@ -48,17 +31,13 @@ From this perspective information theory is abstruse, though it's [much easier t
 
 From here we'll explore three definitions of zero-knowledge. First, we'll see "perfect" zero knowledge, which is believed to be too strong to be practical. We'll give a sketch of the "right" proof that graph isomorphism has a perfect zero-knowledge proof. Then we'll see two relaxations to "statistical" and "computational" zero knowledge. We'll discuss their theoretical relationships to each other and the rest of the world from a high level.
 
-
 ## Perfect zero-knowledge
-
 
 Recall from our [first post](http://jeremykun.com/2016/07/05/zero-knowledge-proofs-a-primer/), the interactive protocol for graph isomorphism has a very nice property. Say you took all the messages sent back and forth between the prover and verifier, and say you think of those messages as a random outcome of a probabilistic event. Then a simulator could have produced a set of messages drawn from the _same_ distribution, without needing to see the messages from the protocol in the first place! So anything that the verifier could compute as a result of participating in the protocol, the simulator could compute without needing the protocol in the first place. The simulator just needs to assume the truth of the claim. This type of zero-knowledge is called _perfect_ zero-knowledge.
 
 Let's distill this into some notation. In order to do this, we'll shift to the theoretical way of discussing a "problem" as a _language_, i.e., a set of strings. For example, for 3-coloring you fix a method for describing graphs as strings (it doesn't really matter which method you use), and the language is the set of strings
 
-
 $\displaystyle \{ G : G \textup{ has a valid 3-coloring } \}$
-
 
 Membership in the set is the same as saying an instance of the problem "does $G$ have a 3-coloring?" has a yes answer. Throughout the entire discussion we will fix a generic way to encode any object as a binary string, and we'll implicitly equate $G$ with the string representing $G$, and call them both $G$. In this post I'll always use $L$ for a language.
 
@@ -82,8 +61,6 @@ Unfortunately, there is no known zero-knowledge proof for a nontrivial problem t
 
 Now we can sketch the real graph isomorphism proof. The simulator is defined as follows:
 
-
-
 	  1. Pick $i \in \{ 1, 2 \}$ randomly and let $H$ be a random permutation of $G_i$.
 	  2. Invoke the verifier $V(H)$ as a subroutine with input $H$, and call the output $k$, which is either 1 or 2.
 	  3. If $k \neq i$, output "KAPUT!", otherwise invoke $V$ as a subroutine with the isomorphism $H \to G_i$ as input.
@@ -94,23 +71,15 @@ Now when we invoke the verifier subroutine, we can't know what the verifier will
 
 If you ignore that we need to prove a few probability-theory facts (like that the choice of $H$ really is uniformly random), then this completes the proof.
 
-
 $\square$
 
-
-
-
-
 ## Statistical and computational zero-knowledge
-
 
 While perfect zero-knowledge is the strongest form of zero-knowledge, it's believed to be too strong. A more tractable definition is called _statistical_ zero-knowledge, and for this we relax the requirement that the message distributions are equal to the requirement that they're "very similar." Informally, by "very similar" I mean that if the output strings have length $m$, then the sum of the differences of the probabilities is "basically" exponentially small in $m$.
 
 More formally, if $D_1, D_2$ are two distributions over $\{0,1\}^m$, then we say they're _statistically close_ if the following distance function vanishes (asymptotically in $m$) faster than $1/m^c$ for any $c > 0$.
 
-
 $\displaystyle d(D_1, D_2) = \sum_{x \in \{0,1\}^m} \left | \Pr_{y \sim D_1}[y=x] - \Pr_{y \sim D_2}[y=x] \right |$
-
 
 This distance function just sums, for every outcome, the difference between the probabilities of those outcomes. In other words, being statistically close means that the two distributions can't disagree on any particular input too much, nor can they disagree on most the outputs more than a tiny bit.
 
@@ -124,9 +93,7 @@ Finally, the weakest form of zero-knowledge isn't so much a property of the two
 
 **Definition: **An interactive proof $M(P,V)$ is said to have _computational zero-knowledge_ if there is a simulator $S$ such that for every input $x$, and for every probabilistic polynomial-time algorithm $A$, the following probability is negligible.
 
-
 $\displaystyle \Pr[A(M(P,V)(x)) \neq A(S(x))]$
-
 
 In words, $A$ fails to distinguish between $M(P,V)(x)$ and $S(x)$ with a significant (non-negligible) edge over random guessing. Another way to say it is that the distributions $A(M(P,V)(x))$ and $A(S(x))$ are statistically close. So the simulator can't necessarily produce a statistically close distribution on messages, but the simulator _can_ produce a distribution that fools a computationally limited observer.
 
@@ -134,28 +101,17 @@ If general, two distributions $D_1, D_2$ are called _computationally indistingu
 
 So our landscape consists of three classes of problems nested as follows:
 
-
 Perfect ZK $\subset $ statistical ZK $\subset$ Computational ZK
-
-
-
 
 An interesting question we'll discuss by towards the end of this post is whether these classes of problems are actually different.
 
-
-
-
-
 ## Back to 3-coloring
-
 
 This computational distinguishing property shows up all over cryptography. The reason is simple: almost all cryptographic hardness assumptions can be rephrased as the computational indistinguishability properties. The hardness of one-way functions, predicting pseudorandom generators, all of it is the inability of a polynomial-time adversary to solve a problem.
 
 From this perspective, we can already see why it should be obvious that the zero-knowledge proof for 3-coloring has computational zero knowledge: we used crypto to commit to a coloring, and revealed the secret key later. If the verifier could break the zero-knowledge aspect, then they could defeat the underlying cryptographic primitive. The formal proof of computational zero-knowledge is a drawn-out, detail-oriented quest to entrench this idea in formalism and fit the simulator definition.
 
 Nevertheless, it's interesting to see where precisely the assumption makes its way into the simulator. Reminder of the protocol:
-
-
 
 	  1. The prover has a 3-coloring, and publicly commits to a random permutation of that coloring, sends it to the verifier.
 	  2. The verifier picks an edge uniformly at random, sends it to the prover.
@@ -176,25 +132,13 @@ In other words, we can _use_ a verifier that breaks zero-knowledge of this pro
 
 Actually, I don't think I ever formally said what the security assumption for a bit commitment scheme is, since in the previous posts I hadn't provided the definition of computational indistinguishability. So here it is: a bit-commitment scheme, which is defined by a one-way permutation $G$ with a hard-core predicate $f$, maps $b \mapsto (G(x), f(x) \oplus b)$ and has the property that the distributions committing to zero and one are computationally indistinguishable. That is, the following two distributions:
 
-
 $\textup{commit}_n(0) = \{ (G(x), f(x) \oplus 0): x \in \{ 0,1 \}^n \}$
-
-
-
 
 $\textup{commit}_n(1) = \{ (G(x), f(x) \oplus 1): x \in \{ 0,1 \}^n \}$
 
-
-
-
 So the verifier can pick a bad edge with probability as most $1/3 + \textup{negligible}$, which is far less than 1/2. Then you can use the trick we showed earlier to get a good enough simulator that never KAPUTs. And that proves computational zero-knowledge.
 
-
-
-
-
 ## Theorems and limitations
-
 
 Here's an interesting theorem:
 

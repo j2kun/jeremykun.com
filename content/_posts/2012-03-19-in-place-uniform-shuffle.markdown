@@ -17,7 +17,6 @@ tags:
 [![](http://jeremykun.files.wordpress.com/2012/03/riffle.jpg)
 ](http://jeremykun.files.wordpress.com/2012/03/riffle.jpg)
 
-
 **Problem**: Write a program that shuffles a list. Do so without using more than a constant amount of extra space and linear time in the size of the list.
 
 **Solution**: (in Python)
@@ -48,6 +47,5 @@ Taking all of this into consideration, we have the following pseudocode:
        for i in range(0, n-1) inclusive:
           j = random(i, n-1) inclusive
           swap L[i], L[j]
-
 
 As we showed above, this pseudocode translates quite nicely to Python, and it obviously satisfies the requirements of not using a lot of extra space and running in linear time; we only visit each position in the list once, and swaps take constant time and all the swaps combined only use constant space. On the other hand, [implementations in functional languages](http://okmij.org/ftp/Haskell/perfect-shuffle.txt) are a bit more difficult, and if the language is _purely functional_, it can't be done "in place." I'd usually be the last one to admit functional languages aren't the best tool for every job, but there you have it.

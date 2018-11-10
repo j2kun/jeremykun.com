@@ -25,14 +25,11 @@ tags:
 
 In this post we'll get a strong taste for zero knowledge proofs by exploring the graph isomorphism problem in detail. In the next post, we'll see how this relates to cryptography and the bigger picture. The goal of this post is to get a strong understanding of the terms "prover," "verifier," and "simulator," and "zero knowledge" in the context of a specific zero-knowledge proof. Then [next time](http://jeremykun.com/2016/08/01/zero-knowledge-proofs-for-np/) we'll see how the same concepts (though not the same proof) generalizes to a cryptographically interesting setting.
 
-
 ## Graph isomorphism
-
 
 Let's start with an extended example. We are given two graphs $G_1, G_2$, and we'd like to know whether they're isomorphic, meaning they're the same graph, but "drawn" different ways.
 
 ![](https://jeremykun.files.wordpress.com/2015/11/gi-example.png)
-
 
 The problem of telling if two graphs are isomorphic seems hard. The pictures above, which are all different drawings of the same graph (or are they?), should give you pause if you thought it was easy.
 
@@ -40,9 +37,7 @@ To add a tiny bit of formalism, a graph $G$ is a list of edges, and each edge $
 
 Given two arbitrary graphs as input on a large number of vertices $n$, nobody knows of an efficient—i.e., polynomial time in $n$—algorithm that can always decide whether the input graphs are isomorphic. Even if you promise me that the inputs are isomorphic, nobody knows of an algorithm that could construct an isomorphism. (If you think about it, such an algorithm could be used to solve the decision problem!)
 
-
 ## A game
-
 
 Now let's play a game. In this game, we're given two enormous graphs on a billion nodes. I claim they're isomorphic, and I want to prove it to you. However, my life's fortune is locked behind these particular graphs (somehow), and if you actually had an isomorphism between these two graphs you could use it to steal all my money. But I still want to convince you that I do, in fact, own all of this money, because we're about to start a business and you need to know I'm not broke.
 

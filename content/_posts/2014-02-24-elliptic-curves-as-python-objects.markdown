@@ -20,9 +20,7 @@ tags:
 
 With that understanding in mind we now finally turn to code, and write classes for curves and points and implement the addition algorithm. As usual, [all of the code](https://github.com/j2kun/elliptic-curves-rationals) we wrote in this post is available on [this blog's Github page](https://github.com/j2kun).
 
-
 ## Points and Curves
-
 
 Every introductory programming student has probably written the following program in some language for a class representing a point.
 
@@ -149,33 +147,23 @@ For distinct points we have to follow the algorithm we used last time. Remember 
 
 In order to do that, we need to analytically solve for the coefficient of the $x^2$ term of the equation $L(x)^2 = x^3 + ax + b$. It's tedious, but straightforward. First, write
 
-
 $\displaystyle L(x) = \left ( \frac{y_2 - y_1}{x_2 - x_1} \right ) (x - x_1) + y_1$
-
 
 The first step of expanding $L(x)^2$ gives us
 
-
 $\displaystyle L(x)^2 = y_1^2 + 2y_1 \left ( \frac{y_2 - y_1}{x_2 - x_1} \right ) (x - x_1) + \left [ \left (\frac{y_2 - y_1}{x_2 - x_1} \right ) (x - x_1) \right ]^2$
-
 
 And we notice that the only term containing an $x^2$ part is the last one. Expanding that gives us
 
-
 $\displaystyle \left ( \frac{y_2 - y_1}{x_2 - x_1} \right )^2 (x^2 - 2xx_1 + x_1^2)$
-
 
 And again we can discard the parts that don't involve $x^2$. In other words, if we were to rewrite $L(x)^2 = x^3 + ax + b$ as $0 = x^3 - L(x)^2 + ax + b$, we'd expand all the terms and get something that looks like
 
-
 $\displaystyle 0 = x^3 - \left ( \frac{y_2 - y_1}{x_2 - x_1} \right )^2 x^2 + C_1x + C_2$
-
 
 where $C_1, C_2$ are some constants that we don't need. Now using Vieta's formula and calling $x_3$ the third root we seek, we know that
 
-
 $\displaystyle x_1 + x_2 + x_3 = \left ( \frac{y_2 - y_1}{x_2 - x_1} \right )^2$
-
 
 Which means that $x_3 = \left ( \frac{y_2 - y_1}{x_2 - x_1} \right )^2 - x_2 - x_1$. Once we have $x_3$, we can get $y_3$ from the equation of the line $y_3 = L(x_3)$.
 
@@ -210,9 +198,7 @@ First, we check if the two points are the same, in which case we use the tangent
 
 Now for the case when the points $P, Q$ are actually the same. We'll call it $P = (x_1, y_1)$, and we're trying to find $2P = P+P$. As per our algorithm, we compute the tangent line $J(x)$ at $P$. In order to do this we need just a tiny bit of calculus. To find the slope of the tangent line we implicitly differentiate the equation $y^2 = x^3 + ax + b$ and get
 
-
 $\displaystyle \frac{dy}{dx} = \frac{3x^2 + a}{2y}$
-
 
 The only time we'd get a vertical line is when the denominator is zero (you can verify this by taking limits if you wish), and so $y=0$ implies that $P+P = 0$ and we're done. The fact that this can ever happen for a nonzero $P$ should be surprising to any reader unfamiliar with groups! But without delving into [a deep conversation](http://jeremykun.com/2012/12/08/groups-a-primer/) about the different kinds of group structures out there, we'll have to settle for such nice surprises.
 
@@ -336,9 +322,7 @@ The scaling function allows us to quickly compute $nP = P + P + \dots + P$ ($n$ 
 
 Given a number written in binary $n = b_kb_{k-1}\dots b_1b_0$, we can write $nP$ as
 
-
 $\displaystyle b_0 P + b_1 2P + b_2 4P + \dots + b_k 2^k P$
-
 
 The advantage of this is that we can compute each of the $P, 2P, 4P, \dots, 2^kP$ iteratively using only $k$ additions by multiplying by 2 (adding something to itself) $k$ times. Since the number of bits in $n$ is $k= \log(n)$, we're getting a huge improvement over $n$ additions.
 

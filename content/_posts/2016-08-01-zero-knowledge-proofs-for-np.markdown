@@ -27,8 +27,6 @@ A zero-knowledge proof is a special kind of interactive proof in which the prov
 
 In this post we'll see that, using a bit of cryptography, zero-knowledge proofs capture a much wider class of problems than graph isomorphism. Basically, if you believe that cryptography exists, every problem whose answers can be easily verified have zero-knowledge proofs (i.e., all of the class NP). Here are a bunch of examples. For each I'll phrase the problem as a question, and then say what sort of data the prover's secret could be.
 
-
-
 	  * Given a boolean formula, is there an assignment of variables making it true? Secret: a satisfying assignment to the variables.
 	  * Given a set of integers, is there a subset whose sum is zero? Secret: such a subset.
 	  * Given a graph, does it have a 3-coloring? Secret: a valid 3-coloring.
@@ -38,9 +36,7 @@ The common link among all of these problems is that they are NP-hard (graph isom
 
 We're going to describe and implement a zero-knowledge proof for graph 3-colorability, and in the next post we'll dive into the theoretical definitions and talk about the proof that the scheme we present is zero-knowledge. As usual, all of the code used in making this post is available in [a repository](https://github.com/j2kun/zero-knowledge-proofs) on [this blog's Github page](https://github.com/j2kun). In the [follow up to this post](https://jeremykun.com/2016/09/19/zero-knowledge-definitions-and-theory/), we'll dive into more nitty gritty details about the proof that this works, and study different kinds of zero-knowledge.
 
-
 ## One-way permutations
-
 
 In a recent program gallery post we introduced the [Blum-Blum-Shub pseudorandom generator](http://jeremykun.com/2016/07/11/the-blum-blum-shub-pseudorandom-generator/). A pseudorandom generator is simply an algorithm that takes as input a short random string of length $s$ and produces as output a longer string, say, of length $3s$. This output string should not be random, but rather "indistinguishable" from random in a sense we'll make clear next time. The underlying function for this generator is the "modular squaring" function $x \mapsto x^2 \mod M$, for some cleverly chosen $M$. The $M$ is chosen in such a way that makes this mapping a permutation. So this function is more than just a pseudorandom generator, it's a _one-way permutation_.
 
@@ -83,9 +79,7 @@ def parity(n):
     return sum(int(x) for x in bin(n)[2:]) % 2
 {{< /highlight >}}
 
-
 ## Bit Commitment Schemes
-
 
 A core idea that will makes zero-knowledge proofs work for NP is the ability for the prover to publicly "commit" to a choice, and later reveal that choice in a way that makes it infeasible to fake their commitment. This will involve not just the commitment to a single bit of information, but also the transmission of auxiliary data that is provably infeasible to fake.
 
@@ -289,17 +283,13 @@ And a sample output:
 
 Before we move on, we should note that this integer commitment scheme "blows up" the secret by quite a bit. If you have a security parameter $s$ and an integer with $n$ bits, then the commitment uses roughly $sn$ bits. A more efficient method would be to simply use a good public-key encryption scheme, and then reveal the secret key used to encrypt the message. While we [implemented such schemes](http://jeremykun.com/2014/02/08/introducing-elliptic-curves/) previously on this blog, I thought it would be more fun to do something new.
 
-
 ## A zero-knowledge proof for 3-coloring
-
 
 First, a high-level description of the protocol. The setup: the prover has a graph $G$ with $n$ vertices $V$ and $m$ edges $E$, and also has a secret 3-coloring of the vertices $\varphi: V \to \{ 0, 1, 2 \}$. Recall, a 3-coloring is just an assignment of colors to vertices (in this case the colors are 0,1,2) so that no two adjacent vertices have the same color.
 
 So the prover has a coloring $\varphi$ to be kept secret, but wants to prove that $G$ is 3-colorable. The idea is for the verifier to pick a random edge $(u,v)$, and have the prover reveal the colors of $u$ and $v$. However, if we run this protocol only once, there's nothing to stop the prover from just lying and picking two distinct colors. If we allow the verifier to run the protocol many times, and the prover actually reveals the colors from their secret coloring, then after roughly $|V|$ rounds the verifier will know the entire coloring. Each step reveals more knowledge.
 
 We can fix this with two modifications.
-
-
 
 	  1. The prover first publicly commits to the coloring using a commitment scheme. Then when the verifier asks for the colors of the two vertices of a random edge, he can rest assured that the prover fixed a coloring that does not depend on the verifier's choice of edge.
 	  2. The prover doesn't reveal colors from their secret coloring, but rather from a random permutation of the secret coloring. This way, when the verifier sees colors, they're equally likely to see _any_ two colors, and all the verifier will know is that those two colors are different.
@@ -475,15 +465,9 @@ Here's the output
 0 != 1 and commitment is valid? True
 {{< /highlight >}}
 
-
 So while we haven't proved it rigorously, we've seen the zero-knowledge proof for graph 3-coloring. This automatically gives us a zero-knowledge proof for all of NP, because given any NP problem you can just convert it to the equivalent 3-coloring problem and solve that. Of course, the blowup required to convert a random NP problem to 3-coloring can be polynomially large, which makes it unsuitable for practice. But the point is that this gives us a theoretical justification for which problems have zero-knowledge proofs _in principle. _Now that we've established that you can go about trying to find the most efficient protocol for your favorite problem.
 
-
-
-
-
 ## Anticipatory notes
-
 
 When we covered graph isomorphism last time, we said that a _simulator_ could, without participating in the zero-knowledge protocol or knowing the secret isomorphism, produce a transcript that was drawn from the same distribution of messages as the protocol produced. That was all that it needed to be "zero-knowledge," because anything the verifier could do with its protocol transcript, the simulator could do too.
 

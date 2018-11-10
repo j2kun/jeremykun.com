@@ -25,8 +25,6 @@ So in this series of posts we're going to get knee deep in a mess of elliptic cu
 
 The series will have the following parts:
 
-
-
 	  1. [Elliptic curves as elementary equations](http://jeremykun.com/2014/02/10/elliptic-curves-as-elementary-equations/)
 	  2. [The algebraic structure of elliptic curves](http://jeremykun.com/2014/02/16/elliptic-curves-as-algebraic-structures/)
 	  3. [Points on elliptic curves as Python objects](http://jeremykun.com/2014/02/24/elliptic-curves-as-python-objects/)
@@ -35,7 +33,6 @@ The series will have the following parts:
 	    1. [Finite fields primer](http://jeremykun.com/2014/02/26/finite-fields-a-primer/) (just mathematics)
 	    2. [Programming with finite fields](http://jeremykun.com/2014/03/13/programming-with-finite-fields/)
 	    3. [Back to elliptic curves](http://jeremykun.com/2014/03/19/connecting-elliptic-curves-with-finite-fields-a-reprise/)
-
 
 	  5. [Diffie-Hellman key exchange](http://jeremykun.com/2014/03/31/elliptic-curve-diffie-hellman/)
 	  6. [Shamir-Massey-Omura encryption and Digital Signatures](http://jeremykun.com/2014/04/14/sending-and-authenticating-messages-with-elliptic-curves/)

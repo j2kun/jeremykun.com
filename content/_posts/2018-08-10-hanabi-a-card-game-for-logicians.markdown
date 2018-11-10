@@ -26,10 +26,7 @@ The game has simple rules: each player gets a hand that they may not see, but th
 
 ![Screen Shot 2018-08-09 at 8.34.18 PM](https://jeremykun.files.wordpress.com/2018/08/screen-shot-2018-08-09-at-8-34-18-pm.png)
 
-
 Then the players take turns, and on each turn a player may do one of the following:
-
-
 
 	  1. Choose a card from your hand to play. If the chosen card cannot be played (e.g, it's a red 3 but only a red 1 is on the table), everyone gets a strike. Three strikes ends the game in a loss.
 	  2. Use an information token (limited in supply) to give one piece of information to one other player; the allowed types of information are explained below.

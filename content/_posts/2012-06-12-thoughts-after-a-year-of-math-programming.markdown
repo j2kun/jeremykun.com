@@ -14,8 +14,6 @@ tags:
 
 After a year of writing this blog, what have I learned about the nature of the relationship between computer programs and mathematics? Here are a few notes that sum up my thoughts, roughly in order of how strongly I agree with them. I'd love to hear your thoughts in the comments.
 
-
-
 	  1. Programming is _absolutely great_ for exploring questions and automating tasks. Mathematics is _absolutely great _for distilling the soul of a problem.
 	  2. Programming is fueled by the excitement of what can be done. Mathematics is fueled by the excitement of how things relate, and why they relate.
 	  3. Good mathematics makes for short programs.

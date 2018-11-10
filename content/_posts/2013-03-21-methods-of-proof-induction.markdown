@@ -17,74 +17,37 @@ tags:
 
 In this final post on the basic four methods of proof (but perhaps not our last post on proof methods), we consider the proof by induction.
 
-
 ## Proving Statements About All Natural Numbers
-
 
 Induction comes in many flavors, but the goal never changes. We use induction when we want to prove something is true about all natural numbers. These statements will look something like this:
 
-
 _For all natural numbers n, _$1 + 2 + \dots + n = n(n+1)/2$.
-
 
 Of course, there are many [ways to prove this fact](http://jeremykun.com/2011/06/24/sums-of-the-first-n-numbers-squares/), but induction relies on one key idea: if we know the statement is true for some specific number $n$, then that gives us information about whether the statement is true for $n+1$. If this isn't true about the problem, then proof by induction is hopeless.
 
 Let's see how we can apply it to the italicized statement above (though we haven't yet said what induction is, this example will pave the way for a formal description of the technique). The first thing we notice is that indeed, if we know something about the first $n$ numbers, then we can just add $n+1$ to it to get the sum of the first $n+1$ numbers. That is,
 
-
 $\displaystyle 1 + \dots + n + (n+1) = (1 + \dots + n) + (n+1)$
-
-
-
 
 Reiterating our key point, this is how we know induction is a valid strategy: the statement written for a fixed $n$ translates naturally into the statement about $n+1$. Now suppose we know the theorem is true for $n$. Then we can rewrite the above sum as follows:
 
-
-
-
 $\displaystyle 1 + \dots + n + (n+1) = \frac{n(n+1)}{2} + (n+1)$
-
-
-
 
 With some algebra, we can write the left-hand side as a single fraction:
 
-
-
-
 $\displaystyle 1 + \dots + (n+1) = \frac{n(n+1) + 2(n+1)}{2}$
-
-
-
 
 and factoring the numerator gives
 
-
-
-
 $\displaystyle 1 + \dots + (n+1) = \frac{(n+1)(n+2)}{2}$
-
-
-
 
 Indeed, this is precisely what we're looking for! It's what happens when you replace $n$ by $n+1$ in the original statement of the problem.
 
-
-
-
 At this point we're very close to being finished. We proved that _if_ the statement is true for $n$, then it's true for $n+1$. And by the same reasoning, it will be true for $n+2, n+3, $ and all numbers after $n$. But this raises the obvious question: what's the smallest number that it's true for?
-
-
-
 
 For this problem, it's easy to see the answer is $n=1$. A mathematician would say: the statement is _trivially_ true for $n=1$ (here trivial means there is no thinking required to show it: you just plug in $n=1$ and verify). And so by our reasoning, the statement is true for $n=2, n=3, $ and so on forever. This is the spirit of mathematical induction.
 
-
-
-
-
 ## Formal Nonsense
-
 
 Now that we've got a taste of how to use induction in practice, let's formally write down the rules for induction. Let's have a statement which depends on a number $n$, and call it $p(n)$. This is written as a function because it actually is one (naively). It's a function from the set of natural numbers to the set of all mathematical statements. In our example above, $p(n)$ was the statement that the equality $1 + \dots + n = n(n+1)/2$ holds.
 
@@ -98,8 +61,6 @@ Besides practicing proof by induction, that's all there is to it. One more cavea
 
 Here are some exercises the reader can practice with, and afterward we will explore some variants of induction.
 
-
-
 	  1. Prove that $n! > 2^n$ for all $n \geq 4$.
 	  2. Prove that for all $n \geq 1$ the following equality holds: $1/(1 \cdot 2) + 1/(2 \cdot 3) + \dots + 1/(n \cdot (n+1)) = n/(n+1)$.
 	  3. Prove that for every natural number $n$, a set of $n$ elements has $2^n$ subsets (including the empty subset).
@@ -108,28 +69,19 @@ This last exercise gives a hint that induction can prove more than arithmetic fo
 
 One interesting observation about proof by induction is very relevant to programmers: it's just recursion. That is, if we want to prove a statement $p(n)$, it suffices to prove it for $p(n-1)$ and do some "extra computation" to arrive at the statement for $p(n)$. And of course, we want to make sure the recursion terminates, so we add in the known result for $p(1)$.
 
-
 ## Variations on Induction, and Connections to Dynamic Programming
-
 
 The first variation of induction is simultaneous induction on multiple quantities. That is, we can formulate a statement $p(n,m)$ which depends on two natural numbers independently of one another. The base case is a bit trickier, but paralleling the above remark about recursion, double-induction follows the same pattern as a two-dimensional [dynamic programming algorithm](http://jeremykun.com/2012/01/12/a-spoonful-of-python/). The base cases would consist of all $p(1,m)$ and all $p(n,1)$, and the inductive step to get $p(n,m)$ requires $p(n-1,m)$ and $p(n,m-1)$ (and potentially $p(n-1, m-1)$ or others; it depends on the problem).
 
 Unfortunately, natural instances where double induction is useful (or anywhere close to necessary) are rare. Here is an example of a (tricky) but elementary example. Call
 
-
 $\displaystyle C(m,n) = \frac{(2m)!(2n)!}{m!n!(m+n)!}$,
-
 
 where the exclamation point denotes the factorial function. We will outline a proof that $C(m,n)$ is always an integer for all $m, n \geq 0$. If we look at the base cases, $C(0,n), C(m,0)$ (recalling that 0! = 1), we get $(2n!)/(n! n!)$, and this happens to be in the form of a [binomial coefficient](http://en.wikipedia.org/wiki/Binomial_coefficient) (here, the number of ways to choose $n!$ objects from a collection of $(2n)!$ objects), and binomial coefficients are known to be integers. Now the inductive step relies on the fact that $C(m,n-1)$ and $C(m+1, n-1)$ are both integers. If this is true then
 
-
 $\displaystyle C(m,n) = 4C(m,n-1) - C(m+1, n-1)$,
 
-
-
-
 which is obviously again an integer.
-
 
 If we write these values in a table, we can see how the induction progresses in a "dynamic programming" fashion:
 

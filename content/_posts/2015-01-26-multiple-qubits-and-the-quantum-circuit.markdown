@@ -19,12 +19,7 @@ tags:
 
 [Last time](http://jeremykun.com/2014/12/15/the-quantum-bit/) we left off with the tantalizing question: how do you do a quantum "AND" operation on two qubits? In this post we'll see why the tensor product is the natural mathematical way to represent the joint state of multiple qubits. Then we'll define some basic quantum gates, and present the definition of a quantum circuit.
 
-
-
-
-
 ## Working with Multiple Qubits
-
 
 In a classical system, if you have two bits with values $b_1, b_2$, then the "joint state" of the two bits is given by the concatenated string $b_1b_2$. But if we have two qubits $v, w$, which are vectors in $\mathbb{C}^2$, how do we represent their joint state?
 
@@ -40,7 +35,6 @@ While most of the time we'll just write our states in terms of tensors (using t
 
 Likewise, given two linear maps $A, B$, we can describe the map $A \otimes B$ on the tensor space both in terms of pure tensors ($(A \otimes B)(v \otimes w) = Av \otimes Bw$) and in terms of a matrix. In the same vein as the representation for vectors, the matrix corresponding to $A \otimes B$ is
 
-
 $\displaystyle \begin{pmatrix}
 a_{1,1}B & a_{1,2}B & \dots & a_{1,n}B \\
 a_{2,1}B & a_{2,2}B & \dots & a_{2,n}B \\
@@ -48,29 +42,17 @@ a_{2,1}B & a_{2,2}B & \dots & a_{2,n}B \\
 a_{n,1}B & a_{n,2}B & \dots & a_{n,n}B
 \end{pmatrix}$
 
-
 This is called [the Kronecker product](http://en.wikipedia.org/wiki/Kronecker_product).
 
 One of the strange things about tensor products, which very visibly manifests itself in "strange quantum behavior," is that not every vector in a tensor space can be represented as a single tensor product of some vectors. Let's work with an example: $\mathbb{C}^2 \otimes \mathbb{C}^2$, and denote by $e_0, e_1$ the computational basis vectors (the same letters are used for each copy of $\mathbb{C}^2$). Sometimes you'll get a vector like
 
-
 $\displaystyle v = \frac{1}{\sqrt{2}} e_0 \otimes e_0 + \frac{1}{\sqrt{2}} e_1 \otimes e_0$
-
-
-
 
 And if you're lucky you'll notice that this can be factored and written as $\frac{1}{\sqrt{2}}(e_0 + e_1) \otimes e_0$. Other times, though, you'll get a vector like
 
-
-
-
 $\displaystyle \frac{1}{\sqrt{2}}(e_0 \otimes e_0 + e_1 \otimes e_1)$
 
-
-
-
 And it's a deep fact that this cannot be factored into a tensor product of two vectors (prove it as an exercise). If a vector $v$ in a tensor space _can_ be written as a single tensor product of vectors, we call $v$ a _pure tensor__. _Otherwise, using some physics lingo, we call the state represented by $v$ _entangled. _So if you did the exercise you proved that not all tensors are pure tensors, or equivalently that there exist entangled quantum states. The latter sounds so much more impressive. We'll see in a future post why these entangled states are so important in quantum computing.
-
 
 Now we need to explain how to extend gates and qubit measurements to state spaces with multiple qubits. The first is easy: just as we often restrict our classical gates to a few bits (like the AND of two bits), we restrict multi-qubit quantum gates to operate on at most three qubits.
 
@@ -82,20 +64,12 @@ Because how would one compute an AND of two qubits? Taking a naive approach fr
 
 The way to deal with this is to add an extra "scratch work" qubit that is used for nothing else except to make the operation invertible. So now say we have three qubits $a, b, c$, and we want to compute $a$ AND $b$ in the sensible way described above. What we do is map
 
-
 $\displaystyle a \otimes b \otimes c \mapsto a \otimes b \otimes (c \oplus (a \wedge b))$
-
-
-
 
 Here $a \wedge b$ is the usual AND (where we interpret, e.g., $e_1 \wedge e_0 = e_0$), and $\oplus$ is the exclusive or operation on bits. It's clear that this mapping makes sense for "bits" (the true/false interpretation of basis vectors) and so we can extend it to a linear map by writing down the matrix.
 
-
-
-
 [![quantum-AND](https://jeremykun.files.wordpress.com/2014/11/quantum-and.png)
 ](https://jeremykun.files.wordpress.com/2014/11/quantum-and.png)
-
 
 This gate is often called the _Toffoli gate_ by physicists, but we'll just call it the (quantum) AND gate. Note that the column $ijk$ represents the input $e_i \otimes e_j \otimes e_k$, and the 1 in that column denotes the row whose label is the output. In particular, if we want to do an AND then we'll ensure the "scratch work" qubit is $e_0$, so we can ignore half the columns above where the third qubit is 1. The reader should write down the analogous construction for a quantum OR.
 
@@ -109,9 +83,7 @@ Say I want to apply the quantum NOT gate to a qubit $v$, and I have four other q
 
 In particular, you can represent a gate that depends on only 3 qubits by writing down the 3x3 matrix and the three indices it operates on. Note that this requires only 12 (possibly complex) numbers to write down, and so it takes "constant space" to represent a single gate.
 
-
 ## Quantum Circuits
-
 
 Here we are at the definition of a quantum circuit.
 
@@ -129,9 +101,7 @@ _Proof._ Let $x$ be a binary string input to $C$, and suppose that $C$ has $s$ g
 
 If we call $z$ the contents of all the scratchwork after the quantum circuit described above runs and $z_0$ the initial state of the scratchwork, then what we did was extend the function $x \mapsto C(x)$ to a function $e_{xz_0} \mapsto e_{xz}$. In particular, one of the bits in the $z$ part is the output of the last gate of $C$, and everything is 0-1 valued. So we can measure the state vector, get the string $xz$ and inspect the bit of $z$ which corresponds to the output wire of the final gate of the original circuit $C$. This is your answer.
 
-
 $\square$
-
 
 It should be clear that the single output bit extends to the general case easily. We can split a circuit with lots of output bits into a bunch of circuits with single output bits in the obvious way and combine the quantum versions together.
 

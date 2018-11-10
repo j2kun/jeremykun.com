@@ -24,17 +24,9 @@ And so the next natural step in analyzing the state of mathematics education in 
 [caption id="attachment_4178" align="aligncenter" width="672"][![first-grade-exam](http://jeremykun.files.wordpress.com/2013/11/first-grade-exam.png)
 ](http://jeremykun.files.wordpress.com/2013/11/first-grade-exam.png) This is wrong on so many levels.[/caption]
 
-
 This prompted me to actually look at the text of the Common Core State Standards in Mathematics, which is the currently accepted standard for most states. I have heard a lot about the political debate over efficacy and testing and assessment, but almost nothing about the _mathematical content_ of the standards. Do they actually promote critical thinking skills and mathematical problem solving, as they claim? Does it differ enough from Lockhart's dystopia?
 
-
-
-
 My conclusion is:
-
-
-
-
 
 <blockquote>
 
@@ -44,22 +36,17 @@ My conclusion is:
 > 
 </blockquote>
 
-
 The big distinction I want to make in this article is the (perhaps counterintuitive notion) that [mathematical thinking skills are largely unrelated to knowledge of mathematical facts](http://devlinsangle.blogspot.com/2013/11/the-educational-power-of-elementary.html), or ability to perform mechanical computations. The reason we teach mathematics to gain critical thinking skills is that mathematics gives examples of when they're needed that are as simple and boiled down to their true essence as possible. And the text of the Common Core mostly ignores this.
 
 I cannot claim that the writers of the standard don't understand the _mathematics_ deeply enough to realize this, and it would be too pompous even by my standards to imply that I know better than the thousands of educators that worked on this document. It could be the case that it's instead the result of bureaucracy and partisanship, and the designers of the Common Core felt they could only make progress in certain areas. But even so, all we are left with is the document itself, and I want to give a principled (but more or less unstructured) inspection of its technical content.
 
 There are some exceptions to my conclusion, and I will detail them as they come up, but the general picture is still this: the intent is better than it used to be but the implementation is still wrong. At the end, I'll discuss why this is important and what I think should be done instead.
 
-
 ## Preliminaries
-
 
 Now, before we jump in to the text of the standards themselves, I want to point out a few resources provided for teachers and discuss them briefly. First, there is a 3-minute intro video by the Common Core about why the standards are important
 
-
 [vimeo 51933492]
-
 
 Putting aside the animation style, this video sends some disturbing messages. First, that getting a lot of money is what defines and creates success. Not having a deep understanding of the problems you're facing, not having strong relationships, not helping people, but money. All of this focus on competition and money suggests that the standards are primarily _business_ oriented. I would argue that this is not a useful position for education, but that would digress. Suffice it to say, the Common Core people should know that the most successful mathematician of all time, [Paul Erdős](http://en.wikipedia.org/wiki/Paul_Erd%C5%91s), was homeless and had but a few hundred dollars to his name at any given time. He instead survived (indeed, excelled to legendary status) on his deep understanding of problem solving and his strong relationships with other mathematicians. This is an extreme example but it makes my point clear: collaboration, not competition, breeds success.
 
@@ -73,13 +60,9 @@ Speaking of which, here are the actual standards themselves for the reader to pe
 
 So let's dive right on in.
 
-
 ## Common Core: Too Narrow and Too General
 
-
 The standard starts out by describing a set of general guidelines which I generally agree with. They are:
-
-
 
 	  1. Make sense of problems and persevere in solving them.
 	  2. Reason abstractly and quantitatively.
@@ -92,9 +75,7 @@ The standard starts out by describing a set of general guidelines which I genera
 
 But even as they are true, the descriptions of these tenets are either far too narrow or far too general. Take, for example, this excerpt from the description of the (arguably MOST mathematical) skill "Look for an express regularity in repeated reasoning," also known as "Reasoning about patterns."
 
-
 <blockquote>Mathematically proficient students notice if calculations are repeated, and look both for general methods and for shortcuts. ... Noticing the regularity in the way terms cancel when expanding $(x-1)(x+1), (x-1)(x^2 + x + 1), $ and $(x-1)(x^3 + x^2 + x + 1)$ might lead them to the general formula for the sum of a geometric series. As they work to solve a problem, mathematically proficient students maintain an oversight of the process while attending to the details. They continually evaluate the reasonableness of their intermediate results.</blockquote>
-
 
 Yes, a mathematically proficient student will be able to infer a general pattern here. But it's phrased in a way that makes it seem like expanding products of polynomials is the central goal while the real mathematical skill is just "looking for a shortcut" in calculations. Moreover, the sentence that follows is equally applicable to _any _profession. Indeed, while working to cook a meal, a proficient chef maintains an oversight of the process while attending to details, and continually evaluates the reasonableness of their intermediate results. Finding shortcuts is not mathematical, nor is it culinary. But _reasoning_ about those shortcuts is, whether or not they're correct. I have plenty of calculus students who "find shortcuts" that simply aren't true, but don't bother to think about them, and are hence exercising no mathematical abilities. It's a fine distinction that the Common Core seems to ignore at some times and embrace at others.
 
@@ -102,15 +83,11 @@ The best example of this is in "Construct viable arguments and critique the reas
 
 Indeed, let's take a closer look at the standards themselves.
 
-
 ## Inspecting the Standards Themselves
-
 
 The list of Common Core Standards breaks mathematical abilities down by grade level and by area. I think [the Washington Post article](http://www.washingtonpost.com/blogs/answer-sheet/wp/2013/10/31/a-ridiculous-common-core-test-for-first-graders/) gives a very good critique of the lowest grade standards, so let's focus on high school level. This is where I claim the true big ideas must shine through, if they come up anywhere at all.
 
 The high school standards are broken up into areas by subject:
-
-
 
 	  * Number and Quantity
 	  * Algebra
@@ -128,12 +105,9 @@ The first one, "The Real Number System," already shows some huge red flags. Ther
 	    1. Explain how the definition of the meaning of rational exponents follows from extending the properties of integer exponents to those values, allowing for a notation for radicals in terms of rational exponents. _For example, we define 51/3 to be the cube root of 5 because we want (51/3)3 = 5(1/3)3 to hold, so (51/3)3 must equal 5_
 	    2. Rewrite expressions involving radicals and rational exponents using the properties of exponents.
 
-
 	  2. **Use properties of rational and irrational numbers**
 
 	    1. Explain why the sum or product of two rational numbers is rational; that the sum of a rational number and an irrational number is irrational; and that the product of a nonzero rational number and an irrational number is irrational.
-
-
 
 This is supposed to indicate that someone understands real numbers? Number 1 only shows that one knows how to do arithmetic with exponents, asking the student to know a very specific argument, and number 2 is just memorizing some basic properties of rational numbers. There are some HUGE questions left unasked. Here are a few
 
@@ -146,15 +120,11 @@ This is supposed to indicate that someone understands real numbers? Number 1 onl
 
 To be fair, the grade 8 standards address some of these questions, but in an odd way. Rather than say that students should know that real numbers can be (sort of) _defined_ by a finite integer part and an infinite decimal expansion, it says
 
-
 <blockquote>Understand informally that every number has a decimal expansion; for rational numbers show that the decimal expansion repeats eventually, and convert a decimal expansion which repeats eventually into a rational number.</blockquote>
-
 
 Does that mean that a number can have multiple decimal expansions? Does every decimal expansion also correspond to a number? Or can a decimal expansion represent multiple numbers? What about the number whose "decimal expansion" has an infinite number of 1's before the decimal point? Does that mean that infinity is a real number? As you can see, these are some very basic questions about real numbers, which are arguably more stimulating and important than being able to convert back and forth between decimal expansions and rational numbers (as the 8th grade standard requires, but nobody actually does for numbers harder than 1/3).
 
 The important point I want to make here is that the truly "Big Ideas" underlying this topic are as follows, and they're only halfway related to numbers themselves:
-
-
 
 	  1. Understand the importance of precise definitions, and be able to apply those definitions to simple questions, such as "Prove that 1/3 is a real number," and "Argue why infinity is not a real number."
 	  2. Understand that we can _define_ notation as we see fit, e.g. $5^{1/3}$, and more deeply that mathematical concepts are invented via definitions.
@@ -164,9 +134,7 @@ The important point I want to make here is that the truly "Big Ideas" underlying
 
 And these ideas are the actual ideas that the Common Core is looking for, the ones that apply across all of mathematics and actually relate to real critical thinking skills. But it seems that the only place in the standard where they address the idea of a correspondence is in a Kindergarten "Counting" standard:
 
-
 <blockquote>[CCSS.Math.Content.K.CC.C.6](http://www.corestandards.org/Math/Content/K/CC/C/6) Identify whether the number of objects in one group is greater than, less than, or equal to the number of objects in another group, e.g., by using matching and counting strategies.</blockquote>
-
 
 "Number and Quantity" goes on to describe the importance of consistently using units and rounding measurements to the right number of digits; memorizing properties of complex numbers (with regards to which any introductory college professor will start over anyway); and more rote manipulation of vectors and matrices that few high school students have any reason to know. Other big ideas apply here, ideas from geometry and the idea of correspondence in particular, but the standards still focus on mechanical abilities.
 
@@ -174,9 +142,7 @@ The Common Core folks argue in quite a few places that knowing the _reasons_ for
 
 Again, my big point here is that the requirements of the Standard overlook the deep underlying mathematical thinking skills that we hope are being developed when we ask them to know whatever it is we want them to know. These big concepts like correspondence and impossibility and approximation should be the central focus. The particular rules of exponents and the specific properties of irrational numbers, these are tools and sidenotes that accentuate fluency in the big concepts as applied to solving problems. Almost nobody needs to know facts about irrational numbers in their careers, but relating things by correspondence is a truly useful mathematical skill.
 
-
 ## Taking a Step Back
-
 
 So let's pause for a moment and give some counterpoint. I could just be focusing super narrowly on one or two topics that I feel the Common Core misrepresents, and using that gripe to claim the entire Common Core is crap when it actually has lots of merit in other areas.
 
@@ -184,15 +150,11 @@ While I do think that the standard addresses a few topics well (more on that lat
 
 Even worse, when asked to do derive these formulas, the standard says
 
-
 <blockquote>Give an informal argument for the formulas for the circumference of a circle, area of a circle, volume of a cylinder, pyramid, and cone. _Use dissection arguments, Cavalieri’s principle, and informal limit arguments_.</blockquote>
-
 
 I'd be surprised if many of my readers had even heard of [Cavalieri's principle](http://en.wikipedia.org/wiki/Cavalieri's_principle) before reading this, but this is the pattern striking again. The standard expects the students to know something very specific: not just how to use Cavalieri's principle, but how to apply it just to these special objects, while ignoring the underlying principles at work. A _true_ understanding of measurement and volume would be:
 
-
 <blockquote>Reason about the volume of a solid you've never seen before.</blockquote>
-
 
 But more deeply, Cavalieri's principle is just another kind of correspondence argument applied to geometry. And I see this right away without muddling through that terribly written Wikipedia page because I have a solid understanding of the notion of a correspondence and I can recognize it at work.
 
@@ -206,9 +168,7 @@ A real course in geometry, measurement, and mathematical problem solving might e
 
 I could continue with algebra, and the other sections, but I think my point is clear. The standards are filled with the same arbitrary choices of technical facts, and the deep ideas, the kinds of thinking we want to develop, are absent.
 
-
 ## Modeling and Other Big Ideas
-
 
 There is one aspect of mathematical problem solving that I think the Common Core addresses well, and that is [modeling](http://www.corestandards.org/Math/Content/HSM). That is, students need to be able to take a poorly defined problem, whether it's "analyzing the stopping distance for a car" or asking what constitutes a number, and boil it down to its essence. This means making and questioning assumptions, debating the quality of a model, testing and revising, and interpreting results in a principled way. This is arguably the only kind of mathematics that non-mathematicians do outside of academia, and I feel that the description in the Common Core does justice to its importance. Even better, they admit there can be no "list" of facts the students are expected to know about specific models or tools. Here the Common Core gives in to the truth that discussion and original arguments are the key to developing fluency. In my imagination there were a select few key players lobbying for this to be included in the Core, and I say bravo to you, well done!
 
@@ -243,9 +203,7 @@ When students learn about rational numbers (and if they know about $e$, which I 
 
 The point of all this is that mathematics, and mathematical problem solving skills, are not just about picking the right tool from the set of tools you've been taught. It's about recognizing when any tool you've ever heard of even applies! More deeply, it's about debating with your colleagues that problems can and cannot be solved using certain methods, and giving principled reasons why you think so. This sounds like "modeling," and indeed the strategies used for modeling also apply to pure mathematics, a fact that most people don't realize. Critical thinking and mathematical problem solving is more akin to art and debate than to mechanical computation. And the most interesting problems are the most natural questions one could ask, not the contrived "compute the volume of an oddly shaped wine glass" questions. Those are busy work questions, not open for discussion and interpretation. And the students know it.
 
-
 ## Why This Matters
-
 
 A reasonable objection to my rant goes as follows: why does it matter that the Common Core isn't super clear about these "big ideas" I'm claiming are so central? If the teachers are knowledgeable they'll know what is important and what isn't important, and how to teach the material in the manner that best promotes learning.
 

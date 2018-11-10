@@ -29,34 +29,17 @@ The trick is to use multiplication for "and" and $1-x$ for "not." So $a \wedge b
 
 Combine this with [deMorgan's rule](https://en.wikipedia.org/wiki/De_Morgan%27s_laws) to get any formula. $a \vee b = \neg(\neg a \wedge \neg b)$ translates to $1 - (1-a)(1-b)$. For our example above,
 
-
 $\displaystyle f(x_1, x_2, x_3, x_4) = 1 - (1 - (1-a)(1-b))(1 - c(1-d))$
-
-
-
 
 Which expands to
 
-
-
-
 $\displaystyle 1 - a - b + ab + (1-d)(ac + bc - abc)$
-
-
-
 
 If you plug in $a = 1, b = 0, c = 1, d = 0$ you get True in the original formula (because "not c or d" is False), and likewise the polynomial is
 
-
-
-
 $\displaystyle 1 - 1 - 0 + 0 + (1-0)(1 + 0 - 0) = 1$
 
-
-
-
 You can verify the rest work yourself, using the following table as a guide:
-
 
 {{< highlight python >}}
 0, 0, 0, 0 -> 1

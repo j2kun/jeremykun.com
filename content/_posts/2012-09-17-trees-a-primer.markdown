@@ -19,12 +19,9 @@ tags:
 [![](http://jeremykun.files.wordpress.com/2012/09/tree.png)
 ](http://jeremykun.files.wordpress.com/2012/09/tree.png)
 
-
 This post comes in preparation for [a post on decision trees](http://jeremykun.com/2012/10/08/decision-trees-and-political-party-classification/) (a specific type of tree used for classification in machine learning). While most mathematicians and programmers are familiar with trees, we have yet to discuss them on this blog. For completeness, we'll give a brief overview of the terminology and constructions associated with trees, and describe a few common algorithms on trees. We will assume the reader has read our [first primer on graph theory](http://jeremykun.wordpress.com/2011/06/26/teaching-mathematics-graph-theory/), which is a light assumption. Furthermore, we will use the terms _node_ and _vertex_ interchangeably, as mathematicians use the latter and computer scientists the former.
 
-
 ## Definitions
-
 
 Mathematically, a tree can be described in a very simple way.
 
@@ -51,13 +48,9 @@ In other words, if one can model their data in a binary tree, then searching thr
 
 As a result, much work has been invested in algorithms to construct and work with trees. Indeed the crux of many algorithms is simply in translating a problem into a tree. These data structures pop up in nearly every computational field in existence, from operating systems to artificial intelligence and many many more.
 
-
 ## Representing a Tree in a Computer
 
-
 The remainder of this post will be spent designing a tree data structure in Python and writing a few basic algorithms on it. We're lucky to have chosen Python in that the class representation of a tree is particularly simple. The central compound data type will be called "Node," and it will have three associated parts:
-
-
 
 	  1. A list of child nodes, or an empty list if there are none.
 	  2. A  parent node, or "None" if the node is the root.
@@ -74,7 +67,6 @@ The node class is simply:
        def __init__(self):
           self.parent = None
           self.children = []
-
 
 That's it! In particular, we will set up all of the adjacencies between nodes after initializing them, so we don't need to put anything else in the constructor.
 
@@ -95,7 +87,6 @@ Here's an example of using the class:
     leftChild.parent = root
     rightChild.parent = root
 
-
 We should note that even though we called the variables "leftChild" and "rightChild," there is no distinguishing from left and right in this data structure; there is just a list of children. While in some applications the left child and right child have concrete meaning (e.g. in a binary search tree where the left subtree represents values that are less than the current node, and the right subtree is filled with larger elements), in our application to decision trees there is no need to order the children.
 
 But for the examples we are about to give, we require a binary structure. To make this structure more obvious, we'll ugly the code up a little bit as follows:
@@ -107,11 +98,7 @@ But for the examples we are about to give, we require a binary structure. To mak
           self.leftChild = None
           self.rightChild = None
 
-
-
-
 ## In-order, Pre-order, and Post-order Traversals
-
 
 Now we'll explore a simple class of algorithms that traverses a tree in a specified order. By "traverse," we simply mean that it visits each vertex in turn, and performs some pre-specified action on the data associated with each. Those familiar with our post on [functional programming](http://jeremykun.wordpress.com/2011/10/02/a-taste-of-racket/) can think of these as extensions of the "map" function to operate on trees instead of lists. As we foreshadowed earlier, these represent total orders on the set of nodes of a tree, and in particular they stand out by how they reflect the recursive structure of a tree.
 
@@ -130,7 +117,6 @@ The first is called an _in-order traversal,_ and it is perhaps the most natural 
        if root.rightChild != None:
           inorder(root.rightChild, f)
 
-
 For instance, suppose we have a tree consisting of integers. Then we can use this function to check if the tree is a [binary search tree](http://en.wikipedia.org/wiki/Binary_search_tree). That is, we can check to see if the left subtree only contains elements smaller than the root, and if the right subtree only contains elements larger than the root.
 
     
@@ -146,7 +132,6 @@ For instance, suppose we have a tree consisting of integers. Then we can use thi
     
        return True
 
-
 As expected, this takes linear time in the number of nodes in the tree.
 
 The next two examples are essentially the same as in-order; they are just a permutation of the lines of code of the in-order function given above. The first is pre-order, and it simply evaluates the root before either subtree:
@@ -160,7 +145,6 @@ The next two examples are essentially the same as in-order; they are just a perm
        if root.rightChild != None:
           preorder(root.rightChild, f)
 
-
 And post-order, which evaluates the root after both subtrees:
 
     
@@ -172,7 +156,6 @@ And post-order, which evaluates the root after both subtrees:
           postorder(root.rightChild, f)
     
        f(root)
-
 
 Pre-order does have some nice applications. The first example requires us to have an arithmetical expression represented in a tree:
 
@@ -200,7 +183,6 @@ Pre-order does have some nice applications. The first example requires us to hav
     n6.leftChild = n4
     n6.rightChild = n5
 
-
 This is just the expression $(1+3)*(3-4)$, and the tree structure specifies where the parentheses go. Using pre-order traversal in the exact same way we used in-order, we can convert this representation to another common one: [Polish notation](http://en.wikipedia.org/wiki/Polish_notation).
 
     
@@ -210,7 +192,6 @@ This is just the expression $(1+3)*(3-4)$, and the tree structure specifies wher
     
        preorder(exprTree, f)
        return ''.join(exprString)
-
 
 One could also use a very similar function to create a copy of a binary tree, as one needs to have the root before one can attach any children, and this rule applies recursively to each subtree.
 

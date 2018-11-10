@@ -19,8 +19,6 @@ tags:
 **[![](http://jeremykun.files.wordpress.com/2011/08/apostol4.jpg)
 ](http://jeremykun.files.wordpress.com/2011/08/apostol4.jpg)Solution**: Suppose to the contrary that $\sqrt{2} = a/b$ for integers $a,b$, and that this representation is fully reduced, so that $\textup{gcd}(a,b) = 1$. Consider the isosceles right triangle with side length $b$ and hypotenuse length $a$, as in the picture on the left. Indeed, by the Pythagorean theorem, the length of the hypotenuse is $\sqrt{b^2 + b^2} = b \sqrt{2} = a$, since $\sqrt{2} = a/b$.
 
-
-
 [![](http://jeremykun.files.wordpress.com/2011/08/apostol21.jpg)
 ](http://jeremykun.files.wordpress.com/2011/08/apostol21.jpg)Swinging a $b$-leg to the hypotenuse, as shown, we see that the hypotenuse can be split into parts $b, a-b$, and hence $a-b$ is an integer. Call the point where the $b$ and $a-b$ parts meet $P$. If we extend a perpendicular line from $P$ to the other leg, as shown, we get a second, smaller isosceles right triangle. Since the segments $PQ$ and $QR$ are symmetrically aligned (they are tangents to the same circle from the same point), they too have length equal to $a-b$. Finally, we may write the hypotenuse of the smaller triangle as $b-(a-b) = 2b-a$, which is also an integer.
 

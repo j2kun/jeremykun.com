@@ -20,23 +20,15 @@ tags:
 [![](http://jeremykun.files.wordpress.com/2012/04/poker-img.jpg)
 ](http://jeremykun.files.wordpress.com/2012/04/poker-img.jpg)
 
-
 **Main Theorem**: There exist optimal stackings for standard two-player Texas Hold 'Em.
 
-
-
-
-
 ## A Puzzle is Solved (and then some!)
-
 
 It's been quite a while since [we first formulated the idea of an optimal stacking](http://jeremykun.wordpress.com/2011/07/11/stacking-the-deck/). In the mean time, we've gotten distracted with graduate school, preliminary exams, and the host of other interesting projects that have been going on here at Math ∩ Programming. And so months later, after traversing the homotopic hills of topology and projective plains of algebra, we've finally found time to solve the problem. And we found quite a bit more than we expected! But first, let's recap the ideas from our original post.
 
 For a reminder of the rules of Texas Hold 'Em, here's a [silly tutorial video](http://www.youtube.com/watch?v=aJkT_NXEUTg) from PokerStars.com. For the sake of this post, the betting rules will not matter.
 
-
 ## Optimal Stackings
-
 
 In card games, especially gambling games, trust is rarely given freely. Instead, we incorporate rituals into standard play that assure fairness. One of the most common such rituals is "cutting the deck." The player who shuffles the deck passes the deck to a second player, who cuts the deck in half, placing the bottom half above the top half. Assuming the two players are not colluding and there is no sleight of hand, this ritual absolves the dealer of any guilt. Even if the dealer had stacked the deck to deal himself favorable cards, the randomness of the cut will necessarily ruin his efforts. Moreover, the cutter is often chosen to be the player to the dealer's right (the last one dealt, in most games) to make it all the more difficult for two players to collude.
 
@@ -52,34 +44,17 @@ In fact, we find much more than this, but we should formalize the notion a bit f
 
 **Definition**: A _cutting permutation_ $\sigma$ of a list $(1, 2, \dots, n)$ is a permutation in $S_n$ with the [cycle form](http://en.wikipedia.org/wiki/Cycle_notation#Example):
 
-
 $(1\ 2\ \dots\ n)^k$
-
-
-
 
 and for a fixed $0 \leq k < n$, we call $\sigma$ the cut at the $k$-th position.
 
-
-
-
 If the reader is not familiar with the [symmetric groups](http://en.wikipedia.org/wiki/Symmetric_group), this is simply a formalization of the intuitive idea of a cut. For example, to "cut" the list $(1, 2, 3, 4, 5)$ at the third position is simply the permutation with cycle form $(1\ 3\ 5\ 2\ 4)$. Applying this results in the list $(4,5,1,2,3)$, as expected. Moreover, every cut can be achieved by iterating the process of putting the top card on the bottom of the deck. Hence, the set of all cutting permutations is the cyclic group $\mathbb{Z}/52\mathbb{Z}$.
-
-
-
 
 Since any list imposes an ordering on its contents, we can apply cutting permutations to any list.
 
-
-
-
 **Definition**: A _cut_ of a list $(c_1, \dots , c_n)$ is the list $(c_{\sigma(1)}, \dots, c_{\sigma(n)})$ for some cutting permutation $\sigma$. If the list is denoted $l$, we denote the cut $\sigma(l)$.
 
-
-
-
 Specifically to card games, we speak of _cutting_ a deck as the process of replacing a list of cards with its cut. We can now define an optimal stacking.
-
 
 **Definition**: Fix a game $G$ played with a set of $k$ cards and $n$ players. We say that $G$ has an _optimal stacking for player _$i$ if there exists an ordering of the cards $D = (c_1, \dots, c_k)$ such that for every cutting permutation $\sigma$, player $i$ can force a win when $\sigma(D)$ is dealt.
 
@@ -87,55 +62,25 @@ Moreover, a game is said to simply _have an optimal __stacking_ if it has one
 
 Note that we do not want to assume the cheating player knows the order of the deck ahead of time. Instead, an optimal stacking should allow the player to force a win simply by logical play and the knowledge that the stacking is optimal. Specifically, for a game where players have individual hands, the cheating player should not need to know the contents of the other players' hands in order to win. In Texas Hold 'Em this becomes a null issue, since if a player knows he is being dealt an optimal stacking, his hand will always end up winning; there is no reason for him to fold, even if his chances seem slim to none by usual probabilistic analysis.
 
-
 Before we get back to Texas Hold 'Em, we take a moment to prove a nice fact.
-
-
-
 
 **Proposition**: The (slightly simplified) game of Hearts does not have an optimal stacking.
 
-
-
-
 _Proof._ First, we must clarify that a "win" in Hearts is to either collect 0 points in a round or shoot the moon, and such a score must be_ forced_ in order to have an optimal stacking. We allow no passing of cards. Moreover, we restrict our game of Hearts to a single round, so that the winner of the game is the one who takes the smallest number of points. Hence, if one cannot shoot the moon, one must try to minimize the number of points taken. In particular, there is no reason for one player to "take one for the team" by trying to stop another player from shooting the moon unless the first player can guarantee having the smallest number of points at the end.
-
-
-
 
 The crux of the proof is that all cards in the deck are dealt before play begins. Suppose first that the goal is simply to collect 0 points. Indeed, suppose that some stacking $D$ wins for player 1. Then a cut at position 1 shifts all of the hands right by one player, so then player 4 can guarantee collecting 0 points. If still player 1 can guarantee collecting zero points, then instead a cut at position 2 gives such guarantees to players 3 and 4. At this point, player 1 can still guarantee taking 0 points, then player 2 can shoot the moon, hence giving all other players 26 points.
 
-
-
-
 If, on the other hand, player 1 can guarantee shooting the moon, the same argument shows that a cut at position 1 gives that guarantee to player 4. This is a contradiction since two players cannot shoot the moon simultaneously, nor can one shoot the moon while the other takes zero points. $\square$
-
-
-
 
 Even extending the definition of a win to "collecting the minimum number of points" does not change the existence of an optimal stacking. The same proof applies, along with the knowledge that 26 (the total number of points) is not divisible by 4 (the number of players), or more coarsely that the Queen of Spades already represents 13 points, and can only be taken by one player.
 
-
-
-
 One aspect of this proof contradicts the claim that the existence of an optimal stacking is a measure of complexity. In particular, Hearts is considered a rather complex game (certainly more complex than Kicsi Poker), and yet it does not have an optimal stacking. Moreover, with a suitable definition of a "win," we can likely extend this proof to _any _game which deals out the entire deck to all players before starting (and where all players can see all their cards at all times).
-
-
-
 
 While we do not have a formal rebuttal, it may instead be the case that the existence of an optimal stacking measures the ability for a game to ___diverge_. In other words, in a game like Texas Hold 'Em, one can start with a poor hand and later improve it. On the other hand, it could simply be that Texas Hold 'Em has a complex _deal_: the five community cards, along with the dead cards burned in between each round, give the game enough "space" to allow for an optimal stacking.
 
-
-
-
 But enough big-picture speculation. It's time for the real prize.
 
-
-
-
-
 ## Optimal Stackings in Texas Hold 'Em
-
 
 Before we get into the program, we should give an example of an optimal stacking, and hence a proof of the main theorem. Here it is:
 
@@ -197,7 +142,6 @@ Before we get into the program, we should give an example of an optimal stacking
     3dTh | Kc5d | Ad 3c Qs 4h 8c | One Pair  | High Card | 1
     Kc5d | Th7c | 3c Qs Jc 6c 9d | High Card | High Card | 1
 
-
 The first two columns show the pocket cards dealt to player 1 and player 2, respectively, and the fourth and fifth columns give their final hands, again respectively.
 
 Immediately, the reader will recognize that there are 52! possible stackings of the deck, a number with more than 60 digits. Searching them all, even at supercomputer speed, would easily take longer than the life of the universe (at a trillion stackings per second, the estimate is on the order of $10^{50}$ years). So we cannot possibly look through them all.
@@ -220,9 +164,7 @@ Third, we parallelized the program using [OpenMP](http://openmp.org/wp/) to run 
 
 In the next section we detail the important aspects of the code.
 
-
 ## Enter the Jungle
-
 
 Unfortunately, a primer on C++ is far beyond the scope of this blog. The best introductory text we know of is Prata's [C++ Primer Plus](http://www.amazon.com/C-Primer-Plus-5th-Edition/dp/0672326973), but short of reading this behemoth and becoming a guru, the reader may safely skip ahead to the next section. An equally strong understanding of the algorithm itself can also be gained from our Python post on [cryptanalysis with ngrams](http://jeremykun.wordpress.com/2012/02/03/cryptanalysis-with-n-grams/), though the program is admittedly much slower.
 
@@ -348,9 +290,7 @@ Where "eval7Hand" evaluates a seven-card poker hand to find the best five-card s
 
 Running the main application gives an output similar to the large table above for each discovered optimal stacking.
 
-
 ## Parallelization
-
 
 A thorough introduction to parallel computation is again (sadly) beyond the scope of this post. Luckily, we chose the arguably simplest possible library for parallelization: [OpenMP](http://openmp.org/wp/). With OpenMP, the serial code looks almost identical to the parallel code, with the exception of a few sagely placed pragmas (code annotations). For instance, our main function parallelizes at the top-most level, so that each thread performs steepest ascent trials independently of the others. From this perspective, the steepest ascent algorithm is [pleasingly parallel](http://en.wikipedia.org/wiki/Embarrassingly_parallel). The code for that is:
 
@@ -400,13 +340,9 @@ For an explanation of the pragmas and their syntax, see this [reference/tutorial
 
 We also include the full source code for the fine-granularity parallelization, with the mindset that it may perform better in other application domains, and it serves as an example implementation.
 
-
 ## Results
 
-
 Running the algorithm overnight on the supercomputer gave us a list of approximately 100,000 distinct optimal stackings for two-player Hold 'Em. In particular, we discovered the following interesting properties of stackings:
-
-
 
 	  * Optimal stackings are _plentiful._ In particular, about one in six randomly chosen decks can be improved to an optimal stacking.
 	  * The number of steps in the hill-climbing process is small. Specifically, in all of our tests we never witnessed a deck which required more than 15 steps to reach a local maximum. We do not have a proof that this is upper bound is sharp. Moreover, some decks were optimized with as few as 5 steps.
@@ -426,11 +362,7 @@ We include the list of about 100,000 optimal stackings for the reader's viewing 
     [3cJd4s2s9hAd6sKcTd3h5dTs3s9d8d4cAcQsKsKdJc3d2h5h4dJs8cAh9c7sKh6d5s4hTc7cQhQc8hJh6c9s5c2d7dQd2c8sTh6hAs7h]
     [Ac7cTd6d3c4c9hQc7h9d8hJc8c5sTc6hAdQs9s7s2cKc2s2d4s8d6sAh5d8sJs3sQhKd3hQdJh5cKh4h3d5hTsJd7dKs9c2h4dTh6cAs]
 
-
-
-
 ## Future Work
-
 
 We are very interested in the existence or non-existence of optimal stackings for ___other_ games. We encourage the interested reader (say, as a programming exercise) to implement a steepest-ascent algorithm for optimal stackings in a different game, and post the results in a comment. Some ideas for other games include poker variants like Omaha and Lowball, along with completely unrelated games like Blackjack or Rummy. Might we even go so far as to investigate non-standard card games like [Magic: the Gathering](http://www.wizards.com/Magic/TCG/Default.aspx) (a favorite during my youth)? A critical step in the analysis of most non-poker games would be to formalize what it means to force a win, or relax the definition to make it sensible.
 

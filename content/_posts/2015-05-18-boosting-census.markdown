@@ -13,9 +13,7 @@ categories:
 
 When addressing the question of what it means for an algorithm to learn, one can imagine many different models, and there are quite a few. This invariably raises the question of which models are "the same" and which are "different," along with a precise description of how we're comparing models. We've seen one learning model so far, called [Probably Approximately Correct](http://jeremykun.com/2014/01/02/probably-approximately-correct-a-formal-theory-of-learning/) (PAC), which espouses the following answer to the learning question:
 
-
 An algorithm can "solve" a classification task using labeled examples drawn from some distribution if it can achieve accuracy that is arbitrarily close to perfect on the distribution, and it can meet this goal with arbitrarily high probability, where its runtime and the number of examples needed scales efficiently with all the parameters (accuracy, confidence, size of an example). Moreover, the algorithm needs to succeed no matter what distribution generates the examples.
-
 
 You can think of this as a game between the algorithm designer and an adversary. First, the learning problem is fixed and everyone involved knows what the task is. Then the algorithm designer has to pick an algorithm. Then the adversary, _knowing the chosen algorithm,_ chooses a nasty distribution $D$ over examples that are fed to the learning algorithm. The algorithm designer "wins" if the algorithm produces a hypothesis with low error on $D$ when given samples from $D$. And our goal is to prove that the algorithm designer can pick a single algorithm that is extremely likely to win no matter what $D$ the adversary picks.
 
@@ -23,9 +21,7 @@ We'll momentarily restate this with a more precise definition, because in this 
 
 The amazing fact is that **strong learning and weak learning are equivalent!** Of course a weak learner is not the same thing as a strong learner. What we mean by "equivalent" is that:
 
-
 A problem can be weak-learned if and only if it can be strong-learned.
-
 
 So they are _computationally_ the same. One direction of this equivalence is trivial: if you have a strong learner for a classification task then it's automatically a weak learner for the same task. The reverse is much harder, and this is the crux: there is an algorithm for transforming a weak learner into a strong learner! Informally, we "boost" the weak learning algorithm by feeding it examples from carefully constructed distributions, and then take a majority vote. This "reduction" from strong to weak learning is where all the magic happens.
 
@@ -33,20 +29,13 @@ In this post we'll get into the depths of this boosting technique. We'll review
 
 As usual, [all of the code and data](https://github.com/j2kun/boosting) used in this post is available on [this blog's Github page](https://github.com/j2kun/).
 
-
 ## History and multiplicative weights
 
-
-
-
 Before we get into the details, here's a bit of history and context. PAC learning was introduced by Leslie Valiant in 1984, laying the foundation for a flurry of innovation. In 1988 Michael Kearns posed the question of whether one can "boost" a weak learner to a strong learner. Two years later Rob Schapire published his landmark paper "[The Strength of Weak Learnability](http://www.cs.princeton.edu/~schapire/papers/strengthofweak.pdf)" closing the theoretical question by providing the first "boosting" algorithm. Schapire and Yoav Freund worked together for the next few years to produce a simpler and more versatile algorithm called [AdaBoost](http://en.wikipedia.org/wiki/AdaBoost), and for this they won the Gödel Prize, one of the highest honors in theoretical computer science. AdaBoost is also the standard boosting algorithm used in practice, though there are enough variants to warrant [a book on the subject](http://www.amazon.com/Boosting-Foundations-Algorithms-Adaptive-Computation/dp/0262526034).
-
 
 I'm going to define and prove that AdaBoost works in this post, and implement it and test it on some data. But first I want to give some high level discussion of the technique, and afterward the goal is to make that wispy intuition rigorous.
 
 The central technique of AdaBoost has been discovered and rediscovered in computer science, and recently it was recognized abstractly in its own right. It is called the **Multiplicative Weights Update Algorithm** (MWUA), and it has applications in everything from learning theory to combinatorial optimization and game theory. The idea is to
-
-
 
  	  1. Maintain a nonnegative weight for the elements of some set,
  	  2. Draw a random element proportionally to the weights,
@@ -57,9 +46,7 @@ The "something" is usually a black box algorithm like "solve this simple optimiz
 
 Now let's remind ourselves of the formal definition of PAC. If you've read the previous post on [the PAC model](http://jeremykun.com/2014/01/02/probably-approximately-correct-a-formal-theory-of-learning/), this next section will be redundant.
 
-
 ## Distributions, hypotheses, and targets
-
 
 In PAC-learning you are trying to give labels to data from some set $X$. There is a distribution $D$ producing data from $X$, and it's used for everything: to provide data the algorithm uses to learn, to measure your accuracy, and every other time you might get samples from $X$. You as the algorithm designer don't know what $D$ is, and a successful learning algorithm has to work _no matter what_ $D$ _is_. There's some unknown function $c$ called the _target concept,_ which assigns a $\pm 1$ label to each data point in $X$. The target is the function we're trying to "learn." When the algorithm draws an example from $D$, it's allowed to query the label $c(x)$ and use all of the labels it's seen to come up with some _hypothesis_ $h$ that is used for new examples that the algorithm may not have seen before._ _The problem is "solved" if $h$ has low error on all of $D$.
 
@@ -69,50 +56,23 @@ Of course there are practical issues with this model. I don't have a consistent 
 
 Here's the formal definition of the error of a hypothesis $h(x)$ produced by the learning algorithm:
 
-
 $\textup{err}_{c,D}(h) = P_{x \sim D}(h(x) \neq c(x))$
-
-
-
 
 It's read "The error of $h$ with respect to the concept $c$ we're trying to learn and the distribution $D$ is the probability over $x$ drawn from $D$ that the hypothesis produces the wrong label." We can now define PAC-learning formally, introducing the parameters $\delta$ for "probably" and $\varepsilon$ for "approximately." Let me say it informally first:
 
-
-
-
 An algorithm PAC-learns if, for any $\varepsilon, \delta > 0$ and any distribution $D$, with probability at least $1-\delta$ the hypothesis $h$ produced by the algorithm has error at most $\varepsilon$.
-
-
-
 
 To flush out the other things hiding, here's the full definition.
 
-
-
-
 **Definition (PAC): **An algorithm $A(\varepsilon, \delta)$ is said to PAC-learn the concept class $H$ over the set $X$ if, for any distribution $D$ over $X$ and for any $0 < \varepsilon, \delta < 1/2$ and for any target concept $c \in H$, the probability that $A$ produces a hypothesis $h$ of error at most $\varepsilon$ is at least $1-\delta$. In symbols, $\Pr_D(\textup{err}_{c,D}(h) \leq \varepsilon) > 1 - \delta$. Moreover, $A$ must run in time polynomial in $1/\varepsilon, 1/\delta$ and $n$, where $n$ is the size of an element $x \in X$.
-
-
-
 
 The reason we need a class of concepts (instead of just one target concept) is that otherwise we could just have a constant algorithm that outputs the correct labeling function. Indeed, when we get a problem we ask whether there _exists_ an algorithm that can solve it. I.e., a problem is "PAC-learnable" if there is some algorithm that learns it as described above. With just one target concept there can exist an algorithm to solve the problem by hard-coding a description of the concept in the source code. So we need to have some "class of possible answers" that the algorithm is searching through so that the algorithm actually has a job to do.
 
-
-
-
 We call an algorithm that gets this guarantee a _strong learner. _A _weak learner _has the same definition, except that we replace $\textup{err}_{c,D}(h) \leq \varepsilon$ by the weak error bound: for _some fixed_ $0 < \eta < 1/2$_._ the error $\textup{err}_{c,D}(h) \leq 1/2 - \eta$. So we don't require the algorithm to achieve _any _desired accuracy, it just has to get some accuracy slightly better than random guessing, which we don't get to choose. As we will see, the value of $\eta$ influences the convergence of the boosting algorithm. One important thing to note is that $\eta$ is a constant independent of $n$, the size of an example, and $m$, the number of examples. In particular, we need to avoid the "degenerate" possibility that $\eta(n) = 2^{-n}$ so that as our learning problem scales the quality of the weak learner degrades toward 1/2. We want it to be _bounded _away from 1/2.
-
-
-
 
 So just to clarify all the parameters floating around, $\delta$ will always be the "probably" part of PAC, $\varepsilon$ is the error bound (the "approximately" part) for strong learners, and $\eta$ is the error bound for weak learners.
 
-
-
-
-
 ## What could a weak learner be?
-
 
 Now before we prove that you can "boost" a weak learner to a strong learner, we should have some idea of what a weak learner is. Informally, it's just a 'rule of thumb' that you can somehow guarantee does a little bit better than random guessing.
 
@@ -120,19 +80,11 @@ In practice, however, people sort of just make things up and they work. It's kin
 
 The weak learner we'll use in this post produces "decision stumps." If you know what a [decision tree](http://jeremykun.com/2012/10/08/decision-trees-and-political-party-classification/) is, then a decision stump is trivial: it's a decision tree where the whole tree is just one node. If you don't know what a decision tree is, a decision stump is a classification rule of the form:
 
-
 Pick some feature $i$ and some value of that feature $v$, and output label $+1$ if the input example has value $v$ for feature $i$, and output label $-1$ otherwise.
-
-
-
 
 Concretely, a decision stump might mark an email spam if it contains the word "viagra." Or it might deny a loan applicant a loan if their credit score is less than some number.
 
-
-
-
 Our weak learner produces a decision stump by simply looking through all the features and all the values of the features until it finds a decision stump that has the best error rate. It's brute force, baby! Actually we'll do something a little bit different. We'll make our data numeric and look for a threshold of the feature value to split positive labels from negative labels. Here's the Python code we'll use in this post for boosting. This code was part of a collaboration with my two colleagues [Adam Lelkes](http://homepages.math.uic.edu/~alelkes/) and [Ben Fish](http://homepages.math.uic.edu/~bfish3/). As usual, all of the code used in this post is [available on Github](https://github.com/j2kun/boosting).
-
 
 First we make a class for a decision stump. The attributes represent a feature, a threshold value for that feature, and a choice of labels for the two cases. The classify function shows how simple the hypothesis is.
 
@@ -164,7 +116,6 @@ def minLabelErrorOfHypothesisAndNegation(data, h):
    posError = sum(y == -1 for (x, y) in posData) + sum(y == 1 for (x, y) in negData)
    negError = sum(y == 1 for (x, y) in posData) + sum(y == -1 for (x, y) in negData)
    return min(posError, negError) / len(data)
-
 
 def bestThreshold(data, index, errorFunction):
    '''Compute best threshold for a given feature. Returns (threshold, error)'''
@@ -200,9 +151,7 @@ def buildDecisionStump(drawExample, errorFunction=defaultError):
 
 It's a little bit inefficient but no matter. To illustrate the PAC framework we emphasize that the weak learner needs nothing except the ability to draw from a distribution. It does so, and then it computes the best threshold and creates a new stump reflecting that. The `majorityVote` function just picks the most common label of examples in the list. Note that drawing 500 samples is arbitrary, and in general we might increase it to increase the success probability of finding a good hypothesis. In fact, when proving PAC-learning theorems the number of samples drawn often depends on the accuracy and confidence parameters $\varepsilon, \delta$. We omit them here for simplicity.
 
-
 ## Strong learners from weak learners
-
 
 So suppose we have a weak learner $A$ for a concept class $H$, and for any concept $c$ from $H$ it can produce with probability at least $1 - \delta$ a hypothesis $h$ with error bound $1/2 - \eta$. How can we modify this algorithm to get a strong learner? Here is an idea: we can maintain a large number of separate instances of the weak learner $A$, run them on our dataset, and then combine their hypotheses with a majority vote. In code this might look like the following python snippet. For now examples are binary vectors and the labels are $\pm 1$, so the sign of a real number will be its label.
 
@@ -224,7 +173,6 @@ This is a bit too simplistic: what if the majority of the weak learners are wron
 def error(hypothesis, data):
    return sum(1 for x,y in data if hypothesis(x) != y) / len(data)
 
-
 def boost(learner, data, rounds=100):
    m = len(data)
    weights = [0] * rounds
@@ -244,8 +192,6 @@ This might be better, but we can do something even cleverer. Rather than use 
 
 To implement this idea in mathematics, we will start with a fixed sample $X = \{x_1, \dots, x_m\}$ drawn from $D$ and assign a weight $0 \leq \mu_i \leq 1$ to each $x_i$. Call $c(x)$ the true label of an example. Initially, set $\mu_i$ to be 1. Since our dataset can have repetitions, normalizing the $\mu_i$ to a probability distribution gives an estimate of $D$. Now we'll pick some "update" parameter $\zeta > 1$ (this is intentionally vague). Then we'll repeat the following procedure for some number of rounds $t = 1, \dots, T$.
 
-
-
  	  1. Renormalize the $\mu_i$ to a probability distribution.
  	  2. Train the weak learner $A$, and provide it with a simulated distribution $D'$ that draws examples $x_i$ according to their weights $\mu_i$. The weak learner outputs a hypothesis $h_t$.
  	  3. For every example $x_i$ mislabeled by $h_t$, update $\mu_i$ by replacing it with $\mu_i \zeta$.
@@ -253,9 +199,7 @@ To implement this idea in mathematics, we will start with a fixed sample $X = \{
 
 At the end our final hypothesis will be a weighted majority vote of all the $h_t$, where the weights depend on the amount of error in each round. Note that when the weak learner misclassifies an example we _increase _the weight of that example, which means we're increasing the likelihood it will be drawn in future rounds. In particular, in order to maintain good accuracy the weak learner will eventually have to produce a hypothesis that fixes its mistakes in previous rounds. Likewise, when examples are correctly classified, we reduce their weights. So examples that are "easy" to learn are given lower emphasis. And that's it. That's the prize-winning idea. It's elegant, powerful, and easy to understand. The rest is working out the values of all the parameters and proving it does what it's supposed to.
 
-
 ## The details and a proof
-
 
 Let's jump straight into a Python program that performs boosting.
 
@@ -319,15 +263,12 @@ The code is almost clear. For each round we run the weak learner on our hand-cr
 
 If we wanted to define the algorithm in pseudocode (which helps for the proof) we would write it this way. Given $T$ rounds, start with $D_1$ being the uniform distribution over labeled input examples $X$, where $x$ has label $c(x)$. Say there are $m$ input examples.
 
-
-
  	  1. For each $t=1, \dots T$:
 
  	    1. Let $h_t$ be the weak learning algorithm run on $D_t$.
  	    2. Let $\varepsilon_t$ be the error of $h_t$ on $D_t$.
  	    3. Let $\alpha_t = \frac{1}{2} \log ((1- \varepsilon) / \varepsilon)$.
  	    4. Update each entry of $D_{t+1}$ by the rule $D_{t+1}(x) = \frac{D_t(x)}{Z_t} e^{- h_t(x) c(x) \alpha_t}$, where $Z_t$ is chosen to normalize $D_{t+1}$ to a distribution.
-
 
  	  2. Output as the final hypothesis the sign of $h(x) = \sum_{t=1}^T \alpha_t h_t(x)$, i.e. $h'(x) = \textup{sign}(h(x))$.
 
@@ -337,77 +278,49 @@ Now let's prove this works. That is, we'll prove the error on the input dataset 
 
 _Proof. _ Let $m$ be the number of examples given to the boosting algorithm. First, we derive a closed-form expression for $D_{t}$ in terms of the normalization constants $Z_t$. Expanding the recurrence relation gives
 
-
 $\displaystyle D_{t}(x) = D_1(x)\frac{e^{-\alpha_1 c(x) h_1(x)}}{Z_1} \dots \frac{e^{- \alpha_t c(x) h_t(x)}}{Z_t}$
-
 
 Because the starting distribution is uniform, and combining the products into a sum of the exponents, this simplifies to
 
-
 $\displaystyle \frac{1}{m} \frac{e^{-c(x) \sum_{s=1}^t \alpha_s h_t(x)}}{\prod_{s=1}^t Z_s} = \frac{1}{m}\frac{e^{-c(x) h(x)}}{\prod_s Z_s}$
-
 
 Next, we show that the training error is bounded by the product of the normalization terms $\prod_{s=1}^t Z_s$. This part has always seemed strange to me, that the training error of boosting depends on the factors you need to normalize a distribution. But it's just a different perspective on the multiplicative weights scheme. If we didn't explicitly normalize the distribution at each step, we'd get nonnegative weights (which we could convert to a distribution just for the sampling step) and the training error would depend on the product of the weight updates in each step. Anyway let's prove it.
 
 The training error is defined to be $\frac{1}{m} (\textup{\# incorrect predictions by } h)$. This can be written with an indicator function as follows:
 
-
 $\displaystyle \frac{1}{m} \sum_{x \in X} 1_{c(x) h(x) \leq 0}$
-
 
 Because the sign of $h(x)$ determines its prediction, the product is negative when $h$ is incorrect. Now we can do a strange thing, we're going to upper bound the indicator function (which is either zero or one) by $e^{-c(x)h(x)}$. This works because if $h$ predicts correctly then the indicator function is zero while the exponential is greater than zero. On the other hand if $h$ is incorrect the exponential is greater than one because $e^z \geq 1$ when $z \geq 0$. So we get
 
-
 $\displaystyle \leq \sum_i \frac{1}{m} e^{-c(x)h(x)}$
-
 
 and rearranging the formula for $D_t$ from the first part gives
 
-
 $\displaystyle \sum_{x \in X} D_T(x) \prod_{t=1}^T Z_t$
-
 
 Since the $D_T$ forms a distribution, it sums to 1 and we can factor the $Z_t$ out. So the training error is just bounded by the $\prod_{t=1}^T Z_t$.
 
 The last step is to bound the product of the normalization factors. It's enough to show that $Z_t \leq e^{-2 \eta_t^2}$. The normalization constant is just defined as the sum of the numerator of the terms in step D. i.e.
 
-
 $\displaystyle Z_t = \sum_i D_t(i) e^{-\alpha_t c(x) h_t(x)}$
-
 
 We can split this up into the correct and incorrect terms (that contribute to $+1$ or $-1$ in the exponent) to get
 
-
 $\displaystyle Z_t = e^{-\alpha_t} \sum_{\textup{correct } x} D_t(x) + e^{\alpha_t} \sum_{\textup{incorrect } x} D_t(x)$
-
 
 But by definition the sum of the incorrect part of $D$ is $\varepsilon_t$ and $1-\varepsilon_t$ for the correct part. So we get
 
-
 $\displaystyle e^{-\alpha_t}(1-\varepsilon_t) + e^{\alpha_t} \varepsilon_t$
-
 
 Finally, since this is an upper bound we want to pick $\alpha_t$ so as to minimize this expression. With a little calculus you can see the $\alpha_t$ we chose in the algorithm pseudocode achieves the minimum, and this simplifies to $2 \sqrt{\varepsilon_t (1-\varepsilon_t)}$. Plug in $\varepsilon_t = 1/2 - \eta_t$ to get $\sqrt{1 - 4 \eta_t^2}$ and use the calculus fact that $1 - z \leq e^{-z}$ to get $e^{-2\eta_t^2}$ as desired.
 
-
 $\square$
-
-
-
 
 This is fine and dandy, it says that if you have a true weak learner then the training error of AdaBoost vanishes exponentially fast in the number of boosting rounds. But what about generalization error? What we really care about is whether the hypothesis produced by boosting has low error on the original distribution $D$ as a whole, not just the training sample we started with.
 
-
-
-
 One might expect that if you run boosting for more and more rounds, then it will eventually overfit the training data and its generalization accuracy will degrade. However, in practice this is not the case! The longer you boost, even if you get down to zero training error, the _better _generalization tends to be. For a long time this was sort of a mystery, and we'll resolve the mystery in the sequel to this post. For now, we'll close by showing a run of AdaBoost on some real world data.
 
-
-
-
-
 ## The "adult" census dataset
-
 
 [The "adult" dataset](https://archive.ics.uci.edu/ml/datasets/Adult) is a standard dataset taken from the 1994 US census. It tracks a number of demographic and employment features (including gender, age, employment sector, etc.) and the goal is to predict whether an individual makes over $50k per year. Here are the first few lines from the training set.
 
@@ -418,7 +331,6 @@ One might expect that if you run boosting for more and more rounds, then it will
     53, Private, 234721, 11th, 7, Married-civ-spouse, Handlers-cleaners, Husband, Black, Male, 0, 0, 40, United-States, <=50K
     28, Private, 338409, Bachelors, 13, Married-civ-spouse, Prof-specialty, Wife, Black, Female, 0, 0, 40, Cuba, <=50K
     37, Private, 284582, Masters, 14, Married-civ-spouse, Exec-managerial, Wife, White, Female, 0, 0, 40, United-States, <=50K
-
 
 We perform some preprocessing of the data, so that the categorical examples turn into binary features. You can see the full details in the [github repository for this post](https://github.com/j2kun/boosting); here are the first few post-processed lines (my newlines added).
 
@@ -473,20 +385,10 @@ This isn't too shabby. I've tried running boosting for more rounds (a hundred) a
 
 Though we have not compared our results above to any baseline, AdaBoost seems to work pretty well. This is kind of a meta point about theoretical computer science research. One spends years trying to devise algorithms that work in theory (and finding conditions under which we can get good algorithms in theory), but when it comes to practice we can't do anything but hope the algorithms will work well. It's kind of amazing that something like Boosting works in practice. It's not clear to me that weak learners should exist at all, even for a given real world problem. But the results speak for themselves.
 
-
 ## Next time
-
-
-
 
 Next time we'll get a bit deeper into the theory of boosting. We'll derive the notion of a "margin" that quantifies the confidence of boosting in its prediction. Then we'll describe (and maybe prove) a theorem that says if the "minimum margin" of AdaBoost on the training data is large, then the generalization error of AdaBoost on the entire distribution is small. The notion of a margin is actually quite a deep one, and it shows up in another famous machine learning technique called the Support Vector Machine. In fact, it's part of some recent research I've been working on as well. More on that in the future.
 
-
-
-
 If you're dying to learn more about Boosting, but don't want to wait for me, check out the book [Boosting: Foundations and Algorithms](http://www.amazon.com/gp/product/B00946TOVW/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B00946TOVW&linkCode=as2&tag=mathinterprog-20&linkId=Q7NPJFXCBENWLUBE), by Freund and Schapire.
-
-
-
 
 Until next time!

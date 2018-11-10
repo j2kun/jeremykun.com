@@ -31,8 +31,6 @@ Then, using a combination of tools, I built a rudimentary visualizer. [Go play w
 
 A few notes:
 
-
-
 	  1. It takes about 15 seconds to load before you can start playing. During this time, it loads a compressed version of the database into memory (starting from a mere 5MB). Then it converts the data into a more useful format, builds a rudimentary search index of the names, and displays the ancestors for Gauss.
 	  2. The search index is the main bloat of the program, requiring about a gigabyte of memory to represent. Note that because I'm too lazy to set up a proper server and elasticsearch index, everything in this demo is in Javascript running in your browser. Here's the [github repo for that code](https://github.com/j2kun/math-genealogy-visualizer).
 	  3. You can drag and zoom the graph.

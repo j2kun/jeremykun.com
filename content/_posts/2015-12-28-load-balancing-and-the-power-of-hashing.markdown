@@ -32,9 +32,7 @@ In this post I'll explain the details, and show the application to an importa
 
 Next week, I'll follow this post up with another application of hashing to estimating the number of distinct items in a set that's too large to store in memory.
 
-
 ## Families of Hash Functions
-
 
 To emphasize which specific properties of hash functions are important for a given application, we start by introducing an abstraction: a hash function is just some computable function that accepts strings as input and produces numbers between 1 and $n$ as output. We call the set of allowed inputs $U$ (for "Universe"). A _family_ of hash functions is just a set of possible hash functions to choose from. We'll use a scripty $\mathscr{H}$ for our family, and so every hash function $h$ in $\mathscr{H}$ is a function $h : U \to \{ 1, \dots, n \}$.
 
@@ -42,9 +40,7 @@ You can use a single hash function $h$ to maintain an unordered set of objects i
 
 Here we have a family of random hash functions. So what's the use of having many hash functions? You can pick a hash randomly from a "good" family of hash functions. While this doesn't seem so magical, it has the informal property that it makes arbitrary data "random enough," so that an algorithm which you designed to work with truly random data will also work with the hashes of arbitrary data. Moreover, even if an adversary knows $\mathscr{H}$ and knows that you're picking a hash function at random, there's no way for the adversary to manufacture problems by feeding bad data. With overwhelming probability the worst-case scenario will not occur. Our first example of this is in load-balancing.
 
-
 ## Load balancing and 2-uniformity
-
 
 You can imagine load balancing in two ways, concretely and mathematically. In the concrete version you have a public-facing server that accepts requests from users, and forwards them to a back-end server which processes them and sends a response to the user. When you have a billion users and a million servers, you want to forward the requests in such a way that no server gets too many requests, or else the users will experience delays. Moreover, you're worried that the League of Tanzanian Hackers is trying to take down your website by sending you requests in a carefully chosen order so as to screw up your load balancing algorithm.
 
@@ -61,29 +57,13 @@ The property of a family of hash functions that makes this strategy work is call
 
 **Definition: **A family of functions $\mathscr{H}$ from some universe $U \to \{ 1, \dots, n \}$. is called _2-universal_ if, for every two distinct $x, y \in U$, the probability over the random choice of a hash function $h$ from $\mathscr{H}$ that $h(x) = h(y)$ is at most $1/n$. In notation,
 
-
 $\displaystyle \Pr_{h \in \mathscr{H}}[h(x) = h(y)] \leq \frac{1}{n}$
-
-
-
 
 I'll give an example of such a family shortly, but let's apply this to our load balancing problem. Our load-balancing algorithm would fail if, with even some modest probability, there is some server that receives many more than its fair share ($m/n$) of the $m$ requests. If $\mathscr{H}$ is 2-universal, then we can compute an upper bound on the expected load of a given server, say server 1. Specifically, pick any element $x$ which hashes to 1 under our randomly chosen $h$. Then we can compute an upper bound on the expected number of other elements that hash to 1. In this computation we'll only use the fact that expectation splits over sums, and the definition of 2-universal. Call $\mathbf{1}_{h(y) = 1}$ the random variable which is zero when $h(y) \neq 1$ and one when $h(y) = 1$, and call $X = \sum_{y \in U} \mathbf{1}_{h(y) = 1}$. In words, $X$ simply represents the number of inputs that hash to 1. Then
 
-
-
-
 ![exp-calc](https://jeremykun.files.wordpress.com/2015/12/exp-calc.png)
 
-
-
-
-
 So in expectation we can expect server 1 gets its fair share of requests. And clearly this doesn't depend on the output hash being 1; it works for any server. There are two obvious questions.
-
-
-
-
-
 
 	  1. How do we measure the risk that, despite the expectation we computed above, _some_ server is overloaded?
 	  2. If it seems like (1) is on track to happen, what can you do?
@@ -92,30 +72,15 @@ For 1 we're asking to compute, for a given deviation $t$, the probability that $
 
 So we want to know what is the probability that $X - \mathbb{E}[X] > t \cdot \mathbb{E}[X]$ for some small number $t$, and we want this to get small quickly as $t$ grows. This is where the [Chebyshev inequality](http://jeremykun.com/2013/04/15/probabilistic-bounds-a-primer/) becomes useful. For those who don't want to click the link, for our sitauation Chebyshev's inequality is the statement that, for any random variable $X$
 
-
 $\displaystyle \Pr[|X - \mathbb{E}[X]| > t\mathbb{E}[X]] \leq \frac{\textup{Var}[X]}{t^2 \mathbb{E}^2[X]}.$
-
-
-
 
 So all we need to do is compute the variance of the load of a server. It's a bit of a hairy calculation to write down, but rest assured it doesn't use anything fancier than the linearity of expectation and 2-universality. Let's dive in. We start by writing the definition of variance as an expectation, and then we split $X$ up into its parts, expand the product and group the parts.
 
-
-
-
 $\displaystyle \textup{Var}[X] = \mathbb{E}[(X - \mathbb{E}[X])^2] = \mathbb{E}[X^2] - (\mathbb{E}[X])^2$
-
-
-
 
 The easy part is $(\mathbb{E}[X])^2$, it's just $(1 + (m-1)/n)^2$, and the hard part is $\mathbb{E}[X^2]$. So let's compute that
 
-
-
-
 ![esquared-calcluation](https://jeremykun.files.wordpress.com/2015/12/esquared-calcluation.png)
-
-
 
 In order to continue (and get a reasonable bound) we need an additional property of our hash family which is not immediately spelled out by 2-universality. Specifically, we need that for every $h$ and $i$, $\Pr_x[h(x) = i] = O(\frac{1}{n})$. In other words, each hash function should evenly split the inputs across servers.
 
@@ -126,8 +91,6 @@ Sweeping some of the details inside the big-O, this means that our variance is $
 Now we computed a bound on the probability that a _single_ server is not overloaded, but if we want to extend that to the worst-case server, the typical probability technique is to take the _union bound_ over all servers. This means we just add up all the individual bounds and ignore how they relate. So the probability that _some_ server has a load more than a multiplicative factor of $t$ is bounded from above $O(n/t^2)$. This is only less than one when $t = \Omega(\sqrt{n})$, so all we can say with this analysis is that (with some small constant probability) no server will have a load worse than $\sqrt{n}$ times more than the expected load.
 
 So we have this analysis that seems not so good. If we have a million servers then the worst load on one server could potentially be a thousand times higher than the expected load. This doesn't scale, and the problem could be in any (or all) of three places:
-
-
 
 	  1. Our analysis is weak, and we should use tighter bounds because the true max load is actually much smaller.
 	  2. Our hash families don't have strong enough properties, and we should beef those up to get tighter bounds.
@@ -145,9 +108,7 @@ This has the disadvantage of requiring bidirectional talk between the load bala
 
 This theorem appears to have been proved in a few different forms, with the best analysis being by [Berenbrink et al](http://www.cc.gatech.edu/~vigoda/RandAlgs/BCSV.pdf). You can improve the constant on the $\log \log n$ by computing more than 2 hashes. How does this relate to a good family of hash functions, which is not quite fully random? Let's explore the answer by implementing the algorithm in python.
 
-
 ## An example of universal hash functions, and the load balancing algorithm
-
 
 In order to implement the load balancer, we need to have some good hash functions under our belt. We'll go with the simplest example of a hash function that's easy to prove nice properties for. Specifically each hash in our family just performs some arithmetic modulo a random prime.
 
@@ -157,21 +118,15 @@ This family of hash functions is 2-universal.
 
 **Theorem:** For every $x \neq y \in \{0, \dots, p\}$,
 
-
 $\Pr_{h \in \mathscr{H}}[h(x) = h(y)] \leq 1/p$
-
 
 _Proof. _To say that $h(x) = h(y)$ is to say that $ax+b = ay+b + i \cdot m \mod p$ for some integer $i$. I.e., the two remainders of $ax+b$ and $ay+b$ are equivalent mod $m$. The $b$'s cancel and we can solve for $a$
 
-
 $a = im (x-y)^{-1} \mod p$
-
 
 Since $a \neq 0$, there are $p-1$ possible choices for $a$. Moreover, there is no point to pick $i$ bigger than $p/m$ since we're working modulo $p$. So there are $(p-1)/m$ possible values for the right hand side of the above equation. So if we chose them uniformly at random, (remember, $x-y$ is fixed ahead of time, so the only choice is $a, i$), then there is a $(p-1)/m$ out of $p-1$ chance that the equality holds, which is at most $1/m$. (To be exact you should account for taking a floor of $(p-1)/m$ when $m$ does not evenly divide $p-1$, but it only decreases the overall probability.)
 
-
 $\square$
-
 
 If $m$ and $p$ were equal then this would be even more trivial: it's just the fact that there is a unique line passing through any two distinct points. While that's obviously true from standard geometry, it is also true when you work with arithmetic modulo a prime. In fact, it works using [arithmetic over any field](http://jeremykun.com/2014/02/26/finite-fields-a-primer/).
 

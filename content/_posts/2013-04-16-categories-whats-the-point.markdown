@@ -15,22 +15,11 @@ tags:
 
 Perhaps primarily due to the prominence of monads [in the Haskell programming language](http://www.haskell.org/haskellwiki/Monad#Interesting_monads), programmers are often curious about category theory. Proponents of Haskell and other functional languages can put category-theoretic concepts on a pedestal or in a [mexican restaurant](http://blog.plover.com/prog/burritos.html), and their benefits can seem as mysterious as they are magical. For instance, the most common use of a monad in Haskell is to simulate the mutation of immutable data. Others include suspending and backtracking computations, and even [untying tangled rope](http://vimeo.com/6590617).
 
-
-
-
 Category theory is often mocked (or praised) as the be-all and end-all of mathematical abstraction, and as such (and for [other reasons I've explored](http://jeremykun.com/2013/02/08/why-there-is-no-hitchhikers-guide-to-mathematics-for-programmers/) on this blog) many have found it difficult to digest and impossible to master. However, in truth category theory arose from a need for organizing mathematical ideas based on their shared structure. In this post, I want to give a brief overview of what purpose category theory serves within mathematics, and emphasize what direction we'll be going with it on this blog.
-
-
-
 
 We should also note (writing this after the fact), that this article is meant to be a motivation to our future series on category theory. It is very difficult to explain what category theory is without going into very specific details, but we can explain by analogy what category theory achieves for us. That is the goal of this post.
 
-
-
-
-
 ## Category Theory as a Modern Language
-
 
 It would be a silly question to ask why we don't program entirely in binary. It's a slow, inefficient process prone to mistakes of all sorts, and so we generally avoid it (although a well-rounded programmer can readily work in binary when it is necessary). But once upon a time there was no choice. Eventually people found that certain programmatic constructions were ubiquitous, and the developers of the next generation of languages abstracted these ideas to make types, lists, loops, if statements, and functions. The cycle continued: we found that we needed to further allow programmers to define custom data types, polymorphic operations, protected data, and others. Another iteration and we have list comprehensions, Python [decorators](http://www.artima.com/weblogs/viewpost.jsp?thread=240808), Javascript [promises](http://blog.parse.com/2013/01/29/whats-so-great-about-javascript-promises/), and a whole host of other programming paradigms that have turned into features  [1].
 
@@ -42,9 +31,7 @@ I am saying, however, that enough mathematicians have agreed category theory is
 
 One goal of this blog's category theory series is to gain fair fluency in this modern language.
 
-
 ## Category Theory as an Organizing Principle
-
 
 As most readers will readily understand, people who study and develop programming languages think differently about language features than people who just use programming languages. For instance, a systems programmer friend of mine was pleased to discover that Python supports multiple variable assignments in a single statement (e.g. a,b = 7, False). Now a language designer might smile and think, "Well that's just syntactic sugar." But to a working programmer, this kind of feature is quite convenient and extensible (to one-line variable swapping, multiple return values, etc.). On the other hand, when a language designer claims to have invented a wonderful new paradigm, say, [continuations](http://en.wikipedia.org/wiki/Continuation-passing_style), the working programmer would think, "What good is that for? It's just an ugly way to write functions!" It's not until someone uses the feature to do amazing things like eliminate the need for a stack or [provide lightweight extensible stack inspection](http://scholar.google.com/citations?view_op=view_citation&hl=en&user=jh7JGrEAAAAJ&citation_for_view=jh7JGrEAAAAJ:Tyk-4Ss8FVUC) that the working programmer appreciates the abstraction.
 
@@ -58,9 +45,7 @@ And so as category theory has spread through the mathematical world, more and mo
 
 To reiterate, category theory streamlines the process of making precise technical definitions and proving their well-definition. One hopes, then, that very general theorems proved within category theory can apply to a wide breadth of practical areas. [2] 
 
-
 ## Category as a Tool to Gain More Knowledge
-
 
 When someone invents a new programming tool, the primary goal is usually to allow a programmer to do something that he couldn't do previously (or was difficult/inconvenient to do). For instance, programmers invented version control to allow for easy project collaboration and rollbacks. Before then, managing multiple versions of a file was a horrendous task.
 
@@ -72,9 +57,7 @@ I think it goes without saying that we certainly can't do anything that we could
 
 While I don't necessarily espouse this line of thinking (I believe any mathematics makes you better at analyzing problems), this is essentially the argument for why functional programming is a good thing to learn.
 
-
 ## What We'll Do With Categories
-
 
 I don't necessarily have any amazing applications of category theory in mind for this blog. Instead, I want to develop a fair fluency and categorical organization (the first to sections of this article) among my readers. Along the way, we will additionally _implement_ the concepts of category theory in code. This will give us a chance to play with the ideas as we learn, and hopefully will make all of the abstract nonsense much more concrete.
 

@@ -41,9 +41,7 @@ _Note: this blog post will receive periodic updates as my understanding of the d
 [caption id="attachment_6123" align="aligncenter" width="660"][![Standing room only at Laci's talk.](https://jeremykun.files.wordpress.com/2015/11/20151110_145930.jpg?w=660)
 ](https://jeremykun.files.wordpress.com/2015/11/20151110_145930.jpg) Standing room only at Laci's talk. My advisor in the bottom right, my coauthor mid-left with the thumbs. Various famous researchers spottable elsewhere.[/caption]
 
-
 ## Background on Graph Isomorphism
-
 
 I'll start by giving a bit of background into why Graph Isomorphism (hereafter, GI) is such a famous problem, and why this result is important. If you're familiar with graph isomorphism and the basics of complexity theory, skip to the next section where I get into the details.
 
@@ -68,9 +66,7 @@ So indeed, it could be that GI will become the first ever problem which is NP-in
 
 This is the point at which I will start assuming some level of mathematical maturity.
 
-
 ## The Main Result
-
 
 The specific claim about graph isomorphism being made is the following:
 
@@ -88,9 +84,7 @@ Now if you call $\textup{ISO}_G(x,y)$ the set of all permutations in $G$ that ma
 
 It is not completely obvious that GI reduces to the automorphism problem, but I will prove it does in the next section. Furthermore, the overview of Babai's proof of the theorem follows an outline laid out by [Eugene Luks in 1982](http://ix.cs.uoregon.edu/~luks/iso.pdf), which involves a divide-and-conquer method for splitting the analysis of $\textup{Aut}_G(x)$ into simpler and simpler subgroups as they are found.
 
-
 ## Luks's program
-
 
 [Eugene Luks](http://ix.cs.uoregon.edu/~luks/) was the first person to incorporate "serious group theory" (Babai's words) into the study of graph isomorphism. Why would group theory help in a question about graphs? Let me explain with a lemma.
 
@@ -98,9 +92,7 @@ It is not completely obvious that GI reduces to the automorphism problem, but I
 
 _Proof. _Without loss of generality suppose $X_1, X_2$ are connected graphs. If we want to decide whether $X_1, X_2$ are isomorphic, we may form the disjoint union $X = X_1 \cup X_2$. It is easy to see that $X_1$ and $X_2$ are isomorphic if and only if some $\sigma \in \textup{Aut}(X)$ swaps $X_1$ and $X_2$. Indeed, if any automorphism with this property exists, every generating set of $\textup{Aut}(G)$ must contain one.
 
-
 $\square$
-
 
 Similarly, the string isomorphism problem reduces to the problem of computing a generating set for $\textup{Aut}_G(x)$ using a similar reduction to the one above. As a side note, while $\textup{ISO}_G(x,y)$ can be exponentially large as a set, it is either the empty set, or a coset of $\textup{Aut}_G(x)$ by any element of $\textup{ISO}_G(x,y)$. So there are group-theoretic connections between the automorphism group of a string and the isomorphisms between two strings.
 
@@ -108,19 +100,11 @@ But more importantly, computing the automorphism group of a graph reduces to com
 
 Moreover, $\textup{Aut}(X)$ sits inside the full symmetry group $\textup{Sym}(V)$ of $V$, the vertex set of the starting graph, and $\textup{Sym}(V)$ also induces an action $G_V$ on $Z$. The inclusion is
 
-
 $\displaystyle \textup{Aut}(X) \subset \textup{Sym}(V)$
-
-
-
 
 induces
 
-
-
-
 $\displaystyle G_X = \textup{Aut}(\textup{Enc}(X)) \subset G_V \subset \textup{Aut}(Z)$
-
 
 I.e.,
 
@@ -138,9 +122,7 @@ For strings the sorts of structures to look for are even more refined than equi
 
 The point is that when some useful substructure is found, it will "make progress" toward the result by breaking the problem into many pieces (say, $n^{\log n}$ pieces) where each piece has size $9/10$ the size of the original. So you get a recursion in the amount of time needed which looks like $f(n) \leq n^{\log n} f(9n/10)$. If you call $q(n) = n^{\log n}$ the quasipolynomial factor, then solving the recurrence gives $f(n) \leq q(n)^{O(\log n)}$ which only adds an extra log factor in the exponent. So you keep making progress until the problem size is polylogarithmic, and then you brute force it and put the pieces back together in quasipolynomial time.
 
-
 ## Two main lemmas, which are theorems in their own right
-
 
 This is where the details start to get difficult, in part because Babai jumped back and forth between thinking of the object as a graph and as a string. The point of this in the lecture was to illustrate both where the existing techniques for solving GI (which were in terms of finding canonical graph substructures in graphs) break down.
 
@@ -151,8 +133,6 @@ The problem is that when you get to a coarsest equitable partition, you may end
 The main combinatorial lemma that Babai proves to avoid this problem is that the Johnson graphs are the _only_ obstacle to finding efficient partitions.
 
 **Theorem (Babai 15):** If $X$ is a regular graph on $m$ vertices, then by individualizing a polylog number of vertices we can find one of the three following things:
-
-
 
 	  1. A canonical coloring with each color class having at most 90% of all the nodes.
 	  2. A canonical equipartition of some subset of the vertices that has at least 90% of the nodes (i.e. a big color class from (1)).
@@ -194,9 +174,7 @@ The algorithm to test fullness (and construct a certificate) he called the _Loc
 
 The termination of this is either when $W$ stops growing, in which case the projection is giant and $W$ is our certificate of fullness (i.e. we get a rich family of automorphisms that are actually in our target automorphism group), or else we discover the projected ceases to be giant and $W$ is our certificate of non-fullness. Indeed, the subgroup generated by these layers is a subgroup of $\textup{Aut}_G(x)$, and the subgroup generated by the elements of a non-fullness certificate contain the automorphism group.
 
-
 ## Not enough details?
-
 
 This was supposed to be just a high-level sketch of the algorithm, and Babai is giving two more talks elaborating on the details. Unfortunately, I won't be able to make it to his second talk in which he'll discuss some of the core group theoretic ideas that go into the algorithm. I will, however, make it to his third talk in which he will sketch the proof of the split-or-Johnson routine. That is in two weeks from the time of this writing, and I will update this post with any additional insights then.
 

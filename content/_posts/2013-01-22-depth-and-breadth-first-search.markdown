@@ -27,9 +27,7 @@ These two algorithms nudge gently into the realm of artificial intelligence, bec
 
 Of course, this primer will expect the reader is familiar with the basic definitions of graph theory, but as usual we provide [introductory primers on this blog](http://jeremykun.com/2011/06/26/teaching-mathematics-graph-theory/). In addition, the content of this post will be very similar to [our primer on trees](http://jeremykun.com/2012/09/16/trees-a-primer/), so the familiar reader may benefit from reading that post as well. As usual, [all of the code](https://github.com/j2kun/depth-breadth-first-search) used in this post is available on [this blog's Github page](https://github.com/j2kun/).
 
-
 ## The Basic Graph Data Structure
-
 
 We present the basic data structure in both mathematical terms and explicitly in Python.
 
@@ -54,26 +52,17 @@ Our implementation of these algorithms will use a variation of the following Pyt
           self.value = value
           self.adjacentNodes = []
 
-
 The entire graph will be accessible by having a reference to one vertex (this is guaranteed by connectivity). The vertex class is called Node, and it will contain as its data a value of arbitrary type and a list of neighboring vertices. For now the edges are just implicitly defined (there is an edge from $v$ to $w$ if the latter shows up in the "adjacentNodes" list of the former), but once we need edges with associated values we will have to improve this data structure to one similar to what we used in [our post on neural networks](http://jeremykun.com/2012/12/09/neural-networks-and-backpropagation/).
 
 That is, one must update the adjacentNodes attribute of each Node by hand to add edges to the graph. There are other data structures for graphs that allow one to refer to any vertex at any time, but for our purposes the constraint of not being able to do that is more enlightening. The algorithms we investigate will use no more and no less than what we have. At each stage we will inspect the vertex we currently have access to, and pick some action based on that.
 
-
 Enough talk. Let's jump right in!
 
-
-
-
-
 ## Depth-First Search
-
 
 For the remainder of this section, the goal is to determine if there is a vertex in the graph with the associated value being the integer 6. This can also be phrased more precisely as the question: "is there a path from the given node to a node with value 6?" (For connected. undirected graphs the two questions are equivalent.)
 
 Our first algorithm will solve this problem quite nicely, and is called the depth-first search. Depth-first search is inherently a recursion:
-
-
 
 	  1. Start at a vertex.
 	  2. Pick any unvisited vertex adjacent to the current vertex, and check to see if this is the goal.
@@ -129,12 +118,9 @@ Let's try running our fixed code with some simple examples. In the following exa
     >>> depthFirst(G, "X")
     False
 
-
 Of course, this still doesn't fix the problem with too many recursive calls; a graph which is too large will cause an error because Python limits the number of recursive calls allowed. The next and final step is a standard method of turning a recursive algorithm into a non-recursive one, and it requires the knowledge of a particular data structure called a _stack_.
 
 In the abstract, one might want a structure which stores a collection of items and has the following operations:
-
-
 
 	  * You can quickly add something to the structure.
 	  * You can quickly remove the most recently added item.
@@ -155,24 +141,19 @@ Here is some example code showing this in action:
     >>> L
     [1,2,3]
 
-
 Note that pop modifies the list and returns a value, while push/append only modifies the list.
 
 It turns out that the order in which we visit the vertices in the recursive version of the depth-first search is the same as if we had done the following. At each vertex, push the adjacent vertices onto a stack _in the reverse order_ that you iterate through the list. To choose which vertex to process next, simple pop whatever is on top of the stack, and process it (taking the stack with you as you go). Once again, we have to worry about which vertices have already been visited, and that part of the algorithm remains unchanged.
 
 For example, say we have the following graph:
 
-
 [![graph-dfs-stack-example1](http://jeremykun.files.wordpress.com/2013/01/graph-dfs-stack-example1.png)
 ](http://jeremykun.files.wordpress.com/2013/01/graph-dfs-stack-example1.png)
 
-
 Starting at vertex 1, which is adjacent to vertices 2, 3 and 4, we push 4 onto the stack, then 3, then 2. Next, we pop vertex 2 and iteratively process 2. At this point the picture looks like this:
-
 
 [![stack-example-two](http://jeremykun.files.wordpress.com/2013/01/stack-example-two1.png)
 ](http://jeremykun.files.wordpress.com/2013/01/stack-example-two1.png)
-
 
 Since 2 is connected to 4 and also 5, we push 5 and then 4 onto the stack. Note that 4 is in the stack twice (this is okay, since we are maintaining a set of visited vertices). Now the important part is that since we added vertex 5 and 4 _after_ adding vertex 3, those will be processed before vertex 3. That is, the neighbors of more recently visited vertices (vertex 2) have a preference in being processed over the remaining neighbors of earlier ones (vertex 1). This is precisely the idea of recursion: we don't finish the recursive call until all of the neighbors are processed, and that in turn requires the processing of all of the neighbors' neighbors, and so on.
 
@@ -206,16 +187,12 @@ Moreover, note that this version of the algorithm removes the issue with the ret
 
 The reliance of this algorithm on a data structure is not an uncommon thing. In fact, the next algorithm we will see cannot be easily represented as a recursive phenomenon; the order of traversal is simply too different. Instead, it will be almost identical to the stack-form of the depth-first search, but substituting a queue for a stack.
 
-
 ## Breadth-First Search
-
 
 As the name suggests, the breadth-first search operates in the "opposite" way from the depth-first search. Intuitively the breadth-first search prefers to visit the neighbors of earlier visited nodes before the neighbors of more recently visited ones. Let us reexamine the example we used in the depth-first search to see this change in action.
 
-
 [![graph-dfs-stack-example1](http://jeremykun.files.wordpress.com/2013/01/graph-dfs-stack-example1.png)
 ](http://jeremykun.files.wordpress.com/2013/01/graph-dfs-stack-example1.png)
-
 
 Starting again with vertex 1, we add 4, 3, and 2 (in that order) to our data structure, but now we prefer the _first_ thing added to our data structure instead of the last. That is, in the next step we visit vertex 4 instead of vertex 2. Since vertex 4 is adjacent to nobody, the recursion ends and we continue with vertex 3.
 
@@ -227,8 +204,6 @@ Now vertex 3 is adjacent to 5, so we add 5 to the data structure. At this point 
 That is, and this is the important bit, we process vertex 2 before we process vertex 5. Notice the pattern here: after processing vertex 1, we processed all of the neighbors of vertex 1 before processing any vertices not immediately adjacent to vertex one. This is where the "breadth" part distinguishes this algorithm from the "depth" part. Metaphorically, a breadth-first search algorithm will look all around a vertex before continuing on into the depths of a graph, while the depth-first search will dive straight to the bottom of the ocean before looking at where it is. Perhaps one way to characterize these algorithms is to call breadth-first _cautious, _and depth-first _hasty_. Indeed, there are more formal ways to make these words even more fitting that we will discuss in the future.
 
 The way that we'll make these rules rigorous is in the data-structure version of the algorithm: instead of using a stack we'll use a queue. Again in the abstract, a queue is a data structure for which we'd like the following properties:
-
-
 
 	  * We can quickly add items to the queue.
 	  * We can quickly remove the least recently added item.
@@ -250,7 +225,6 @@ Hence the enqueue operation we will use for a deque is called "appendleft," and 
     7
     >>> queue
     [4]
-
 
 Note that a deque can also operate as a stack (it also has an append function with functions as the push operation). So in the following code for the breadth-first search, the only modification required to make it a depth-first search is to change the word "appendleft" to "append" (and to update the variable names from "queue" to "stack").
 
@@ -282,9 +256,7 @@ As in the depth-first search, one can combine the last three lines into one usin
 
 We leave it to the reader to try some examples of running this algorithm (we repeated the example for the depth-first search in our code, but omit it for brevity).
 
-
 ## Generalizing
-
 
 After all of this exploration, it is clear that the depth-first search and the breadth-first search are truly the same algorithm. Indeed, the only difference is in the data structure, and this can be abstracted out of the entire procedure. Say that we have some data structure that has three operations: add, remove, and len (the Pythonic function for "query the size"). Then we can make a search algorithm that uses this structure without knowing how it works on the inside. Since words like stack, queue, and heap are already taken for specific data structures, we'll call this arbitrary data structure a _pile. _The algorithm might look like the following in Python:
 

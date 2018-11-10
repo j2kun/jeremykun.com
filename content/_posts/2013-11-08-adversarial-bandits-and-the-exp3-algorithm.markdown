@@ -21,7 +21,6 @@ tags:
 
 In the last twenty years there has been a lot of research in a subfield of machine learning called Bandit Learning. The name comes from the problem of being faced with a large sequence of slot machines (once called one-armed bandits) each with a potentially different payout scheme. The problems in this field all focus on one central question:
 
-
 <blockquote>
 
 > 
@@ -29,7 +28,6 @@ In the last twenty years there has been a lot of research in a subfield of machi
 > 
 > 
 </blockquote>
-
 
 The deep question here is how to balance exploitation, the desire to choose an action which has payed off well in the past, with exploration, the desire to try options which may produce even better results. The ideas are general enough that it's hard not to find applications: choosing which drug to test in a clinical study, choosing which companies to invest in, choosing which ads or news stories to display to users, and even (as Richard Feynman once wondered) [how to maximize your dining enjoyment](http://www.feynmanlectures.info/exercises/Feynmans_restaurant_problem.html).
 
@@ -48,9 +46,7 @@ In case the reader is curious, Exp3 was invented in 2001 by Auer, Cesa-Bianchi, 
 
 As usual, all of the code and data produced in the making of this blog post is available for download on [this blog's Github page](https://github.com/j2kun?tab=repositories).
 
-
 ## Model Formalization and Notions of Regret
-
 
 Before we describe the algorithm and analyze its we have to set up the problem formally. The [first few paragraphs of our last post](http://jeremykun.com/2013/10/28/optimism-in-the-face-of-uncertainty-the-ucb1-algorithm/) give a high-level picture of general bandit learning, so we won't repeat that here. Recall, however, that we have to describe both the structure of the payoffs and how success is measured. So let's describe the former first.
 
@@ -62,16 +58,11 @@ Let's specify what the player (algorithm designer) knows during the course of th
 
 So to be completely clear, the game progresses as follows:
 
-
 The player is given access to $K$.
 For each time step $t$:
 
-
-
-
 The player must pick an action $i_t$.
 The player observes the reward $x_i(t) \in [0,1]$, which he may save for future use.
-
 
 The problem gives no explicit limit on the amount of computation performed during each step, but in general we want it to run in polynomial time and not depend on the round number $t$. If runtime even logarithmically depended on $t$, then we'd have a big problem using it for high-frequency applications. For example in ad serving, Google processes on the order of $10^9$ ads per day; so a logarithmic dependence wouldn't be _that _bad, but at some point in the distance future Google wouldn't be able to keep up (and we all want long-term solutions to our problems).
 
@@ -79,60 +70,29 @@ Note that the reward vectors $\mathbf{x}_t$ must be fixed in advance of the algo
 
 So now let's talk about measuring success. For an algorithm $A$ which chooses the sequence $i_1, \dots, i_t$ of actions, define $G_A(t)$ to be the sum of the observed rewards
 
-
 $\displaystyle G_A(t) = \sum_{s=1}^t x_{i_s}(s)$.
-
-
-
 
 And because $A$ will often be randomized, this value is a random variable depending on the decisions made by $A$. As such, we will often only consider the payoff up to expectation. That is, we'll be interested in how $\textup{E}(G_A(t))$ relates to other possible courses of action. To be completely rigorous, the randomization is not over "choices made by an algorithm," but rather the probability distribution over sequences of actions that the algorithm _induces_. It's a fine distinction but a necessary one. In other words, we could define any sequence of actions $\mathbf{j} = (j_1, \dots, j_t)$ and define $G_{\mathbf{j}}(t)$ analogously as above:
 
-
-
-
 $\displaystyle G_{\mathbf{j}}(t) = \sum_{s=1}^t x_{j_s}(s)$.
-
-
-
 
 Any algorithm and choice of reward vectors induces a probability distribution over sequences of actions in a natural way (if you want to draw from the distribution, just run the algorithm). So instead of conditioning our probabilities and expectations on previous choices made by the algorithm, we do it over histories of actions $i_1, \dots, i_t$.
 
-
-
-
 An obvious question we might ask is:** why can't the adversary just make all the payoffs zero? (or negative!)** In this event the player won't get any reward, but he can emotionally and psychologically accept this fate. If he never stood a chance to get any reward in the first place, why should he feel bad about the inevitable result? What a truly cruel adversary wants is, at the end of the game, to show the player what he_ could have won_, and have it far exceed what he actually won. In this way the player feels regret for not using a more sensible strategy, and likely turns to binge eating cookie dough ice cream. Or more likely he returns to the casino to lose more money. The trick that the player has up his sleeve is precisely the randomness in his choice of actions, and he can use its objectivity to partially overcome even the nastiest of adversaries.
-
-
-
 
 [caption id="attachment_3998" align="aligncenter" width="300"][![The adversary would love to show you this bluff after you choose to fold your hand. What a jerk.](http://jeremykun.files.wordpress.com/2013/09/seven-deuce-off-suit-300x225.jpg)
 ](http://jeremykun.files.wordpress.com/2013/09/seven-deuce-off-suit-300x225.jpg) The adversary would love to show you this bluff after you choose to fold your hand. What a jerk. [Image credit](http://www.onlinepokergenius.org/cardinal-rule-number-1-playing-too-many-hands/)[/caption]
 
-
 Sadism aside, this thought brings us to a few mathematical notions of regret that the player algorithm may seek to minimize. The first, most obvious, and least reasonable is the worst-case regret. Given a stopping time $T$ and a sequence of actions $\mathbf{j} = (j_1, \dots, j_T)$, the expected _regret of algorithm $A$ with respect to $\mathbf{j}$ _is the difference $G_{\mathbf{j}}(T) - \mathbb{E}(G_A(T))$. This notion of regret measures the regret of a player if he knew what would have happened had he played $\mathbf{j}$.  The expected _worst-case regret_ of $A$ is then the maximum over all sequences $\mathbf{j}$ of the regret of $A$ with respect to $\mathbf{j}$. This notion of regret seems particularly unruly, especially considering that the payoffs are adversarial, but there are techniques to reason about it.
-
-
-
 
 However, the focus of this post is on a slightly easier notion of regret, called _weak regret_, which instead compares the results of $A$ to the best single action over all rounds. That is, this quantity is just _
 _
 
-
-
-
 $\displaystyle \left ( \max_{j} \sum_{t=1}^T x_j(t) \right ) - \mathbb{E}(G_A(T))$
-
-
-
 
 We call the parenthetical term $G_{\textup{max}}(T)$. This kind of regret is a bit easier to analyze, and the main theorem of this post will given an upper bound on it for Exp3. The reader who read [our last post on UCB1](http://jeremykun.com/2013/10/28/optimism-in-the-face-of-uncertainty-the-ucb1-algorithm/) will wonder why we make a big distinction here just to arrive at the same definition of regret that we had in the stochastic setting. But with UCB1 the best sequence of actions to take just happened to be to play the best action over and over again. Here, the payoff difference between the best sequence of actions and the best single action can be arbitrarily large.
 
-
-
-
-
 ## Exp3 and an Upper Bound on Weak Regret
-
 
 We now describe at the Exp3 algorithm.
 
@@ -140,13 +100,7 @@ Exp3 stands for Exponential-weight algorithm for Exploration and Exploitation. I
 
 The algorithm is readily described in Python code, but we need to set up some notation used in the proof of the theorem. The pseudocode for the algorithm is as follows.
 
-
 **Exp3**
-
-
-
-
-
 
 	  1. Given $\gamma \in [0,1]$, initialize the weights $w_i(1) = 1$ for $i = 1, \dots, K$.
 	  2. In each round $t$:
@@ -157,8 +111,6 @@ The algorithm is readily described in Python code, but we need to set up some no
 	    4. Define the estimated reward $\hat{x}_{i_t}(t)$ to be $x_{i_t}(t) / p_{i_t}(t)$.
 	    5. Set $\displaystyle w_{i_t}(t+1) = w_{i_t}(t) e^{\gamma \hat{x}_{i_t}(t) / K}$
 	    6. Set all other $w_j(t+1) = w_j(t)$.
-
-
 
 The choices of these particular mathematical quantities (in steps 1, 4, and 5) are a priori mysterious, but we will explain them momentarily. In the proof that follows, we will extend $\hat{x}_{i_t}(t)$ to indices other than $i_t$ and define those values to be zero.
 
@@ -197,9 +149,7 @@ We can now state and prove the upper bound on the weak regret of Exp3. Note all 
 
 **Theorem: **For any $K > 0, \gamma \in (0, 1]$, and any stopping time $T \in \mathbb{N}$
 
-
 $\displaystyle G_{\textup{max}}(T) - \mathbb{E}(G_{\textup{Exp3}}(T)) \leq (e-1)\gamma G_{\textup{max}}(T) + \frac{K \log K}{\gamma}$.
-
 
 This is a purely analytical result because we don't actually know what $G_{\textup{max}}(T)$ is ahead of time. Also note how the factor of $\gamma$ occurs: in the first term, having a large $\gamma$ will result in a poor upper bound because it occurs in the numerator of that term: too much exploration means not enough exploitation. But it occurs in the denominator of the second term, meaning that not enough exploration can also produce an undesirably large regret. This theorem then provides a quantification of the tradeoff being made, although it is just an upper bound.
 
@@ -207,43 +157,31 @@ _Proof._
 
 We present the proof in two parts. Part 1:
 
-
 [youtube=http://www.youtube.com/watch?v=30FR9-Hf0AY]
-
 
 We made a notable mistake in part 1, claiming that $e^x \leq 1 + x + (e-2)x^2$ when $x \leq 1$. In fact, this does follow from the Taylor series expansion of $e$, but it's not as straightforward as I made it sound. In particular, note that $e^x = 1 + x + \frac{x^2}{2!} + \dots$, and so $e^1 = 2 + \sum_{k=2}^\infty \frac{1}{k!}$. Using $(e-2)$ in place of $\frac{1}{2}$ gives
 
-
 $\displaystyle 1 + x + \left ( \sum_{k=2}^{\infty} \frac{x^2}{k!} \right )$
-
 
 And since $0 < x \leq 1$, each term in the sum will decrease when replaced by $\frac{x^k}{k!}$, and we'll be left with exactly $e^x$. In other words, this is the tightest possible quadratic upper bound on $e^x$. Pretty neat! On to part 2:
 
-
 [youtube=http://www.youtube.com/watch?v=4ww_-spuVsA]
-
 
 As usual, here is [the entire canvas](http://jeremykun.files.wordpress.com/2013/11/exp3-canvas.png) made over the course of both videos.
 
-
 $\square$
-
 
 We can get a version of this theorem that is easier to analyze by picking a suitable choice of $\gamma$.
 
 **Corollary:** Assume that $G_{\textup{max}}(T)$ is bounded by $g$, and that Exp3 is run with
 
-
 $\displaystyle \gamma = \min \left ( 1, \sqrt{\frac{K \log K}{(e-1)g}} \right )$
-
 
 Then the weak regret of Exp3 is bounded by $2.63 \sqrt{g K \log K}$ for any reward vector $\mathbf{x}$.
 
 _Proof. _Simply plug $\gamma$ in the bound in the theorem above, and note that $2 \sqrt{e-1} < 2.63$.
 
-
 ## A Simple Test Against Coin Flips
-
 
 Now that we've analyzed the theoretical guarantees of the Exp3 algorithm, let's use our implementation above and see how it fares in practice. Our first test will use 10 coin flips (Bernoulli trials) for our actions, with the probabilities of winning (and the actual payoff vectors) defined as follows:
 
@@ -296,9 +234,7 @@ Here is a graph of a run of this experiment.
 
 Note how the Exp3 algorithm never stops increasing its regret. This is in part because of the adversarial model; even if Exp3 finds the absolutely perfect action to take, it just can't get over the fact that the world might try to screw it over. As long as the $\gamma$ parameter is greater than zero, Exp3 will explore bad options just in case they turn out to be good. The benefits of this is that if the model changes over time Exp3 will adapt, but the downside is that the pessimism inherent in this worldview generally results in lower payoffs than other algorithms.
 
-
 ## More Variations, and Future Plans
-
 
 Right now we have two contesting models of how the world works: is it stochastic and independent, like the UCB1 algorithm would optimize for? Or does it follow Exp3's world view that the payoffs are adversarial? [Next time](http://jeremykun.com/2013/12/09/bandits-and-stocks/) we'll run some real-world tests to see how each fares.
 

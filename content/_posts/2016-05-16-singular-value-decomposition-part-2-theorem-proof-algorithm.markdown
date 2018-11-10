@@ -37,59 +37,29 @@ Let's throw down some notation. I'll call $\textup{proj}_v: \mathbb{R}^n \to \ma
 
 The dot-product formula is useful for us because it allows us to compute the squared length of the projection by taking a dot product $|x \cdot v|^2$. So then a formula for the distance of $x$ from the line spanned by the unit vector $v$ is
 
-
 $\displaystyle (\textup{dist}_v(x))^2 = \left ( \sum_{i=1}^n x_i^2 \right ) - |x \cdot v|^2$
-
 
 This formula is just a restatement of the Pythagorean theorem for perpendicular vectors.
 
-
 $\displaystyle \sum_{i} x_i^2 = (\textup{proj}_v(x))^2 + (\textup{dist}_v(x))^2$
-
 
 In particular, the difference vector we originally called $z$ has squared length $\textup{dist}_v(x)^2$. The vector $y$, which is perpendicular to $z$ and is also the projection of $x$ onto $L$, it's squared length is $(\textup{proj}_v(x))^2$. And the Pythagorean theorem tells us that summing those two squared lengths gives you the squared length of the hypotenuse $x$.
 
-
 If we were trying to find the best approximating 1-dimensional subspace for a set of data points $X$, then we'd want to minimize the sum of the squared distances for every point $x \in X$. Namely, we want the $v$ that solves $\min_{|v|=1} \sum_{x \in X} (\textup{dist}_v(x))^2$.
-
-
-
 
 With some slight algebra we can make our life easier. The short version: minimizing the sum of squared distances is the same thing as _maximizing _the sum of squared lengths of the projections. The longer version: let's go back to a single point $x$ and the line spanned by $v$. The Pythagorean theorem told us that
 
-
-
-
 $\displaystyle \sum_{i} x_i^2 = (\textup{proj}_v(x))^2 + (\textup{dist}_v(x))^2$
-
-
-
 
 The squared length of $x$ is constant. It's an input to the algorithm and it doesn't change through a run of the algorithm. So we get the squared distance by subtracting $(\textup{proj}_v(x))^2$ from a constant number,
 
-
-
-
 $\displaystyle \sum_{i} x_i^2 - (\textup{proj}_v(x))^2 = (\textup{dist}_v(x))^2$
-
-
-
 
 which means if we want to _minimize_ the squared distance, we can instead _maximize_ the squared projection. Maximizing the subtracted thing minimizes the whole expression.
 
-
-
-
 It works the same way if you're summing over all the data points in $X$. In fact, we can say it much more compactly this way. If the rows of $A$ are your data points, then $Av$ contains as each entry the (signed) dot products $x_i \cdot v$. And the squared norm of this vector, $|Av|^2$, is exactly the sum of the squared lengths of the projections of the data onto the line spanned by $v$. The last thing is that maximizing a square is the same as maximizing its square root, so we can switch freely between saying our objective is to find the unit vector $v$ that maximizes $|Av|$ and that which maximizes $|Av|^2$.
 
-
-
-
 At this point you should be thinking,
-
-
-
-
 
 <blockquote>
 
@@ -99,154 +69,67 @@ At this point you should be thinking,
 > 
 </blockquote>
 
-
-
-
 Here's the fantastic thing. We can solve the 1-dimensional optimization problem efficiently (we'll do it later in this post), and (2) is answered by the following theorem.
-
-
-
 
 **The SVD Theorem:** Computing the best $k$-dimensional subspace reduces to $k$ applications of the one-dimensional problem.
 
-
 We will prove this after we introduce the terms "singular value" and "singular vector."
-
 
 ## Singular values and vectors
 
-
 As I just said, we can get the best $k$-dimensional approximating linear subspace by solving the one-dimensional maximization problem $k$ times. The _singular vectors _of $A$ are defined recursively as the solutions to these sub-problems. That is, I'll call $v_1$ the _first singular vector_ of $A$, and it is:
-
 
 $\displaystyle v_1 = \arg \max_{v, |v|=1} |Av|$
 
-
-
-
 And the corresponding _first singular value, _denoted $\sigma_1(A)$, is the maximal value of the optimization objective, i.e. $|Av_1|$. (I will use this term frequently, that $|Av|$ is the "objective" of the optimization problem.) Informally speaking, $(\sigma_1(A))^2$ represents how much of the data was captured by the first singular vector. Meaning, how close the vectors are to lying on the line spanned by $v_1$. Larger values imply the approximation is better. In fact, if all the data points lie on a line, then $(\sigma_1(A))^2$ is the sum of the squared norms of the rows of $A$.
-
-
-
 
 Now here is where we see the reduction from the $k$-dimensional case to the 1-dimensional case. To find the best 2-dimensional subspace, you first find the best one-dimensional subspace (spanned by $v_1$), and then find the best 1-dimensional subspace, but _only_ considering those subspaces that are the spans of unit vectors perpendicular to $v_1$. The notation for "vectors $v$ perpendicular to $v_1$" is $v \perp v_1$. Restating, the second singular vector $v _2$ is defined as
 
-
-
-
 $\displaystyle v_2 = \arg \max_{v \perp v_1, |v| = 1} |Av|$
-
-
-
 
 And the SVD theorem implies the subspace spanned by $\{ v_1, v_2 \}$ is the best 2-dimensional linear approximation to the data. Likewise $\sigma_2(A) = |Av_2|$ is the second singular value. Its squared magnitude tells us how much of the data that was not "captured" by $v_1$ is captured by $v_2$. Again, if the data lies in a 2-dimensional subspace, then the span of $\{ v_1, v_2 \}$ will be that subspace.
 
-
-
-
 We can continue this process. Recursively define $v_k$, the $k$-th singular vector, to be the vector which maximizes $|Av|$, when $v$ is considered only among the unit vectors which are perpendicular to $\textup{span} \{ v_1, \dots, v_{k-1} \}$. The corresponding singular value $\sigma_k(A)$ is the value of the optimization problem.
-
-
-
 
 As a side note, because of the way we defined the singular values as the objective values of "nested" optimization problems, the singular values are decreasing, $\sigma_1(A) \geq \sigma_2(A) \geq \dots \geq \sigma_n(A) \geq 0$. This is obvious: you only pick $v_2$ in the second optimization problem because you already picked $v_1$ which gave a bigger singular value, so $v_2$'s objective can't be bigger.
 
-
-
-
 If you keep doing this, one of two things happen. Either you reach $v_n$ and since the domain is $n$-dimensional there are no remaining vectors to choose from, the $v_i$ are an orthonormal basis of $\mathbb{R}^n$. This means that the data in $A$ contains a full-rank submatrix. The data does not lie in any smaller-dimensional subspace. This is what you'd expect from real data.
-
-
-
 
 Alternatively, you could get to a stage $v_k$ with $k < n$ and when you try to solve the optimization problem you find that every perpendicular $v$ has $Av = 0$. In this case, the data actually does lie in a $k$-dimensional subspace, and the first-through-$k$-th singular vectors you computed span this subspace.
 
-
-
-
 Let's do a quick sanity check: how do we know that the singular vectors $v_i$ form a basis? Well formally they only span a basis of the _[row space](https://en.wikipedia.org/wiki/Rank%E2%80%93nullity_theorem)_ of $A$, i.e. a basis of the subspace spanned by the data contained in the rows of $A$. But either way the point is that each $v_{i+1}$ spans a new dimension from the previous $v_1, \dots, v_i$ because we're choosing $v_{i+1}$ to be orthogonal to all the previous $v_i$. So the answer to our sanity check is "by construction."
-
-
-
 
 Back to the singular vectors, the discussion from the last post tells us intuitively that the data is probably never in a small subspace.  You never expect the process of finding singular vectors to stop before step $n$, and if it does you take a step back and ask if something deeper is going on. Instead, in real life you specify how much of the data you want to capture, and you keep computing singular vectors until you've passed the threshold. Alternatively, you specify the amount of computing resources you'd like to spend by fixing the number of singular vectors you'll compute ahead of time, and settle for however good the $k$-dimensional approximation is.
 
-
-
-
 Before we get into any code or solve the 1-dimensional optimization problem, let's prove the SVD theorem.
-
-
-
 
 _Proof of SVD theorem._
 
-
-
-
 Recall we're trying to prove that the first $k$ singular vectors provide a linear subspace $W$ which maximizes the squared-sum of the projections of the data onto $W$. For $k=1$ this is trivial, because we defined $v_1$ to be the solution to that optimization problem. The case of $k=2$ contains all the important features of the general inductive step. Let $W$ be _any_ best-approximating 2-dimensional linear subspace for the rows of $A$. We'll show that the subspace spanned by the two singular vectors $v_1, v_2$ is at least as good (and hence equally good).
-
-
-
 
 Let $w_1, w_2$ be any orthonormal basis for $W$ and let $|Aw_1|^2 + |Aw_2|^2$ be the quantity that we're trying to maximize (and which $W$ maximizes by assumption). Moreover, we can pick the basis vector $w_2$ to be perpendicular to $v_1$. To prove this we consider two cases: either $v_1$ is already perpendicular to $W$ in which case it's trivial, or else $v_1$ isn't perpendicular to $W$ and you can choose $w_1$ to be $\textup{proj}_W(v_1)$ and choose $w_2$ to be any unit vector perpendicular to $w_1$.
 
-
-
-
 Now since $v_1$ maximizes $|Av|$, we have $|Av_1|^2 \geq |Aw_1|^2$. Moreover, since $w_2$ is perpendicular to $v_1$, the way we chose $v_2$ also makes $|Av_2|^2 \geq |Aw_2|^2$. Hence the objective $|Av_1|^2 + |Av_2|^2 \geq |Aw_1|^2 + |Aw_2|^2$, as desired.
-
-
-
 
 For the general case of $k$, the inductive hypothesis tells us that the first $k$ terms of the objective for $k+1$ singular vectors is maximized, and we just have to pick any vector $w_{k+1}$ that is perpendicular to all $v_1, v_2, \dots, v_k$, and the rest of the proof is just like the 2-dimensional case.
 
-
-
-
 $\square$
-
-
-
 
 Now remember that in the last post we started with the definition of the SVD as a decomposition of a matrix $A = U\Sigma V^T$? And then we said that this is a certain kind of change of basis? Well the singular vectors $v_i$ together form the columns of the matrix $V$ (the rows of $V^T$), and the corresponding singular values $\sigma_i(A)$ are the diagonal entries of $\Sigma$. When $A$ is understood we'll abbreviate the singular value as $\sigma_i$.
 
-
-
-
 To reiterate with the thoughts from [last post](http://jeremykun.com/2016/04/18/singular-value-decomposition-part-1-perspectives-on-linear-algebra/), the process of applying $A$ is exactly recovered by the process of first projecting onto the (full-rank space of) singular vectors $v_1, \dots, v_k$, scaling each coordinate of that projection according to the corresponding singular values, and then applying this $U$ thing we haven't talked about yet.
-
-
-
 
 So let's determine what $U$ has to be. The way we picked $v_i$ to make $A$ diagonal gives us an immediate suggestion: use the $Av_i$ as the columns of $U$. Indeed, define $u_i = Av_i$, the images of the singular vectors under $A$. We can swiftly show the $u_i$ form a basis of the image of $A$. The reason is because if $v = \sum_i c_i v_i$ (using all $n$ of the singular vectors $v_i$), then by linearity $Av = \sum_{i} c_i Av_i = \sum_i c_i u_i$. It is also easy to see why the $u_i$ are orthogonal (prove it as an exercise). Let's further make sure the $u_i$ are unit vectors and redefine them as $u_i = \frac{1}{\sigma_i}Av_i$
 
-
-
-
 If you put these thoughts together, you can say exactly what $A$ does to any given vector $x$. Since the $v_i$ form an orthonormal basis, $x = \sum_i (x \cdot v_i) v_i$, and then applying $A$ gives
-
-
-
 
 $\displaystyle \begin{aligned}Ax &= A \left ( \sum_i (x \cdot v_i) v_i \right ) \\  &= \sum_i (x \cdot v_i) A_i v_i \\ &= \sum_i (x \cdot v_i) \sigma_i u_i \end{aligned}$
 
-
-
-
 If you've been closely reading this blog in the last few months, you'll recognize a very nice way to write the last line of the above equation. It's an [outer product](http://jeremykun.com/2016/03/28/tensorphobia-outer-product/). So depending on your favorite symbols, you'd write this as either $A = \sum_{i} \sigma_i u_i \otimes v_i$ or $A = \sum_i \sigma_i u_i v_i^T$. Or, if you like expressing things as matrix factorizations, as $A = U\Sigma V^T$. All three are describing the same object.
-
-
-
 
 Let's move on to some code.
 
-
-
-
-
 ## A black box example
-
 
 Before we implement SVD from scratch (an urge that commands me from the depths of my soul!), let's see a black-box example that uses existing tools. For this we'll use the [numpy](http://www.numpy.org/) library.
 
@@ -349,69 +232,31 @@ This makes the reconstruction less messy, since we can just multiply everything 
 
 What do the singular vectors and values tell us about the movie rating matrix? (Besides nothing, since it's a contrived example) You'll notice that the first singular vector $\sigma_1 > 15$ while the other two singular values are around $4$. This tells us that the first singular vector covers a large part of the structure of the matrix. I.e., a rank-1 matrix would be a pretty good approximation to the whole thing. As an exercise to the reader, write a program that evaluates this claim (how good is "good"?).
 
-
 ## The greedy optimization routine
-
-
-
 
 Now we're going to write SVD from scratch. We'll first implement the greedy algorithm for the 1-d optimization problem, and then we'll perform the inductive step to get a full algorithm. Then we'll run it on the CNN data set.
 
-
-
-
 The method we'll use to solve the 1-dimensional problem isn't necessarily industry strength (see [this document](http://www.math.iit.edu/~fass/477577_Chapter_12.pdf) for a hint of what industry strength looks like), but it is simple conceptually. It's called the_ power method_. Now that we have our decomposition of theorem, understanding how the power method works is quite easy.
-
-
-
 
 Let's work in the language of a matrix decomposition $A = U \Sigma V^T$, more for practice with that language than anything else (using outer products would give us the same result with slightly different computations). Then let's observe $A^T A$, wherein we'll use the fact that $U$ is orthonormal and so $U^TU$ is the identity matrix:
 
-
-
-
 $\displaystyle A^TA = (U \Sigma V^T)^T(U \Sigma V^T) = V \Sigma U^TU \Sigma V^T = V \Sigma^2 V^T$
-
-
-
 
 So we can completely eliminate $U$ from the discussion, and look at just $V \Sigma^2 V^T$. And what's nice about this matrix is that we can compute its eigenvectors, and eigenvectors turn out to be exactly the singular vectors. The corresponding eigenvalues are the squared singular values. This should be clear from the above derivation. If you apply $(V \Sigma^2 V^T)$ to any $v_i$, the only parts of the product that aren't zero are the ones involving $v_i$ with itself, and the scalar $\sigma_i^2$ factors in smoothly. It's dead simple to check.
 
-
-
-
 **Theorem:** Let $x$ be a random unit vector and let $B = A^TA = V \Sigma^2 V^T$. Then with high probability, $\lim_{s \to \infty} B^s x$ is in the span of the first singular vector $v_1$. If we normalize $B^s x$ to a unit vector at each $s$, then furthermore the limit is $v_1$.
-
-
-
 
 _Proof. _Start with a random unit vector $x$, and write it in terms of the singular vectors $x = \sum_i c_i v_i$. That means $Bx = \sum_i c_i \sigma_i^2 v_i$. If you recursively apply this logic, you get $B^s x = \sum_i c_i \sigma_i^{2s} v_i$. In particular, the dot product of $(B^s x)$ with any $v_j$ is $c_i \sigma_j^{2s}$.
 
-
-
-
 What this means is that so long as the first singular value $\sigma_1$ is sufficiently larger than the second one $\sigma_2$, and in turn all the other singular values, the part of $B^s x$  corresponding to $v_1$ will be much larger than the rest. Recall that if you expand a vector in terms of an orthonormal basis, in this case $B^s x$ expanded in the $v_i$, the coefficient of $B^s x$ on $v_j$ is _exactly the dot product_. So to say that $B^sx$ converges to being in the span of $v_1$ is the same as saying that the ratio of these coefficients, $|(B^s x \cdot v_1)| / |(B^s x \cdot v_j)| \to \infty$ for any $j$. In other words, the coefficient corresponding to the first singular vector dominates all of the others. And so if we normalize, the coefficient of $B^s x$ corresponding to $v_1$ tends to 1, while the rest tend to zero.
-
-
-
 
 Indeed, this ratio is just $(\sigma_1 / \sigma_j)^{2s}$ and the base of this exponential is bigger than 1.
 
-
-
-
 $\square$
-
-
-
 
 If you want to be a little more precise and find bounds on the number of iterations required to converge, you can. The worry is that your random starting vector is "too close" to one of the smaller singular vectors $v_j$, so that if the ratio of $\sigma_1 / \sigma_j$ is small, then the "pull" of $v_1$ won't outweigh the pull of $v_j$ fast enough. Choosing a random unit vector allows you to ensure with high probability that this doesn't happen. And conditioned on it not happening (or measuring "how far the event is from happening" precisely), you can compute a precise number of iterations required to converge. The last two pages of [these lecture notes](http://www.cs.yale.edu/homes/el327/datamining2013aFiles/07_singular_value_decomposition.pdf) have all the details.
 
-
-
-
 We won't compute a precise number of iterations. Instead we'll just compute until the angle between $B^{s+1}x$ and $B^s x$ is very small. Here's the algorithm
-
 
 {{< highlight python >}}
 import numpy as np
@@ -446,14 +291,9 @@ def svd_1d(A, epsilon=1e-10):
             return currentV
 {{< /highlight >}}
 
-
 We start with a random unit vector $x$, and then loop computing $x_{t+1} = Bx_t$, renormalizing at each step. The condition for stopping is that the magnitude of the dot product between $x_t$ and $x_{t+1}$ (since they're unit vectors, this is the cosine of the angle between them) is very close to 1.
 
-
-
-
 And using it on our movie ratings example:
-
 
 {{< highlight python >}}
 if __name__ == "__main__":
@@ -478,19 +318,11 @@ converged in 6 iterations!
 [-0.54184805 -0.67070993 -0.50650655]
 {{< /highlight >}}
 
-
 Note that the sign of the vector may be different from numpy's output because we start with a random vector to begin with.
-
-
-
 
 The recursive step, getting from $v_1$ to the entire SVD, is equally straightforward. Say you start with the matrix $A$ and you compute $v_1$. You can use $v_1$ to compute $u_1$ and $\sigma_1(A)$. Then you want to ensure you're ignoring all vectors in the span of $v_1$ for your next greedy optimization, and to do this you can simply subtract the rank 1 component of $A$ corresponding to $v_1$. I.e., set $A' = A - \sigma_1(A) u_1 v_1^T$. Then it's easy to see that $\sigma_1(A') = \sigma_2(A)$ and basically all the singular vectors shift indices by 1 when going from $A$ to $A'$. Then you repeat.
 
-
-
-
 If that's not clear enough, here's the code.
-
 
 {{< highlight python >}}
 def svd(A, epsilon=1e-10):
@@ -516,9 +348,7 @@ def svd(A, epsilon=1e-10):
     return singularValues, us.T, vs
 {{< /highlight >}}
 
-
 And we can run this on our movie rating matrix to get the following
-
 
 {{< highlight python >}}
 >>> theSVD = svd(movieRatings)
@@ -539,9 +369,7 @@ array([[ 0.54184805,  0.67071006,  0.50650638],
        [-0.37632934,  0.73246611, -0.56733554]])
 {{< /highlight >}}
 
-
 Checking this against our numpy output shows it's within a reasonable level of precision (considering the power method took on the order of ten iterations!)
-
 
 {{< highlight python >}}
 >>> np.round(np.abs(npSVD[0]) - np.abs(theSVD[1]), decimals=5)
@@ -563,9 +391,7 @@ array([ 0.,  0., -0.])
 
 So there we have it. We added an extra little bit to the svd function, an argument $k$ which stops computing the svd after it reaches rank $k$.
 
-
 ## CNN stories
-
 
 One interesting use of the SVD is in topic modeling. Topic modeling is the process of taking a bunch of documents (news stories, or emails, or movie scripts, whatever) and grouping them by topic, where the algorithm gets to choose what counts as a "topic." Topic modeling is just the name that natural language processing folks use instead of clustering.
 
@@ -700,9 +526,7 @@ One can also inspect the stories, though the clusters are harder to print out he
 
 Anyway, you can explore the data more at your leisure (and tinker with the parameters to improve it!).
 
-
 ## Issues with the power method
-
 
 Though I mentioned that the power method isn't an industry strength algorithm I didn't say why. Let's revisit that before we finish. The problem is that the convergence rate of even the 1-dimensional problem depends on the ratio of the first and second singular values, $\sigma_1 / \sigma_2$. If that ratio is very close to 1, then the convergence will take a long time and need many many matrix-vector multiplications.
 

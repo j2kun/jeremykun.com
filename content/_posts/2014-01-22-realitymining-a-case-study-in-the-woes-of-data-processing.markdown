@@ -27,9 +27,7 @@ In order to access the data yourself, you must [fill out a form](http://realityc
 
 Before we get started let me state my goals: to extract the person-to-person voice call data, actual proximity data (whether two subjects were connected to the same cell tower at the same time), and perceived friendship/proximity data. The [resulting program](https://github.com/j2kun/reality-mining) is free to use and modify, and is posted on [this blog's Github page](https://github.com/j2kun).
 
-
 ## Loading realitymining.mat into Python
-
 
 Once I found out that the Python [scipy library](http://scipy.org/) has a function to [load the Matlab data into Python](http://docs.scipy.org/doc/scipy/reference/generated/scipy.io.loadmat.html), I was hopeful that things would be nice and user friendly. Boy was I wrong.
 
@@ -85,9 +83,7 @@ Okay so 's' is an array of one element containing the array of actual data (I re
 
 Okay... what's a numpy.void? Searching Google for "What's a numpy.void" gives little, but combing through [Stackoverflow answers](http://stackoverflow.com/a/10645505/438830) gives the following:
 
-
 <blockquote>From what I understand, void is sort of like a Python list since it can hold objects of different data types, which makes sense since the columns in a structured array can be different data types.</blockquote>
-
 
 So basically, numpy arrays that aren't homogeneous are 'voids' and you can't tell any information about the values. Great. Well I suppose we could just try *printing* out the value, at the cost of potentially having to kill the process and restart.
 
@@ -113,9 +109,7 @@ dtype='&lt;U8'), array([[0]], dtype=uint8),
 
 So this one has data, but still we have the problem that we have no idea what the various pieces of data represent! We could guess and check, but come on we're in the 21st century.
 
-
 ## Hopelessness, and then Hope
-
 
 At this point I gave up on a Python approach. As far as I could tell, the data was in a completely unusable format. My only recourse was to spend two weeks obtaining a copy of Matlab from my institution, spend an hour installing it, and then try to learn enough Matlab to parse out the subset of data I wanted into a universal (plaintext) format, so I could then read it back into Python and analyze it.
 
@@ -151,9 +145,7 @@ def idDicts(subjects):
 
 Given a list of subjects (the valid ones), we create three dictionaries whose keys are the various identifiers, and whose values are the subject objects (and my own id). So we'll pass around these dictionaries in place of the subject array.
 
-
 ## Extracting Communication Events
-
 
 The important data here is the set of person-to-person phone calls made over the course of the study. But before we get there we need to inspect how the data is stored more closely. Before I knew about what follows, I was getting a lot of confusing index errors.
 
@@ -265,15 +257,11 @@ def processCallEvents(callEvents, hashNumDict):
 
 All I needed to do was filter them by time now (implement the `convertDateTime` function used above)...
 
-
 ## Converting datetimes from Matlab to Python
-
 
 Matlab timestamps are floats like
 
-
 <blockquote>834758.1231233</blockquote>
-
 
 The integer part of the float represents the number of days since Jan 1, 0AD. The fractional part represents a fraction of a day, down to seconds I believe. To convert from the matlab Format to the Python format, use
 
@@ -298,13 +286,9 @@ def filterByDate(dateRange, events):
 
 Phew! Glad I didn't have to go through that hassle on my own.
 
-
 ## Extracting Survey Data
 
-
 The dataset includes a survey about friendship and proximity among the participants. That means we have data on
-
-
 
 	  1. Who considers each other in the same "close group of friends."
 	  2. An estimate on how much time at work each person spends with each other person.
@@ -360,9 +344,7 @@ outLabProximity = network['outlab']
 
 The values in these matrices are accessed in exactly the same way, with the values being in the set {nan, 1.0, 2.0, 3.0, 4.0, 5.0}. These numbers correspond to various time ranges (the documentation is a bit awkward about this too, using "at least" in place of complete time ranges), but fine. It's no different from the friends matrix, so at least it's consistent.
 
-
 ## Cell Tower Data
-
 
 Having learned all of the gotchas I did, I processed the cell tower data with little fuss. The only bothersome bit was that they provide two "parallel" arrays, one called "locs" containing pairs of (date, cell tower id), and a second called "loc_ids" containing numbers corresponding to a "second" set of simplified cell tower ids. These records correspond to times when a user entered into a region covered by a specific tower, and so it gives very (coarse location) data. It's not the lat/long values promised by the website, and even though the ids for the cell towers are governed by a national standard, the lat/long values for the towers are not publicly or freely available in database form.
 
@@ -380,15 +362,11 @@ Again the datetimes are in matlab format, so the date conversion function above 
 
 The documentation is also unclear as to whether the (datestamp, tower id) pair represents the time when the user _started_ using that tower, or the time when the user _finished_ using that tower. As such, I must guess that it's the former at the risk of producing bad data (and hence bad research).
 
-
 ## Conclusions
-
 
 I love free data sets. I really do, and I appreciate all the work that researchers put into making and providing their data. But all the time I encounter the most horrible, terrible, no good, very bad data sets! RealityMining is only one small example, and it was actually nice because I _was_ able to figure things out eventually. There are other datasets that have frustrated me much more with inconsistencies and complete absence of documentation.
 
 Is it really that hard to make data useable? Here are the reasons why this was such an annoying and frustrating task:
-
-
 
 	  1. The data was stored in a proprietary format. Please please please release your data in plaintext files!
 	  2. The documentation contradicted the data it was documenting, and was altogether unclear. (One contradiction is too often. This was egregious.)

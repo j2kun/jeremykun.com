@@ -55,7 +55,6 @@ In the Python above, we make use of _generators_ to represent infinite sequence
           yield n
           n += 1
 
-
 What Python does with this function is translate it into a generator object "g" which works as follows: when something calls next(g), the function computes as usual until it reaches a yield statement; then it returns the yielded value, saves all of its internal state, and then returns control to the caller. The next time next(g) is called, this process repeats. A generator can be infinite or finite, and it terminates the iteration process when the function "falls off the end," returning None as a function which has no return statement would.
 
 We should note as well that Python knows how to handle generators with the usual "for ... in ..." language form. This makes it extremely handy, because programmers don't have to care whether they're using a list or an iterator; the syntax to work with them is identical.

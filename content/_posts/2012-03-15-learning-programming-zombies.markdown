@@ -19,9 +19,7 @@ tags:
 
 _By the end, the breadth and depth of our collective knowledge was far beyond what anyone could expect from any high school course in any subject. _
 
-
 ## Education Versus Exploration
-
 
 I'm a lab TA for an introductory Python programming course this semester, and it's been...depressing. I remember my early days of programming, when the possibilities seemed endless and adding new features to my programs was exciting and gratifying, and I brimmed with pride at every detail, and I boasted to my friends of the amazing things I did, and I felt powerful. The world was literally at my fingertips. I could give substance to any idea I cared to entertain and any facet of life I wanted to explore. I had developed an insatiable thirst for programming that has lasted to this very day.
 
@@ -38,9 +36,7 @@ The course has other problems with it. For instance, the professor teaches the s
 
 All of this has gotten me thinking pretty regularly about how I might teach my own course, if I might ever have one. This post will roughly be an outline of how my own computer science education began. I'll distill the most important aspects of it: the things that made me want to keep programming and the things that taught me deep ideas in natural contexts.
 
-
 ## My First Time was with Java
-
 
 My high school ([Campolindo High](http://www.acalanes.k12.ca.us/campolindo/), in Moraga, CA) was blessed with a computer science course. With my early exposure to computers (at 3 years old, by my parents' accounts), my love of video games, and my basic grasp of HTML, it seemed inevitable that I belonged in the class. In retrospect, it was perhaps the most beneficial course I ever took, followed closely by Honors/AP English, German, and public policy. Not only did it provide me with the aforementioned thirst for programming, but it planted a mathematical seed in my mind that would flourish years later like a giant bean stalk, which I'm still in the process of climbing today.
 
@@ -62,9 +58,7 @@ All of these instilled a sense of relaxation in the course. We weren't being tau
 
 As I did, most students who took a first year in the course stuck around for a second year. And that was when the amazing projects started to come.
 
-
 ## Zmob
-
 
 The second year in the computer science class was all games all the time. Moreover, we started by looking at real-time games, the kinds of side-scrolling platformers we loved to play ourselves (yeah, Super Mario Brothers and Donkey Kong Country). I tried my hand at one, but before long I was lost in figuring out how to make the collisions work. Making the levels and animating the character and making the screen scroll were all challenging but not beyond my reach.
 
@@ -100,17 +94,13 @@ After about a week of trying with no success, I finally went to my statistics te
 
 After a moment's thought, he pulled out a textbook and showed me a page on rotation matrices. To my seventeen-year-old eyes, the formula was as mysterious as an ancient rune:
 
-
 ![](http://upload.wikimedia.org/wikipedia/en/math/7/5/2/752fd6396a9c9d026f10eccb39ddca15.png)
-
-
 
 My particular code ended up looking like:
 
     
     x += frame*Math.cos(angle) + Math.sin(frame)*Math.sin(angle)
     y += frame*Math.sin(angle) + Math.sin(frame)*Math.cos(angle)
-
 
 When I ran the code, it worked so perfectly I shouted out loud. After my week of struggle and botched attempts to figure this out, this solution was elegant and beautiful and miraculous. After that, I turned to calculus to make jumping look more natural in my Fox side-scroller. I experimented with other matrix operations like shearing and stretching. By the end of that year, I had a better understanding of a "change of basis" (though I didn't know the words for it) than most of the students I took linear algebra with in college! It was just a different coordinate system for space; there were rotated coordinates, fat and stretchy coordinates, along with skinny and backward coordinates. I tried all sorts of things in search of fun gameplay.
 
@@ -125,9 +115,7 @@ One pretty important issue that came up was speed. Once I added images, I decide
 
 And I never learned the name of this technique until I got to a third-year college course in dynamic web programming when we discussed the Hibernate object-relational mapping for databases! Just like with linear algebra, my personalized problems resulted in me reinventing or rediscovering important concepts far earlier than I would have learned them otherwise. I was giving myself a deep understanding of the concepts and what sorts of problems they could solve.  This is distinctly different from the sort of studying that goes on in college: students memorize the name of a concept and what it means, but only the top students get a feel for why it's important and when to use it.
 
-
 ## An Honest Evaluation in Retrospect
-
 
 I'll admit it, I was more dedicated to my work than the average kid. A small portion of the class was only engaged in the silly stuff. Some students didn't have a goal in mind, or they did but didn't pursue the issue with my kind of vigor. We didn't have access to many good examples outside of our own web browsing and the mediocre quality of the books Mr. Maters had on hand. The choice of Java was perhaps a steep learning curve for some, but I think in the end it did more good than harm.
 
@@ -135,27 +123,19 @@ But on the other hand, those of us that did work well got to explore, and absorb
 
 And worst of all, it absolutely breaks my heart_ _ to hear my students say "I didn't think programming would be like _this_. I'm just not cut out for it." The best response I can muster is "Don't judge programming by this class. It can be fun, truly."
 
-
 ## What They Need
-
 
 It's become woefully clear to me that to keep students interested in programming, they need a couple of things:
 
-
 **1. Instant gratification**
-
 
 My students spend way too much time confused about their code. They need have some way to make a change and see the effects immediately. They need teaching tools designed by [Bret Victor](http://www.youtube.com/watch?v=PUv66718DII) (skip ahead to 10:30 in the video to see what I mean, but the whole thing is worth watching). And they need to work on visual programs. Drawing programs and games and music. Programs whose effects they can experience in a non-intellectual way, as opposed to checking whether they're computing polynomial derivatives correctly.
 
-
 **2. Projects that are relevant, or at least fun.**
-
 
 Just like when I was learning, student need to be able to explore. Let them work on their own projects, and have enough knowledge as a teacher to instruct them when they get stuck (or better yet, brainstorm _with_ them). If everyone having a customized project is out of the question, at least have them work on something relevant. The last two projects in the class I teach were regrettably based on file input/output and matrix sums. Why not let them work on a video game, or a search engine (it might sound complicated, but that's the introductory course over at [udacity](http://www.udacity.com/overview/Course/cs101)), or some drawing/animation, a chat client, solve Sudoku puzzles, or even show them how to get data from Facebook with the Graph API. All of these things can be sufficiently abstracted so that a student at any level can handle it, and each requires the ability to use certain constructs (basic networking for a chat client, matrix work for a sudoku, file I/O in parts of a search engine, etc.). Despite the wealth of interesting things they could have students do, it seems to me that the teachers just don't want to come up with interesting projects, so they just have their students compute matrix sums over and over and over again.
 
-
 **3. The ability to read others' code.**
-
 
 This is an integral part of learning. Not only should students be able to write code, but they must be able to read foreign code. They have to be able to look at examples and extract the important parts to use in their own original work. They have to be able to collaborate with their classmates, work on a shared project, and brainstorm new ideas while discussing bugs. They have to be able to _criticize_ code as they might criticize a movie or a restaurant. Students should be very opinionated about software, and they should strive to find the right way to do things, openly lampooning pieces of code that are bloated or disorganized (okay, maybe not too harshly, but they should be mentally aware).
 

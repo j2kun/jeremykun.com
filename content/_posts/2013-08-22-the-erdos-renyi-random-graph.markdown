@@ -22,9 +22,7 @@ During the 1950's the famous mathematician Paul Erdős and Alfred Rényi put fo
 
 In this post we'll explore basic facts about random graphs, slowly detail a proof on their applications to graph theory, and explore their more interesting properties computationally (a prelude to proofs about their structure). We assume the reader is familiar with the definition of a graph, which we've [written about at length for non-mathematical audiences](http://jeremykun.com/2011/06/26/teaching-mathematics-graph-theory/), and has some familiarity with [undergraduate-level probability](http://jeremykun.com/2013/01/04/probability-theory-a-primer/) and combinatorics for the more mathematical sections of the post. We'll do our best to remind the reader of these prerequisites as we go, and we welcome any clarification questions in the comment section.
 
-
 ## The Erdős-Rényi Model
-
 
 The definition of a random graph is simple enough that we need not defer it to the technical section of the article.
 
@@ -32,9 +30,7 @@ The definition of a random graph is simple enough that we need not defer it to t
 
 Of course, there is no single random graph. What we've described here is a process for constructing a graph. We create a set of $n$ vertices, and for each possible pair of vertices we flip a coin (often a biased coin) to determine if we should add an edge connecting them. Indeed, _every_ graph can be made by this process if one is sufficiently lucky (or unlucky), but it's very unlikely that we will have no edges at all if $p$ is large enough. So $G(n,p)$ is really a probability distribution over the set of all possible graphs on $n$ vertices. We commit a horrendous abuse of notation by saying $G$ or $G(n,p)$ _is_ a random graph instead of saying that $G$ is sampled from the distribution. The reader will get used to it in time.
 
-
 ## Why Do We Care?
-
 
 Random graphs of all sorts (not just Erdős's model) find applications in two very different worlds. The first is pure combinatorics, and the second is in the analysis of networks of all kinds.
 
@@ -50,9 +46,7 @@ For applied purposes, the Erdős-Rényi random graph model is in the second camp
 
 So lets go ahead and look at a technical proof using random graphs from combinatorics, and then write some programs to generate random graphs.
 
-
 ## Girth and Chromatic Number, and Counting Triangles
-
 
 As a fair warning, this proof has a lot of moving parts. Skip to the next section if you're eager to see some programs.
 
@@ -68,96 +62,43 @@ So let's start with cycles. If we're given a desired girth of $g$, the expected 
 
 So the probability that we get a cycle of $j$ vertices is
 
-
 $\displaystyle \binom{n}{j}(j-1)!p^j$
-
-
-
 
 And by the reasoning above we can bound this by $n^jp^j$. Summing over all numbers $j = 3, \dots, g$ (we are secretly using the [union bound](http://en.wikipedia.org/wiki/Boole's_inequality)), we bound the expected number of cycles of length $\leq g$ from above:
 
-
-
-
 $\displaystyle \sum_{j=3}^g n^j p^j < \sum_{j=0}^g n^j p^j = \frac{(np)^{g+1}}{np - 1}$
-
-
-
 
 Since we want relatively few cycles to occur, we want it to be the case that the last quantity, $(np)^{j+1}/(np-1)$, goes to zero as $n$ goes to infinity. One trick is to pick $p$ depending on $n$. If $p = n^l$, our upper bound becomes $n^{(l+1)(g+1)} / (n^{1+l} - 1)$, and if we want the quantity to tend to zero it must be that $(l+1)(g+1) < 1$. Solving this we get that $-1 < l < \frac{1}{g+1} - 1 < 0$. Pick such an $l$ (it doesn't matter which), and keep this in mind: for our choice of $p$, the expected number of cycles goes to zero as $n$ tends to infinity.
 
-
-
-
 On the other hand, we want to make sure that such a graph has high chromatic number. To do this we'll look at a related property: the size of the largest _independent set_. An independent set of a graph $G = (V,E)$ is a set of vertices $S \subset V$ so that there are no edges in $E$ between vertices of $S$. We call $\alpha(G)$ the size of the largest independent set. The values $\alpha(G)$ and $\chi(G)$ are related, because any time you have an independent set you can color all the vertices with a single color. In particular, this proves the inequality $\chi(G) \alpha(G) \geq n$, the number of vertices of $G$, or equivalently $\chi(G) \geq n / \alpha(G)$. So if we want to ensure $\chi(G)$ is large, it suffices to show $\alpha(G)$ is small (rigorously, $\alpha(G) \leq n / k$ implies $\chi(G) \geq k$).
-
-
-
 
 The expected number of independent sets (again using the union bound) is at most the product of the number of possible independent sets and the probability of one of these having no edges. We let $r$ be arbitrary and look at independent sets of size $r$ Since there are $\binom{n}{r}$ sets and each has a probability $(1-p)^{\binom{r}{2}}$ of being independent, we get the probability that there is an independent set of size $r$ is bounded by
 
-
-
-
 $\displaystyle \textup{P}(\alpha(G) \geq r) \leq \binom{n}{r}(1-p)^{\binom{r}{2}}$
-
-
-
 
 We use the fact that $1-x < e^{-x}$ for all $x$ to translate the $(1-p)$ part. Combining this with the usual $\binom{n}{r} \leq n^r$ we get the probability of having an independent set of size $r$ at most
 
-
-
-
 $\displaystyle \textup{P}(\alpha(G) \geq r) \leq \displaystyle n^re^{-pr(r-1)/2}$
-
-
-
 
 Now again we want to pick $r$ so that this quantity goes to zero asymptotically, and it's not hard to see that $r = \frac{3}{p}\log(n)$ is good enough. With a little arithmetic we get the probability is at most $n^{(1-a)/2}$, where $a > 1$.
 
-
-
-
 So now we have two statements: the expected number of short cycles goes to zero, and the probability that there is an independent set of size at least $r$ goes to zero. If we pick a large enough $n$, then the expected number of short cycles is less than $n/5$, and using [Markov's inequality](http://jeremykun.com/2013/04/15/probabilistic-bounds-a-primer/) we see that the probability that there are more than $n/2$ cycles of length at most $g$ is strictly less than 1/2. At the same time, if we pick a large enough $n$ then $\alpha(G) \geq r$ with probability strictly less than 1/2. Combining these two (once more with the union bound), we get
-
-
-
 
 $\textup{P}(\textup{at least } n/2 \textup{ cycles of length } \leq g \textup{ and } \alpha(G) \geq r) < 1$
 
-
-
-
 Now we can conclude that for all sufficiently large $n$ there has to be a graph on at least $n$ vertices which has _neither_ of these two properties! Pick one and call it $G$. Now $G$ still has cycles of length $\leq g$, but we can fix that by removing a vertex from each short cycle (it doesn't matter which). Call this new graph $G'$. How does this operation affect independent sets, i.e. what is $\alpha(G')$? Well removing vertices can only decrease the size of the largest independent set. So by our earlier inequality, and calling $n'$ the number of vertices of $G'$, we can make a statement about the chromatic number:
-
-
-
 
 $\displaystyle \chi(G') \geq \frac{n'}{\alpha(G')} \geq \frac{n/2}{\log(n) 3/p} = \frac{n/2}{3n^l \log(n)} = \frac{n^{1-l}}{6 \log(n)}$
 
-
-
-
 Since $-1 < l < 0$ the numerator grows asymptotically faster than the denominator, and so for sufficiently large $n$ the chromatic number will be larger than any $k$ we wish. Hence we have found a graph with girth at least $g$ and chromatic number at least $k$.
-
-
-
 
 $\square$
 
-
-
-
-
 ## Connected Components
-
 
 The statistical properties of a random graph are often quite easy to reason about. For instance, the degree of each vertex in $G(n,p)$ is $np$ in expectation. Local properties like this are easy, but global properties are a priori very mysterious. One natural question we can ask in this vein is: when is $G(n,p)$ connected? We would very much expect the answer to depend on how $p$ changes in relation to $n$. For instance, $p$ might look like $p(n) = 1/n^2$ or $\log(n) / n$ or something similar. We could ask the following question:
 
-
 As $n$ tends to infinity, what limiting proportion of random graphs $G(n,p)$ are connected?
-
 
 Certainly for some $p(n)$ which are egregiously small (for example, $p(n) = 0$), the answer will be that no graphs are connected. On the other extreme, if $p(n) = 1$ then all graphs will be connected (and complete graphs, at that!). So our goal is to study the transition phase between when the graphs are disconnected and when they are connected. A priori this boundary could be a gradual slope, where the proportion grows from zero to one, or it could be a sharp jump. Next time, we'll formally state and prove the truth, but for now let's see if we can figure out which answer to expect by writing an exploratory program.
 
@@ -223,51 +164,37 @@ def graphLargestComponentSize(n, theRange):
 
 Running this code and plotting it for $p$ varying from zero to 0.5 gives the following graph.
 
-
 [![zoomedout-50-1000](http://jeremykun.files.wordpress.com/2013/08/zoomedout-50-1000.png)
 ](http://jeremykun.files.wordpress.com/2013/08/zoomedout-50-1000.png)
 
-
 The blue line is the size of the largest component, and the red line gives a moving average estimate of the data.  As we can see, there is a very sharp jump peaking at $p=0.1$ at which point the whole graph is connected. It would appear there is a relatively quick "phase transition" happening here. Let's zoom in closer on the interesting part.
-
 
 [![zoomedin-50-1000](http://jeremykun.files.wordpress.com/2013/08/zoomedin-50-1000.png)
 ](http://jeremykun.files.wordpress.com/2013/08/zoomedin-50-1000.png)
 
-
 It looks like the transition begins around 0.02, and finishes at around 0.1. Interesting... Let's change the parameters a bit, and increase the size of the graph. Here's the same chart (in the same range of $p$ values) for a graph with a hundred vertices.
-
 
 [![zoomedin-100-1000](http://jeremykun.files.wordpress.com/2013/08/zoomedin-100-1000.png)
 ](http://jeremykun.files.wordpress.com/2013/08/zoomedin-100-1000.png)
 
-
 Now the phase transition appears to have shifted to about $(0.01, 0.05)$, which is about multiplying the endpoints of the phase transition interval above by 1/2. The plot thickens... Once more, let's move up to a graph on 500 vertices.
-
 
 [![zoomedin-5000-1000](http://jeremykun.files.wordpress.com/2013/08/zoomedin-5000-1000.png)
 ](http://jeremykun.files.wordpress.com/2013/08/zoomedin-5000-1000.png)
 
-
 Again it's too hard to see, so let's zoom in.
-
 
 [![zoomedin-500-1000](http://jeremykun.files.wordpress.com/2013/08/zoomedin-500-1000.png)
 ](http://jeremykun.files.wordpress.com/2013/08/zoomedin-500-1000.png)
 
-
 This one looks like the transition starts at 0.002 and ends at 0.01. This is a 5-fold decrease from the previous one, and we increased the number of vertices by 5. Could this be a pattern? Here's a conjecture to formalize it:
-
 
 **Conjecture:** The random graph $G(n,p)$ enters a phase transition at $p=1/n$ and becomes connected almost surely at $p=5/n$.
 
-
 This is not quite rigorous enough to be a true conjecture, but it sums up our intuition that we've learned so far. Just to back this up even further, here's an animation showing the progression of the phase transition as $n = 20 \dots 500$ in steps of twenty. Note that the $p$ range is changing to maintain our conjectured window.
-
 
 [![phase-transition-n-grows](http://jeremykun.files.wordpress.com/2013/08/phase-transition-n-grows.gif)
 ](http://jeremykun.files.wordpress.com/2013/08/phase-transition-n-grows.gif)
-
 
 Looks pretty good. Next time we'll see some formal mathematics validating our intuition (albeit reformulated in a nicer way), and we'll continue to investigate other random graph models.
 

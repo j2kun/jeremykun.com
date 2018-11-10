@@ -22,8 +22,6 @@ tags:
 
 There are two basic problems in information theory that are very easy to explain. Two people, Alice and Bob, want to communicate over a digital channel over some long period of time, and they know the probability that certain messages will be sent ahead of time. For example, English language sentences are more likely than gibberish, and "Hi" is much more likely than "asphyxiation." The problems are:
 
-
-
 	  1. Say communication is very expensive. Then the problem is to come up with an encoding scheme for the messages which minimizes the expected length of an encoded message and guarantees the ability to unambiguously decode a message. This is called the _noiseless coding problem._
 	  2. Say communication is not expensive, but error prone. In particular, each bit $i$ of your message is erroneously flipped with some known probably $p$, and all the errors are independent. Then the question is, how can one encode their messages to as to guarantee (with high probability) the ability to decode any sent message? This is called the _noisy coding problem._
 
@@ -36,24 +34,15 @@ One amazing thing about these two problems is that they were posed and solved [i
 [caption id="" align="aligncenter" width="216"]![](http://upload.wikimedia.org/wikipedia/en/2/2f/Claude_Elwood_Shannon_%281916-2001%29.jpg)
 Claude Shannon. Image credit: [Wikipedia](http://en.wikipedia.org/wiki/Claude_Shannon)[/caption]
 
-
 ## Entropy and noiseless encoding
-
 
 Before we can state Shannon's theorems we have to define entropy.
 
 **Definition:** Suppose $D$ is a distribution on a finite set $X$, and I'll use $D(x)$ to denote the probability of drawing $x$ from $D$. The _entropy _of $D$, denoted $H(D)$ is defined as
 
-
 $H(D) = \sum_{x \in X} D(x) \log \frac{1}{D(x)}$
 
-
-
-
 It is strange to think about this sum in abstract, so let's suppose $D$ is a biased coin flip with bias $0 \leq p \leq 1$ of landing heads. Then we can plot the entropy as follows
-
-
-
 
 [caption id="attachment_5598" align="aligncenter" width="300"][![Image source: Wikipedia](https://jeremykun.files.wordpress.com/2015/01/screen-shot-2015-02-15-at-6-21-25-pm.png?w=300)
 ](https://jeremykun.files.wordpress.com/2015/01/screen-shot-2015-02-15-at-6-21-25-pm.png) Image source: [Wikipedia](http://commons.wikimedia.org/wiki/File:Binary_entropy_plot.svg)[/caption]
@@ -66,8 +55,6 @@ Shannon's famous theorem shows that the entropy of the distribution is actually
 
 **Theorem (Noiseless Coding Theorem) [Shannon 1948]: **For every finite set $X$ and distribution $D$ over $X$, there are encoding and decoding functions $\textup{Enc}: X \to \{0,1 \}^*, \textup{Dec}: \{ 0,1 \}^* \to X$ such that
 
-
-
 	  1. The encoding/decoding actually works, i.e. $\textup{Dec}(\textup{Enc}(x)) = x$ for all $x$.
 	  2. The expected length of an encoded message is between $H(D)$ and $H(D) + 1$.
 
@@ -77,9 +64,7 @@ Item 2 and the last sentence are the magical parts. In other words, if you kno
 
 As the title of this post says, we aren't going to give a proof here. [Wikipedia has a proof](http://en.wikipedia.org/wiki/Shannon%27s_source_coding_theorem) if you're really interested in the details.
 
-
 ## Noisy Coding
-
 
 The noisy coding problem is more interesting because in a certain sense (that was not solved by Shannon) it is still being studied today in the field of coding theory. The interpretation of the noisy coding problem is that you want to be able to recover from white noise errors introduced during transmission. The concept is called _error correction_. To restate what we said earlier, we want to recover from error with probability asymptotically close to 1, where the probability is over the errors.
 
@@ -98,8 +83,6 @@ Indeed, two years later Richard Hamming spawned the theory of _error correcting
 We'll cover Hamming's basic codes next time, and then move on to Reed-Solomon codes and others. Until then!
 
 Posts in this series:
-
-
 
 	  * [A Proofless Introduction to Coding Theory](https://jeremykun.com/2015/02/16/a-proofless-introduction-to-information-theory/)
 	  * [Hamming's Code](https://jeremykun.com/2015/03/02/hammings-code/)

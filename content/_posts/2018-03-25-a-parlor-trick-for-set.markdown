@@ -50,9 +50,7 @@ Source: "[The Joy of Set](https://www.setgame.com/sites/default/files/teachersco
 
 Then using the enumeration, a set might be given by
 
-
 $\displaystyle \{ (1, 1, 1, 1), (1, 2, 0, 1), (1, 0, 2, 1) \}$
-
 
 The crucial feature for us is that the vector-sum (using the modular field arithmetic on each entry) of the cards in a valid set is the zero vector $(0, 0, 0, 0)$. This is because $1+1+1 = 0, 2+2+2 = 0,$ and $1+2+3=0$ are all true mod 3.
 
@@ -60,9 +58,7 @@ _Proof of Theorem._ Consider the vector-valued invariant $S_t$ equal to the sum
 
 At the end of the game, the invariant still holds even if there are no valid sets left to claim. Let $x$ be the vector corresponding to the last un-dealt card, and $c_1, \dots, c_n$ be the remaining visible cards. Then $x + \sum_{i=1}^n c_i = (0,0,0,0)$, meaning $x = -\sum_{i=1}^n c_i$.
 
-
 $\square$
-
 
 I would provide an example, but I want to encourage everyone to play a game of SET and try it out live!
 

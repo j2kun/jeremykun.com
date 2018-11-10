@@ -14,7 +14,6 @@ categories:
 
 ![](http://www.cut-the-knot.org/proofs/threecircles.gif)
 
-
 We notice that the three centers of dilation are collinear. Show they are always collinear for any three non-intersecting circles of distinct radii.
 
 **Solution**: We augment any such layout of three circles with a three-dimensional construction: atop each circle place a cone with height equal to its radius. For any two circles, there is a line containing the apexes of their corresponding cones. We call this the "apex-line" of the two base circles. Clearly, the apex-line of two circles intersects their center of dilation, because the center of dilation of the two circles is also the center of dilation of the two cones.

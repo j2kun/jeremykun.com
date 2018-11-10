@@ -37,9 +37,7 @@ In this post we will derive one possible version of the clustering problem known
 
 And as usual, [all of the code](https://github.com/j2kun/k-means) used in this post is freely available on [this blog's Github page](https://github.com/j2kun/).
 
-
 ## Partitions and Squared Deviations
-
 
 The process of clustering is really a process of choosing a good partition of the data. Let's call our data set $S$, and formalize it as a list of points in space. To be completely transparent and mathematical, we let $S$ be a finite subset of a metric space $(X,d)$, where $d$ is our distance metric.
 
@@ -51,74 +49,33 @@ There are many different kinds of clustering problems, but every clustering prob
 
 In order to properly define the clustering problem, we need to specify the desired features of a cluster, or a desired feature of the set of all clusters combined. Intuitively, we think of a cluster as a bunch of points which are all close to each other. We can measure this explicitly as follows. Let $A$ be a fixed subset of the partition we're interested in. Then we might want to optimize the sum of all of the distances of pairs of points within $A$ to be a measure of it's "clusterity." In symbols, this would be
 
-
 $\displaystyle \sum_{x \neq y \in A} d(x, y)$
-
-
-
 
 If this quantity is small, then it says that all of the points in the cluster $A$ are close to each other, and $A$ is a good cluster. Of course, we want all clusters to be "good" simultaneously, so we'd want to minimize the sum of these sums over all subsets in the partition.
 
-
-
-
 Note that if there are $n$ points in $A$, then the above sum involves $\choose{n}{2} \sim n^2$ distance calculations, and so this could get quite inefficient with large data sets. One of the many alternatives is to pick a "center" for each of the clusters, and try to minimize the sum of the distances of each point in a cluster from its center. Using the same notation as above, this would be
-
-
-
 
 $\displaystyle \sum_{x \in A} d(x, c)$
 
-
-
-
 where $c$ denotes the center of the cluster $A$. This only involves $n$ distance calculations, and is perhaps a better measure of "clusterity." Specifically, if we use the first option and one point in the cluster is far away from the others, we essentially record that single piece of information $n - 1$ times, whereas in the second we only record it once.
-
-
-
 
 The method we will use to determine the center can be very general. We could use one of [a variety of measures of center](http://en.wikipedia.org/wiki/Mean#Examples_of_means), like the arithmetic mean, or we could try to force one of the points in $A$ to be considered the "center." Fortunately, the arithmetic mean has the property that it minimizes the above sum for all possible choices of $c$. So we'll stick with that for now.
 
-
-
-
 And so the clustering problem is formalized.
-
-
-
 
 **Definition:** Let $(X,d)$ be a metric space with metric $d$, and let $S \subset (X,d)$ be a finite subset. The _centroid __clustering_ problem is the problem of finding for any positive integer $k$ a partition $\left \{ A_1 ,\dots A_k \right \}$ of $S$ so that the following quantity is minimized:
 
-
-
-
 $\displaystyle \sum_{i=1}^k\sum_{x \in A_i} d(x, c(A_i))$
-
-
-
 
 where $c(A_i)$ denotes the center of a cluster, defined as the arithmetic mean of the points in $A_i$:
 
-
-
-
 $\displaystyle c(A) = \frac{1}{|A|} \sum_{x \in A} x$
-
-
-
 
 Before we continue, we have a confession to make: the centroid clustering problem is prohibitively difficult. In particular, it falls into a class of problems known as [NP-hard problems](http://jeremykun.com/2012/02/23/p-vs-np-a-primer-and-a-proof-written-in-racket/). For the working programmer, NP-hard means that there is unlikely to be an exact solution to the problem which is better than trying all possible partitions.
 
-
-
-
 We'll touch more on this after we see some code, but the salient fact is that a [heuristic](http://en.wikipedia.org/wiki/Heuristic_(computer_science)) algorithm is our best bet. That is, all of this preparation with partitions and squared deviations really won't come into the algorithm design at all. Formalizing this particular problem in terms of sets and a function we want to optimize only allows us to rigorously prove it is difficult to solve exactly. And so, of course, we will develop a naive and intuitive heuristic algorithm to substitute for an exact solution, observing its quality in practice.
 
-
-
-
 Lloyd's Algorithm
-
 
 The most common heuristic for the centroid clustering problem is Lloyd's algorithm, more commonly known as the k-means clustering algorithm. It was named after its inventor Stuart Lloyd, a University of Chicago graduate and member of the Manhattan project who designed the algorithm in 1957 during his time at Bell Labs.
 
@@ -131,7 +88,6 @@ Heuristics tend to be on the simpler side, and Lloyd's algorithm is no exception
           each subset B[i] is given a center c[i] computed from A
           x is assigned to the subset B[i] whose c[i] is closest
        stop if B is equal to the old partition A, else set A = B
-
 
 Intuitively, we imagine the centers of the partitions being pulled toward the center of mass of the points in its currently assigned cluster, and then the points deciding selectively who to pull towards them. (Indeed, precisely because of this the algorithm may not always give sensible results, but more on that later.)
 
@@ -150,7 +106,6 @@ Perhaps we should break away from traditional pseudocode illegibility and rewrit
     compute a fixed point by recursively applying 
     updatePartition to any initial partition.
 
-
 Of course, the difference between these pseudocode snippets is just the difference between functional and imperative programming. Neither is superior, but the perspective of both is valuable in its own right.
 
 And so we might as well implement Lloyd's algorithm in two such languages! The first, weighing in at a whopping four lines, is our Mathematica implementation:
@@ -167,10 +122,8 @@ While it's a little bit messy (as nesting 5 function calls and currying by hand 
 
 Indeed, this is as close as it gets to the "functional" pseudocode we had above. And applying it to some synthetic data (three randomly-sampled Gaussian clusters that are relatively far apart) gives a good clustering in a mere two iterations:
 
-
 [![k-means-example](http://jeremykun.files.wordpress.com/2013/02/k-means-example.png)
 ](http://jeremykun.files.wordpress.com/2013/02/k-means-example.png)
-
 
 Indeed, we rarely see a large number of iterations, and we leave it as an exercise to the reader to test Lloyd's algorithm on random noise to see just how bad it can get (remember, [all of the code](https://github.com/j2kun/k-means) used in this post is available on [this blog's Github page](https://github.com/j2kun/)). One will likely see convergence on the order of tens of iterations. On the other hand, [there are pathologically complicated sets of points](http://cseweb.ucsd.edu/users/avattani/papers/kmeans-journal.pdf) (even in the plane) for which Lloyd's algorithm takes _exponentially long_ to converge to a fixed point. And even then, the solution is never guaranteed to be optimal. Indeed, having the possibility for terrible run time and a lack of convergence is one of the common features of heuristic algorithms; it is the trade-off we must make to overcome the infeasibility of NP-hard problems.
 
@@ -191,9 +144,7 @@ def kMeans(points, k, initialMeans, d=euclideanDistance):
 
 We added in the boilerplate functions for euclideanDistance, partition, and mean appropriately, and the reader is welcome to browse the source code for those.
 
-
 ## Birth and Death Rates Clustering
-
 
 To test our algorithm, let's apply it to a small data set of real-world data. This data will consist of one data point for each country consisting of two features: birth rate and death rate, measured in annual number of births/deaths per 1,000 people in the population. Since the population is constantly changing, it is measured at some time in the middle of the year to act as a reasonable estimate to the median of all population values throughout the year.
 
@@ -215,15 +166,12 @@ Note how some of the points which we would expect to be in the "left" cluster ar
 
 Compensating for this is quite simple: we just need to [standardize the data](http://en.wikipedia.org/wiki/Standard_score#Standardizing_in_mathematical_statistics). That is, we need to replace each data point with its deviation from the mean (with respect to each coordinate) using the usual formula:
 
-
 $\displaystyle z = \frac{x - \mu}{\sigma}$
-
 
 where for a random variable $X$, its (sample) expected value is $\mu$ and its (sample) standard deviation is $\sigma$. Doing this in Mathematica is quite easy:
 
     
     Transpose[Map[Standardize, Transpose[L]]]
-
 
 where L is a list containing our data. Re-running Lloyd's algorithm on the standardized data gives a much better picture:
 
@@ -232,9 +180,7 @@ where L is a list containing our data. Re-running Lloyd's algorithm on the stand
 
 Now the boundary separating one cluster from the other is in line with what our intuition dictates it should be.
 
-
 ## Heuristics... The Air Tastes Bitter
-
 
 We should note at this point that we really haven't solved the centroid clustering problem yet. There is one glaring omission: the choice of $k$. This question is central to the problem of finding a good partition; a bad choice can yield bunk insights at best. Below we've calculated Lloyd's algorithm for varying values of $k$ again on the birth-rate data set.
 
@@ -247,26 +193,14 @@ And as we've already said, even if the correct choice of $k$ is known, there is 
 
 Here is an example with four clusters, where each frame is a step, and the algorithm progresses from left to right (click to enlarge):
 
-
 [![](http://upload.wikimedia.org/wikipedia/commons/7/7c/K-means_convergence_to_a_local_minimum.png)
 ](http://upload.wikimedia.org/wikipedia/commons/7/7c/K-means_convergence_to_a_local_minimum.png)One way to alleviate the issues of local minima is the same here as in our other posts: simply start the algorithm over again from a different randomly chosen starting point. That is, as in our implementations above, our "initial means" are chosen uniformly at random from among the data set points. Alternatively, one may randomly partition the data (without respect to any center; each data point is assigned to one of the $k$ clusters with probability $1/k$). We encourage the reader to try both starting conditions as an exercise, and implement the repeated algorithm to return that output which minimizes the objective function (as detailed in the "Partitions and Squared Deviations" section).
 
-
-
-
 And even if the algorithm _will_ converge to a global minimum, it might not be the case that it does so efficiently. As we already mentioned, solving the problem of centroid clustering (even for a fixed $k$) is NP-hard. And so (assuming $\textup{P} \neq \textup{NP}$) any algorithm which converges to a global minimum will take exponentially long on some pathological inputs. The interested reader will see this exponentially slow convergence even in the [case of k=2](http://charlotte.ucsd.edu/~dasgupta/papers/kmeans.pdf) for points in the plane (that is as simple as it gets).
-
-
-
 
 These kinds of reasons make Lloyd's algorithm and the centroid clustering problem a bit of a poster child of machine learning. In theory it's difficult to solve exactly, but it has an efficient and widely employed heuristic used in practice which is often good enough. Moreover, since the exact solution is more or less hopeless, much of the focus has shifted to finding randomized algorithms which on average give solutions that are within some constant-factor approximation of the true minimum.
 
-
-
-
-
 ## A Word on Expectation Maximization
-
 
 This algorithm shares quite a bit of features with a very famous algorithm called the Expectation-Maximization algorithm. We plan to investigate this after we spend some more time on probability theory on this blog, but the (very rough) idea is that the algorithm operates in two steps. First, a measure of "center" is chosen for each of a number of statistical models based on given data. Then a maximization step occurs which chooses the optimal parameters for those statistical models, in the sense that the probability that the data was generated by statistical models with those parameters is maximized. These statistical models are then used as the "old" statistical models whose centers are computed in the next step.
 

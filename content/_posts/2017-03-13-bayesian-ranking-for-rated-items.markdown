@@ -55,8 +55,6 @@ But how do users get these probabilities? In this story, the probabilities are t
 
 So the story is you have a book, and that book gets a Dirichlet distribution (unknown to us), and then when a user comes along they sample from the Dirichlet distribution to get a discrete distribution, which they then draw from to choose a rating. We observe the ratings, and we need to find the book's underlying Dirichlet. We start by assigning it some default Dirichlet (the prior) and update that Dirichlet as we observe new ratings. Some other assumptions:
 
-
-
 	  1. Books are indistinguishable except in the parameters of their Dirichlet distribution.
 	  2. The parameters of a book's Dirichlet distribution don't change over time, and inherently reflect the book's value.
 
@@ -64,9 +62,7 @@ So a Dirichlet distribution is a process that produces discrete distributions. 
 
 The interpretation we use for a Dirichlet distribution is its expected value, which, recall, is the parameters of a discrete distribution. In particular if $n = \sum_i n_i$, then the expected value is a discrete distribution whose probabilities are
 
-
 $\displaystyle \left (  \frac{n_0}{n}, \frac{n_1}{n}, \dots, \frac{n_5}{n} \right )$
-
 
 So you can think of each integer in the specification of a Dirichlet as "ghost ratings," sometimes called _pseudocounts_, and we're saying the probability is proportional to the count.
 

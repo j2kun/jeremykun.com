@@ -21,12 +21,7 @@ tags:
 
 The goal of this post is to use prime numbers to make interesting and asymmetric graphics, and to do so in the context of the web design language CSS.
 
-
-
-
-
 ## Number Patterns
-
 
 For the longest time numbers have fascinated mathematicians and laymen alike. Patterns in numbers are decidedly simple to recognize, and the proofs of these patterns range from trivially elegant to Fields Medal worthy. Here's an example of a simple one that computer science geeks will love:
 
@@ -36,49 +31,21 @@ If you're a mathematician, you might be tempted to use induction, but if you're 
 
 _Proof_: Consider the base 2 representation of $2^i$, which is a 1 in the $i$th place and zeros everywhere else. Then we may write the summation as
 
-
 $\begin{matrix} & 100 & \dots & 0 \\ & 010 & \dots & 0 \\ & 001 & \dots & 0 \\ & & \vdots & \\ + & 000 & \dots & 1 \\ = & 111 & \dots & 1 \end{matrix}$
-
-
-
 
 And clearly adding one to this sum gives the next largest power of 2. $\square$
 
-
-
-
 This proof extends quite naturally to all $k$ powers, giving the following identity. Try to prove it yourself using base $k$ number representations!
-
-
-
 
 $\sum \limits_{i=0}^{n} k^i = \dfrac{k^{n+1}-1}{k-1}$
 
-
-
-
 The only other straightforward proof of this fact would require induction on $n$, and as a reader points out in the comments (and I repeat in the [proof gallery](http://jeremykun.wordpress.com/2011/07/01/sums-of-k-powers/)), it's not so bad. But it was refreshing to discover this little piece of art on my own (and it dispelled my boredom during a number theory class). Number theory is full of such treasures.
-
-
-
-
 
 ## Primes
 
-
-
-
 Though there are many exciting ways in which number patterns overlap, there seems to be one grand, overarching undiscovered territory that drives research and popular culture's fascination with numbers: the primes.
 
-
-
-
 The first few prime numbers are $2,3,5,7,11,13,17,19,23, \dots $. Many elementary attempts to characterize the prime numbers admit results implying intractability. Here are a few:
-
-
-
-
-
 
 	  * There are infinitely many primes.
 	  * For any natural number $n$, there exist two primes $p_1, p_2$ with no primes between them and $|p_1 - p_2| \geq n$. (there are arbitrarily large gaps between primes)
@@ -92,65 +59,38 @@ However, the work of many great mathematicians over thousands of years is certai
 
 **Theorem:** Let $\pi(n)$ be the number of primes less than or equal to $n$ (called the _prime counting function_). Then
 
-
 $\lim \limits_{n \rightarrow \infty} \dfrac{\pi(n)}{n / \log(n)} = 1$
-
-
-
-
-
-
 
 Intuitively, this means that $\pi(n)$ is about $n / \log(n)$ for large $n$, or more specifically that if one picks a random number near $n$, the chance of it being prime is about $1/ \log(n)$. Much of the work on prime numbers (including equivalent statements to the Riemann hypothesis) deals with these prime counting functions and their growth rates. But stepping back, this is a fascinatingly counterintuitive result: we can say with confidence how many primes there are in any given range, but determining what they are is exponentially harder!
 
 And what's more, many interesting features of the prime numbers have been just stumbled upon by accident. Unsurprisingly, these results are among the most confounding. Take, for instance, the following construction. Draw a square spiral starting with 1 in the center, and going counter-clockwise as below:
 
-
 [![Number Spiral](http://jeremykun.files.wordpress.com/2011/06/number-spiral.png)
 ](http://jeremykun.files.wordpress.com/2011/06/number-spiral.png)
-
 
 If you circle all the prime numbers you'll notice many of them spectacularly lie on common diagonals! If you [continue this process for a long time](http://upload.wikimedia.org/wikipedia/commons/8/81/Ulam4004001.png), you'll see that the primes continue to lie on diagonals, producing a puzzling pattern of dashed cross-hatches. This _Ulam Spiral_ was named after its discoverer, Stanislaw Ulam, and the reasons for its appearance are still unknown (though conjectured).
 
 All of this wonderful mathematics aside, our interest in the primes is in its apparent lack of patterns.
 
-
 ## **Primes in Design**
-
-
-
 
 One very simple but useful property of primes is in least common denominators. The product of two numbers is well known to equal the product of their least common multiple and greatest common divisor. In symbols:
 
-
-
-
 $\textup{gcd}(p,q) \textup{lcm}(p,q) = pq$
-
 
 We are particularly interested in the case when $p$ and $q$ are prime, because then their greatest (and only) common divisor is 1, making this equation
 
-
 $\textup{lcm}(p,q) = pq$
 
-
-
-
 The least common multiple manifests itself concretely in patterns. Using the numbers six and eight, draw two rows of 0's and 1's with a 1 every sixth character in the first row and every 8th character in the second. You'll quickly notice that the ones line up every twenty-fourth character, the lcm of six and eight:
-
-
-
 
 000001000001000001000001000001000001000001000001
 000000010000000100000001000000010000000100000001
 
-
 Using two numbers $p,q$ which are coprime (their greatest common divisor is 1, but they are not necessarily prime; say, 9 and 16), then the 1's in their two rows would line up every $pq$ characters. Now for pretty numbers like six and eight, there still appears to be a mirror symmetry in the distribution of 1's and 0's above. However, if the two numbers _are_ prime, this symmetry is much harder to see. Try 5 and 7:
-
 
 0000100001000010000100001000010000100001000010000100001000010000100001
 0000001000000100000010000001000000100000010000001000000100000010000001
-
 
 There is much less obvious symmetry, and with larger primes it  becomes even harder to tell that the choice of match up isn't random.
 
@@ -217,5 +157,4 @@ So there you have it. Prime numbers contribute to interesting, unique designs th
 It would make me extremely happy if any readers who play around and come up with a cool design submit them. Just send a link to a place where your design is posted, and if I get enough submissions I can create a gallery of my own :)
 
 Until next time!
-
 

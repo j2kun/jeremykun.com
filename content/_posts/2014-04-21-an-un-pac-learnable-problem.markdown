@@ -29,66 +29,31 @@ One of the primary goals of studying models of learning is to figure out what is
 
 _Addendum: _This post is dishonest in the following sense. The original definition I presented of PAC-learning is not considered the "standard" version, precisely because it forces the learning algorithm to produce hypotheses from the concept class it's trying to learn. As this post shows, that prohibits us from learning concept classes that should be easy to learn. So to quell any misconceptions, we're not saying that 3-term DNF formulas (defined below) are not PAC-learnable, just that they're not PAC-learnable under the definition we gave [in the previous post](http://jeremykun.com/2014/01/02/probably-approximately-correct-a-formal-theory-of-learning/). In other words, we've set up a straw man (or, done some good mathematics) in order to illustrate why we need to add the extra bit about hypothesis classes to the definition at the end of this post.
 
-
 ## 3-Term DNF Formulas
-
 
 Readers of this blog will probably have encountered a _boolean formula_ before. A boolean formula is just a syntactic way to describe some condition (like, exactly one of these two things has to be true) using variables and logical connectives. The best way to recall it is by example: the following boolean formula encodes the "exclusive or" of two variables.
 
-
 $\displaystyle (x \wedge \overline{y}) \vee (\overline{x} \wedge y)$
-
-
-
 
 The wedge $\wedge$ denotes a logical AND and the vee $\vee$ denotes a logical OR. A bar above a variable represents a negation of a variable. (Please don't ask me why the official technical way to write AND and OR is in all caps, I feel like I'm yelling math at people.)
 
-
-
-
 In general a boolean formula has _literals, _which we can always denote by an $x_i$ or the negation $\overline{x_i}$, and _connectives _$\wedge$ and $\vee$, and parentheses to denote order. It's a simple fact that any logical formula can be encoded using just these tools, but rather than try to learn general boolean formulas we look at formulas in a special form.
-
-
-
 
 **Definition:** A formula is in _three-term disjunctive normal form_ (DNF) if it has the form $C_1 \vee C_2 \vee C_3$ where each $C_i$ is an AND of some number of literals.
 
-
-
-
 Readers who enjoyed our [P vs NP primer](http://jeremykun.com/2012/02/23/p-vs-np-a-primer-and-a-proof-written-in-racket/) will recall a related form of formulas: the 3-CNF form, where the "three" meant that each clause had exactly three literals and the "C" means the clauses are connected with ANDs. This is a sort of dual normal form: there are only three clauses, each clause can have any number of variables, and the roles of AND and OR are switched. In fact, if you just distribute the $\vee$'s in a 3-term DNF formula using [DeMorgan's rules](http://en.wikipedia.org/wiki/De_Morgan's_laws), you'll get an equivalent 3-CNF formula. The restriction of our hypotheses to 3-term DNFs will be the crux of the difficulty: it's not that we can't learn DNF formulas, we just can't learn them if we are _forced to express our hypothesis_ as a 3-term DNF as well.
-
-
-
 
 The way we'll prove that 3-term DNF formulas "can't be learned" in the PAC model is by an NP-hardness reduction. That is, we'll show that if we _could_ learn 3-term DNFs in the PAC model, then we'd be able to efficiently solve NP-hard problems with high probability. The official conjecture we'd be violating is that [RP is different from NP](http://en.wikipedia.org/wiki/RP_(complexity)#Connection_to_P_and_NP). RP is the class of problems that you can solve in polynomial time with randomness if you can never have false positives, and the probability of a false negative is at most 1/2. Our "RP" algorithm will be a PAC-learning algorithm.
 
-
-
-
 The NP-complete problem we'll reduce from is graph 3-coloring. So if you give me a graph, I'll produce an instance of the 3-term DNF PAC-learning problem in such a way that finding a hypothesis with low error corresponds to a valid 3-coloring of the graph. Since PAC-learning ensures that you are highly likely to find a low-error hypothesis, the existence of a PAC-learning algorithm will constitute an RP algorithm to solve this NP-complete problem.
-
-
-
 
 In more detail, an "instance" of the 3-term DNF problem comes in the form of a distribution over some set of labeled examples. In this case the "set" is the set of all possible truth assignments to the variables, where we fix the number of variables to suit our needs, along with a choice of a target 3-term DNF to be learned. Then you'd have to define the distribution over these examples.
 
-
-
-
 But we'll actually do something a bit slicker. We'll take our graph $G$, we'll construct a set $S_G$ of labeled truth assignments, and we'll define the distribution $D$ to be the uniform distribution over those truth assignments used in $S_G$. Then, if there happens to be a 3-term DNF that coincidentally labels the truth assignments in $S_G$ exactly how we labeled them, and we set the allowed error $\varepsilon$ to be small enough, a PAC-learning algorithm will find a consistent hypothesis (and it will correspond to a valid 3-coloring of $G$). Otherwise, no algorithm would be able to come up with a low-error hypothesis, so if our purported learning algorithm outputs a bad hypothesis we'd be certain (with high probability) that it was not bad luck but that the examples are not consistent with _any_ 3-term DNF (and hence there is no valid 3-coloring of $G$).
-
-
-
 
 This general outline has nothing to do with graphs, and so you may have guessed that the technique is commonly used to prove learning problems are hard: come up with a set of labeled examples, and a purported PAC-learning algorithm would have to come up with a hypothesis consistent with all the examples, which translates back to a solution to your NP-hard problem.
 
-
-
-
-
 ## The Reduction
-
 
 Now we can describe the reduction from graphs to labeled examples. The intuition is simple: each term in the 3-term DNF should correspond to a color class, and so any two adjacent vertices should correspond to an example that cannot be true. The clauses will correspond to...
 
@@ -115,9 +80,7 @@ On the other hand, say there is a consistent 3-term DNF $\varphi$. We need to co
 
 Now we just need to show a few more details to finish the proof. In particular, we need to observe that the number of examples we generate is polynomial in the size of the graph $G$; that the learning algorithm would still run in polynomial time in the size of the input graph (indeed, this depends on our choice of the learning parameters); and that we only need to pick $\delta < 1/2$ and $\varepsilon \leq 1/(2|S^+ \cup S^-|)$ in order to enforce that an efficient PAC-learner would generate a hypothesis consistent with all the examples. Indeed, if a hypothesis errs on even one example, it will have error at least $1 / |S^+ \cup S^-|$, which is too big.
 
-
 ## Everything's not Lost
-
 
 This might seem a bit depressing for PAC-learning, that we can't even hope to learn 3-term DNF formulas. But we will give a sketch of why this is mostly not a problem with PAC but a problem with DNFs.
 

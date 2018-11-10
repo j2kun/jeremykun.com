@@ -19,25 +19,19 @@ tags:
 
 [Over at Math3ma](http://www.math3ma.com/mathema/2018/5/17/is-the-square-a-secure-polygon), Tai-Danae Bradley shared the following puzzle, which she also featured in a [fantastic (spoiler-free) YouTube video](https://www.youtube.com/watch?v=a7gp9c2p0UQ). If you're seeing this for the first time, watch the video first.
 
-
 <blockquote>_Consider a square in the xy-plane, and let A (an "assassin") and T (a "target") be two arbitrary-but-fixed points within the square. __Suppose that the square behaves like a billiard table, so that any ray (a.k.a "shot") from the assassin will bounce off the sides of the square, with the angle of incidence equaling the angle of reflection._
 
 _**Puzzle**: Is it possible to block any possible shot from A to T by placing a finite number of points in the square?_</blockquote>
-
 
 This puzzle found its way to me through Tai-Danae's video, via category theorist [Emily Riehl](http://www.math.jhu.edu/~eriehl/), via a talk by the recently deceased Fields Medalist Maryam Mirzakhani, who studied the problem in more generality. I'm not familiar with her work, but knowing mathematicians it's probably set in an arbitrary complex $n$-manifold.
 
 See Tai-Danae's post for a proof, which left such an impression on me I had to dig deeper. In this post I'll discuss a visualization I made—now posted at the end of Tai-Danae's article—as well as [here](http://j2kun.github.io/assassin-puzzle/index.html) and below (to avoid spoilers). In the visualization, mouse movement chooses the firing direction for the assassin, and the target is in green. Dragging the target with the mouse updates the position of the guards. The source code is on [Github](https://github.com/j2kun/j2kun-math3ma/tree/master/assassin-puzzle).
 
-
 ## Outline
-
 
 The visualization uses [d3 library](https://d3js.org/), which was made for visualizations that dynamically update with data. I use it because it can draw [SVGs](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) real nice.
 
 The meat of the visualization is in two geometric functions.
-
-
 
 	  1. [Decompose a ray into a series of line segments](https://github.com/j2kun/j2kun-math3ma/blob/master/assassin-puzzle/geometry.js#L264)—its path as it bounces off the walls—stopping if it intersects any of the points in the plane.
 	  2. [Compute the optimal position of the guards](https://github.com/j2kun/j2kun-math3ma/blob/master/assassin-puzzle/geometry.js#L319), given the boundary square and the positions of the assassin and target.
@@ -46,9 +40,7 @@ Both of these functions, along with all the geometry that supports them, is in [
 
 As with most programming and software problems, the key to implementing these functions while maintaining your sanity is breaking it down into manageable pieces. Incrementalism is your friend.
 
-
 ## Vectors, rays, rectangles, and ray splitting
-
 
 We start at the bottom with a Vector class with helpful methods for adding, scaling, and computing norms and inner products.
 
@@ -137,17 +129,13 @@ class Rectangle {
 
 The function `rayToPoints` that splits a ray into line segments from bouncing depends on three helper functions:
 
-
-
 	  1. `rayIntersection`: Compute the intersection point of a ray with the rectangle.
 	  2. `isOnVerticalWall`: Determine if a point is on a vertical or horizontal wall of the rectangle, raising an error if neither.
 	  3. `splitRay`: Split a ray into a line segment and a shorter ray that's "bounced" off the wall of the rectangle.
 
 (2) is trivial, computing some x- and y-coordinate distances up to some error tolerance. (1) involves parameterizing the ray and checking one of four inequalities. If the bottom left of the rectangle is $(x_1, y_1)$ and the top right is $(x_2, y_2)$ and the ray is written as $\{ (c_1 + t v_1, c_2 + t v_2) \mid t > 0 \}$, then—with some elbow grease—the following four equations provide all possibilities, with some special cases for vertical or horizontal rays:
 
-
 $\displaystyle \begin{aligned} c_2 + t v_2 &= y_2 & \textup{ and } \hspace{2mm} & x_1 \leq c_1 + t v_1 \leq x_2 & \textup{ (intersects top)} \\ c_2 + t v_2 &= y_1 & \textup{ and } \hspace{2mm} & x_1 \leq c_1 + t v_1 \leq x_2 & \textup{ (intersects bottom)} \\ c_1 + t v_1 &= x_1 & \textup{ and } \hspace{2mm} & y_1 \leq c_2 + t v_2 \leq y_2 & \textup{ (intersects left)} \\ c_1 + t v_1 &= x_2 & \textup{ and } \hspace{2mm} & y_1 \leq c_2 + t v_2 \leq y_2 & \textup{ (intersects right)} \\ \end{aligned}$
-
 
 In code:
 
@@ -253,9 +241,7 @@ As you have probably guessed, `rayToPoints` simply calls ` splitRay` over and ov
 
 That's sufficient to draw the shot emanating from the assassin. This method is called every time the mouse moves.
 
-
 ## Optimal guards
-
 
 The function to compute the optimal position of the guards takes as input the containing rectangle, the assassin, and the target, and produces as output a list of 16 points.
 
@@ -271,13 +257,10 @@ function computeOptimalGuards(square, assassin, target) {
 
 If you read Tai-Danae's proof, you'll know that this construction is to
 
-
-
 	  1. Compute mirrors of the target across the top, the right, and the top+right of the rectangle. Call this resulting thing the _4-mirrored-targets._
 	  2. Replicate the 4-mirrored-targets four times, by translating three of the copies left by the entire width of the 4-mirrored-targets shape, down by the entire height, and both left-and-down.
 	  3. Now you have 16 copies of the target, and one assassin. This gives 16 line segments from assassin-to-target-copy. Place a guard at the midpoint of each of these line segments.
 	  4. Finally, apply the reverse translation and reverse mirroring to return the guards to the original square.
-
 
 Due to Wordpress being a crappy blogging platform I need to migrate off of, the code snippets below have been magically disappearing. I've included links to github lines as well.
 
@@ -364,13 +347,9 @@ Due to Wordpress being a crappy blogging platform I need to migrate off of, the 
 
 And that's all there is to it!
 
-
 ## Improvements, if I only had the time
 
-
 There are a few improvements I'd like to make to this puzzle, but haven't made the time (I'm writing a book, after all!).
-
-
 
 	  1. Be able to drag the guards around.
 	  2. Create new guards from an empty set of guards, with a button to "reveal" the solution.

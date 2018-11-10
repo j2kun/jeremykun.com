@@ -34,9 +34,7 @@ Two years ago, [Erik Demaine](http://erikdemaine.org/) and three other researche
 
 But while bad tech-writers tend to interpret NP-hard as "[really really hard](http://news.cnet.com/8301-17852_3-57620251-71/mathematician-says-candy-crush-is-really-really-hard/)," the truth is more complicated. It's really a statement about _computational complexity_, which has a precise mathematical formulation. Sparing the reader any [technical details](http://jeremykun.com/2012/02/23/p-vs-np-a-primer-and-a-proof-written-in-racket/), here's what NP-hard implies for practical purposes:
 
-
 <blockquote>You should abandon hope of designing an algorithm that can solve **any** instance of your NP-hard problem, but many NP-hard problems have efficient practical "good-enough" solutions.</blockquote>
-
 
 The very definition of NP-hard means that NP-hard problems need only be hard _in the worst case_. For illustration, the fact that Pokemon is NP-hard boils down to whether you can navigate a vastly complicated maze of trainers, some of whom are guaranteed to defeat you. It has little to do with the difficulty of the _game_ Pokemon itself, and everything to do with whether you can stretch some subset of the game's rules to create a really bad worst-case scenario.
 
@@ -52,12 +50,9 @@ But we could also turn the question right back around. Since all of these great 
 
 [1] EXP is the class of problems solvable in exponential time (where the exponent is the size of the problem instance, say $n$ for a game played on an $n \times n$ board), so we're saying that a perfect Chess or Checkers solver could be used to solve _any problem_ that can be solved in exponential time. PSPACE is strictly smaller (we think; this is open): it's the class of all problems solvable if you are allowed as much time as you want, but only a polynomial amount of space to write down your computations. ↑
 
-
 ## A Case Study: Greedy Spiders
 
-
 [Greedy spiders](https://play.google.com/store/apps/details?id=com.blyts.greedyspiders.free) is a game designed by the game design company [Blyts](http://blyts.com/index.php). In it, you're tasked with protecting a set of helplessly trapped flies from the jaws of a hungry spider.
-
 
 [caption id="attachment_4730" align="aligncenter" width="493"][![A screenshot from Greedy Spiders.](http://jeremykun.files.wordpress.com/2014/03/greedy-spiders.png)
 ](http://jeremykun.files.wordpress.com/2014/03/greedy-spiders.png) A screenshot from Greedy Spiders. Click to enlarge.[/caption]
@@ -67,8 +62,6 @@ In the game the spider always moves in discrete amounts (between the intersectio
 Aside from being totally fun, this game is obviously mathematical. For the reader who is familiar with [graph theory](http://jeremykun.com/2011/06/26/teaching-mathematics-graph-theory/), there's a nice formalization of this problem.
 
 **The Greedy Spiders Problem:** You are given a graph $G_0 = (V, E_0)$ and two sets $S_0, F \subset V$ denoting the locations of the spiders and flies, respectively. There is a fixed algorithm $A$ that the spiders use to move. An instance of the game proceeds in rounds, and at the beginning of each round we call the current graph $G_i = (V, E_i)$ and the current location of the spiders $S_i$. Each round has two steps:
-
-
 
 	  1. You pick an edge $e \in E_i$ to delete, forming the new graph $G_{i+1} = (V, E_i)$.
 	  2. The spiders jointly compute their next move according to $A$, and each spider moves to an adjacent vertex. Thus $S_i$ becomes $S_{i+1}$.
@@ -83,9 +76,7 @@ Indeed the Greedy Spiders folks did just that: their game features some 70-odd l
 
 [2]: In the adversarial case it smells like it's PSPACE-complete, being very close to known PSPACE-hard problems like [Cops and Robbers](http://dl.acm.org/citation.cfm?id=2446061) and [Generalized Geography](http://en.wikipedia.org/wiki/Generalized_geography). ↑
 
-
 ## Examples
-
 
 I can point to a number of interesting problems that I can imagine turning into successful games, and I will in a moment, but before I want to make it clear that I don't propose game developers study theoretical computer science just to turn our problems into games verbatim. No, I imagine that the wealth of problems in computer science can serve as inspiration, as a spring board into a world of interesting gameplay mechanics and puzzles. The bonus for game designers is that adding features usually makes problems harder and more interesting, and you don't need to know anything about proofs or the details of the reductions to understand the problems themselves (you just need familiarity with the basic objects of consideration, sets, graphs, etc).
 
@@ -93,9 +84,7 @@ For a tangential motivation, I imagine that _students_ would be much more willin
 
 But enough rambling! Here is a short list of theoretical computer science problems for which I see game potential. None of them have, to my knowledge, been turned into games, but the common features among them all are the huge potential for creative extensions and interesting level design.
 
-
 ### Graph Coloring
-
 
 _[Graph coloring](http://jeremykun.com/2011/07/14/graph-coloring-or-proof-by-crayon/)_ is one of the oldest NP-complete problems known. Given a graph $G$ and a set of colors $\{ 1, 2, \dots, k \}$, one seeks to choose colors for the vertices of $G$ so that no edge connects two vertices of the same color.
 
@@ -106,9 +95,7 @@ Now coloring a given graph would be a lame game, so let's spice it up. Instead o
 
 An additional modification: give the two players a graph that _can't_ be colored with $k$ colors, and the first player to color a monochromatic edge is the loser. Add additional move types (contracting edges or deleting vertices, etc) to taste.
 
-
 ### Art Gallery Problem
-
 
 Given a layout of a museum, the [_art gallery problem_](http://en.wikipedia.org/wiki/Art_gallery_problem) is the problem of choosing the minimal number of cameras so as to cover the whole museum.
 
@@ -121,9 +108,7 @@ For more spice, allow the thief some special tactics like breaking through walls
 
 This idea has of course been the basis of many single-player stealth games (where the guards/cameras are fixed by the level designer), but I haven't seen it done as a multiplayer game. This also brings to mind variants like the recent [_Nothing to Hide_](https://back.nothingtohide.cc/), which counterintuitively pits you as both the camera placer and the hero: you have to place cameras in such a way that you're _always_ in vision as you move about to solve puzzles. Needless to say, this fruit still has plenty of juice for the squeezing.
 
-
 ### Pancake Sorting
-
 
 [_Pancake sorting_](http://en.wikipedia.org/wiki/Pancake_sorting) is the problem of sorting a list of integers into ascending order by using only the operation of a "pancake flip."
 
@@ -132,14 +117,9 @@ This idea has of course been the basis of many single-player stealth games (wher
 
 The level design then becomes finding good word scrambles with multiple reasonable paths one could follow to get valid words. My mother would probably play this game!
 
-
 ### 
 
-
-
-
 ### Bin Packing
-
 
 Young Mikio is making sushi for his family! He's got a table full of ingredients of various sizes, but there is a limit to how much he can fit into each roll. His family members have different tastes, and so his goal is to make everyone as happy as possible with his culinary skills and the options available to him.
 

@@ -20,7 +20,6 @@ tags:
 
 ## Binary Search
 
-
 Binary search is perhaps the first and most basic nontrivial algorithm a student learns. For the mathematicians out there, binary search is a fast procedure to determine whether a sorted list contains a particular element. Here is a pseudocode implementation:
 
 {{< highlight python >}}
@@ -49,15 +48,11 @@ Binary search's runtime is rather easy to analyze. At each step of the algorithm
 
 Notice that the success of the algorithm depends on the fact that the list is sorted, but the specific total order $<$ is irrelevant. We will investigate this idea further, but first we need some deeper maths.
 
-
 ## Well and Total Orders
-
 
 For those of us who aren't set theorists, it isn't fair to talk about total orders and well orders without defining them. So here comes a definition:
 
 **Definition:** A _strict total order_ $<$ is a relation on a set $S$ with the following statements holding for all $a, b, c \in S$:
-
-
 
 	  * It is never the case that $a < a$. (anti-reflexivity)
 	  * Exactly one of the following are true: $a < b, b < a,$ or $a = b$. (trichotomy)
@@ -75,8 +70,6 @@ Interestingly enough, a theorem [due to Ernst Zermelo](http://en.wikipedia.org/w
 
 As another aside, it turns out that we only need one of the inequalities in $(<, \leq, >, \geq)$ and the standard logical operations _and_ (infix &&), _or _(infix ||), and _not_ (prefix !) in order to define the other three (and indeed, to define $=, \neq$ as well). This is a computer science trick that comes in handy, as we'll see later, so here is the described equivalence. Given $<$, we define the remaining operations as follows:
 
-
-
 	  * $x > y$ is equivalent to $y < x$
 	  * $x \geq y$ is equivalent to $!(x < y)$
 	  * $x \leq y$ is equivalent to $!(y < x)$
@@ -85,15 +78,12 @@ As another aside, it turns out that we only need one of the inequalities in $(<,
 
 So if we are interested in sorting a set via some procedure, all we need from the user is the $<$ operation, and then we may compare any way our heart desires.
 
-
 ## Defining a New Well Order
-
 
 Consider a deck of cards which is initially sorted (with some arbitrary ordering on the suits), and then is "cut" at some arbitrary point and the bottom part is placed on top of the deck. We may simplify this "cut" operation to a list of numbers, say ten, and provide the following example of a cut:
 
     
     (5,6,9,10,11,13,1,3,3,4)
-
 
 To pick a standard working language, we say the "cut point" of this list is 5, not 4.
 

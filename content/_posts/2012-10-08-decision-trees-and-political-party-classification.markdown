@@ -28,9 +28,7 @@ In this post we'll see how decision trees can alleviate these issues, and we'll 
 
 Before going on, the reader is encouraged to read our [primer on trees](http://jeremykun.wordpress.com/2012/09/16/trees-a-primer/). We will assume familiarity with the terminology defined there.
 
-
 ## Intuition
-
 
 Imagine we have a data set where each record is a list of categorical weather conditions on a randomly selected number of days, and the labels correspond to whether a girl named Arya went for a horse ride on that day. Let's also assume she would like to go for a ride every day, and the only thing that might prohibit her from doing so is adverse weather. In this case, the input variables will be the condition in the sky (sunny, cloudy, rainy, and snow), the temperature (cold, warm, and hot), the relative humidity (low, medium, and high), and the wind speed (low and high). The output variable will be whether Arya goes on a horse ride that day. Some entries in this data set might look like:
 
@@ -43,7 +41,6 @@ Imagine we have a data set where each record is a list of categorical weather co
     Sunny   Hot            High        High    No
     Snow    Cold           Low         High    No
     Rainy   Warm           High        Low     Yes
-
 
 In this case, one might reasonably guess that certain weather features are more important than others in determining whether Arya can go for a horse ride. For instance, the difference between sun and rain/snow should be a strong indicator, although it is not always correct in this data set. In other words, we're looking for a weather feature that best _separates_ the data into its respective classes. Of course, we'll need a rigorous way to measure how good that separation is, but intuitively we can continue.
 
@@ -62,7 +59,6 @@ For example, we might split based on the wind speed feature. In this case, we ha
     Sunny   Warm           Medium      Yes
     Rainy   Warm           High        Yes
 
-
 In this case, Arya is never known to ride a horse when the wind speed is high, and there is only one occasion when she doesn't ride a horse and the wind speed is low. Taking this one step further, we can repeat the splitting process on the "Wind = Low" data in search of a complete split between the two output classes. We can see by visual inspection that the only "no" instance occurs when the temperature is cold. Hence, we should split on the temperature feature.
 
 It is not useful to write out another set of tables (one feels the pain already when imagining a data set with a thousand entries), because in fact there is a better representation. The astute reader will have already recognized that our process of picking particular values for the weather features is just the process of traversing a tree.
@@ -71,10 +67,8 @@ Let's investigate this idea closer. Imagine we have a tree where the root node c
 
 We can stop this process once the choice of features completely splits our data set. Pictorially, our tree would look like this:
 
-
 [![](http://jeremykun.files.wordpress.com/2012/09/arya-decision-tree.png)
 ](http://jeremykun.files.wordpress.com/2012/09/arya-decision-tree.png)
-
 
 We reasonably decide to stop the traversal when all of the examples in the split are in the same class. More so, we would not want to include the option for the temperature to be Hot in the right subtree, because the data tells us nothing about such a scenario (as indicated by the "None" in the corresponding leaf).
 
@@ -84,7 +78,6 @@ Now that we have the data organized as a tree, we can try to classify _new_ dat
     Sky     Temperature    Humidity    Wind    Horse Ride
     Rainy   Cold           Low         Low     ?
 
-
 We first inspect the wind speed feature, and seeing that it is "Low," we follow the edge to the right subtree and repeat. Seeing that the temperature feature is "Cold," we further descend down the "Cold" branch, reaching the "All No" leaf. Since this leaf corresponds to examples we've seen which are all in the "No" class, we should classify the new data as "No" as well.
 
 Summarizing, given a new piece of data, we can traverse the tree according to the values of its features until we reach a leaf node. If the leaf node is "All No," then we classify the new set of weather conditions as a "No," and if it is "All Yes," we classify as "Yes."
@@ -93,35 +86,17 @@ Of course, this tree makes it clear that this toy data set is much too small to 
 
 Before we generalize this example to any data set, we should note that there is yet another form for our classification rule. In particular, we can write the traversal from the root to the rightmost leaf as a boolean expression of the form:
 
-
 $\displaystyle \textup{Wind = ``Low''} \wedge \textup{Temp = ``Warm''}$
-
-
-
 
 An example will be classified as "Yes" if and only if the wind feature is "High" and the temperature feature is "Warm" (here the wedge symbol $\wedge$ means "and," and is called a _conjunction_). If we had multiple such routes leading to leaves labeled with "All Yes," say a branch for wind being "High" and sky being "Sunny," we could expand our expression as a _disjunction_ (an "or," denoted $\vee$) of the two corresponding conjunctions as follows:
 
-
-
-
  $\displaystyle (\textup{Wind = ``Low''} \wedge \textup{Temp = ``Warm''}) \vee (\textup{Wind = ``High''} \wedge \textup{Sky = ``Sunny''})$
-
-
-
 
 In the parlance of formal logic, this kind of expression is called the [disjunctive normal form](http://en.wikipedia.org/wiki/Disjunctive_normal_form), that is, a disjunction of conjunctions. It's an easy exercise to prove that every propositional statement (in our case, using only and, or, and parentheses for grouping) can be put into disjunctive normal form. That is, any boolean condition that can be used to classify the data can be expressed in a disjunctive normal form, and hence as a decision tree.
 
-
-
-
 Such a "boolean condition" is an example of a _hypothesis_, which is the formal term for the rule an algorithm uses to classify new data points. We call the set of all possible hypotheses expressible by our algorithm the _hypothesis space_ of our algorithm. What we've just shown above is that decision trees have a large and well-defined hypothesis space. On the other hand, it is much more difficult to describe the hypothesis space for an algorithm like [k-nearest-neighbors](http://jeremykun.wordpress.com/2012/08/26/k-nearest-neighbors-and-handwritten-digit-classification/). This is one argument in favor of decision trees: they have a well-understood hypothesis space, and that makes them analytically tractable and interpretable.
 
-
-
-
-
 ## Using Entropy to Find Optimal Splits
-
 
 The real problem here is not in using a decision tree, but in constructing one from data alone. At any step in the process we outlined in the example above, we need to determine which feature is the right one to split the data on. That is, we need to choose the labels for the interior nodes in so that the resulting data subsets are as homogeneous as possible. In particular, it would be nice to have a quantitative way to measure the quality of a split. Then at each step we could simply choose the feature whose split yields the highest value under this measurement.
 
@@ -129,14 +104,9 @@ While we won't derive such a measurement in this post, we will use one that has 
 
 **Definition:** Let $D$ be a discrete probability distribution $(p_1, p_2, \dots, p_n)$. Then the _Shannon entropy_ of $D$, denoted $E(p_1, \dots, p_n)$ is
 
-
 $\displaystyle E(p_1, \dots , p_n) = - \sum_{i=1}^n p_i \log(p_i)$
 
-
-
-
 Where the logarithms are taken in base 2.
-
 
 In English, there are $n$ possible outcomes numbered 1 to $n$, and the probability that an instance drawn from $D$ results in the outcome $k$ is $p_k$. Then Shannon's entropy function computes a numerical quantity describing how "dispersed" the outcomes are.
 
@@ -146,55 +116,25 @@ Let's verify that Shannon's entropy function makes sense for our problem. Specif
 
 Indeed, if we adopt the convention that $\log(0) = 0$, then the entropy of $(1,0, \dots, 0)$ consists of a single term $-1 \log(1) = 0$. It is clear that this does not depend on the position of the 1 within the probability distribution. On the other hand, the entropy of $(1/n, \dots, 1/n)$ is
 
-
 $\displaystyle -\sum_{i=1}^n\frac{1}{n}\log \left (\frac{1}{n} \right ) = -\log \left (\frac{1}{n} \right ) = -(0 - \log(n)) = \log(n)$
-
-
-
 
 A [well-known property](http://www.mtm.ufsc.br/~taneja/book/node6.html) of the entropy function tells us that this is in fact the maximum value for this function.
 
-
-
-
 Summarizing this, in the best case entropy is minimized after the split, and in the worst case entropy is maximized. But we can't simply look at the entropy of each subset after splitting. We need a sensible way to combine these entropies and to compare them with the entropy of the data _before_ splitting. In particular, we would quantify the "decrease" in entropy caused by a split, and maximize that quantity.
-
-
-
 
 **Definition:** Let $S$ be a data set and $A$ a feature with values $v \in V$, and let $E$ denote Shannon's entropy function. Moreover, let $S_v$ denote the subset of $S$ for which the feature $A$ has the value $v$. The _gain_ of a split along the feature $A$, denoted $G(S,A)$ is
 
-
-
-
 $\displaystyle G(S,A) = E(S) - \sum_{v \in V} \frac{|S_v|}{|S|} E(S_v)$
-
-
-
 
 That is, we are taking the difference of the entropy before the split, and subtracting off the entropies of each part after splitting, with an appropriate weight depending on the size of each piece. Indeed, if the entropy grows after the split (that is if the data becomes more mixed), then this number will be small. On the other hand if the split separates the classes nicely, each subset $S_v$ will have small entropy, and hence the value will be large.
 
-
-
-
 It requires a bit of mathematical tinkering to be completely comfortable that this function actually does what we want it to (for instance, it is not obvious that this function is non-negative; does it make sense to have a negative gain?). We won't tarry in those details (this author has spent at least a day or two ironing them out), but we can rest assured that this function has been studied extensively, and nothing unexpected happens.
-
-
-
 
 So now the algorithm for building trees is apparent: at each stage, simply pick the feature for which the gain function is maximized, and split the data on that feature. Create a child node for each of the subsets in the split, and connect them via edges with labels corresponding to the chosen feature value for that piece.
 
-
-
-
 This algorithm is classically called [ID3](http://en.wikipedia.org/wiki/ID3_algorithm), and we'll implement it in the next section.
 
-
-
-
-
 ## Building a Decision Tree in Python
-
 
 As with our [primer on trees](http://jeremykun.wordpress.com/2012/09/16/trees-a-primer/), we can use a quite simple data structure to represent the tree, but here we need a few extra pieces of data associated with each node.
 
@@ -273,7 +213,6 @@ Of course, the best split (represented as the best feature to split on) is given
     
     bestFeature = max(range(n), key=lambda index: gain(data, index))
 
-
 We can't quite use this line exactly though, because while we're building up the decision tree (which will of course be a recursive process) we need to keep track of which features have been split on previously and which have not; this data is different for each possible traversal of the tree. In the end, our function to build a decision tree requires three pieces of data: the current subset of the data to investigate, the root of the current subtree that we are in the process of building, and the set of features we have yet to split on.
 
 Of course, this raises the obvious question about the base cases. One base case will be when we run out of data to split; that is, when our input data all have the same classification label. To check for this we implement a function called "homogeneous"
@@ -349,9 +288,7 @@ def decisionTree(data):
    return buildDecisionTree(data, Tree(), set(range(len(data[0][0]))))
 {{< /highlight >}}
 
-
 ## Classifying New Data
-
 
 The last piece of the puzzle is to classify a new piece of data once we've constructed the decision tree. This is a considerably simpler recursive process. If the current node is a leaf, output its label. Otherwise, recursively search the subtree (the child of the current node) whose splitFeatureValue matches the new data's choice of the feature being split. In code,
 
@@ -381,9 +318,7 @@ def testClassification(data, tree):
 
 But now we run into the issue of noisy data. What if one wants to classify a point where one of the feature values which is used in the tree is unknown? One can take many approaches to remedy this, and we choose a simple one: simply search both routes, and use a majority vote when reaching a leaf. This requires us to add one additional piece of information to the leaf nodes: the total number of labels in each class used to build that leaf (recall, one of our stopping conditions resulted in a leaf having heterogeneous data). We omit the details here, but the reader is invited to read them on [this blog's Github page](https://github.com/j2kun/), where as usual we have provided [all of the code](https://github.com/j2kun/decision-trees) used in this post.
 
-
 ## Classifying Political Parties Based on Congressional Votes
-
 
 We now move to a concrete application of decision trees. The data set we will work with comes from the [UCI machine learning repository](http://archive.ics.uci.edu/ml/), and it records the [votes cast by the US House of Representatives during a particular session of Congress in 1984](http://archive.ics.uci.edu/ml/datasets/Congressional+Voting+Records). The data set has 16 features; that is, there were 16 different measures considered "key" measures that were vote upon during this session. So each point in the dataset represents the 16 votes of a single House member in that session. With a bit of reformatting, we provide the complete data set on [this blog's Github page](https://github.com/j2kun/).
 
@@ -411,9 +346,7 @@ Indeed, the classification accuracy in doing this is around 90%. In addition (th
 
 Inspecting the trees generated in this process, it appears that the most prominent feature to split on is the adoption of a new budget resolution. Very few Demorats voted in favor of this, so for many of the random subsets of the data, a split on this feature left one side homogeneously Republican.
 
-
 ## Overfitting, Pruning, and Other Issues
-
 
 Now there are some obvious shortcomings to the method in general. If the data set used to build the decision tree is enormous (in dimension or in number of points), then the resulting decision tree can be arbitrarily large in size. In addition, there is the pitfall of overfitting to this particular data set. For the party classification problem above, the point is to extend the classification to any population of people who might vote on these issues (or, more narrowly, to any politician who might vote on these issues). If we make our decision tree very large, then the hypothesis may be overly specific to the people in the sample used, and hence will not generalize well.
 

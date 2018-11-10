@@ -26,11 +26,9 @@ Indeed, the more I learn about quantum computing the more it's become clear that
 
 Scott Aaronson (one of the few people who explains quantum in a way I understand) [describes the situation superbly](http://www.amazon.com/Quantum-Computing-since-Democritus-Aaronson/dp/0521199565).
 
-
 <blockquote>There are two ways to teach quantum mechanics. The first way – which for most physicists today is still the only way – follows the historical order in which the ideas were discovered. So, you start with classical mechanics and electrodynamics, solving lots of grueling differential equations at every step. Then, you learn about the "blackbody paradox" and various strange experimental results, and the great crisis that these things posed for physics. Next, you learn a complicated patchwork of ideas that physicists invented between 1900 and 1926 to try to make the crisis go away. Then, if you're lucky, after years of study, you finally get around to the central conceptual point: that nature is described not by _probabilities_ (which are always nonnegative), but by numbers called _amplitudes_ that can be positive, negative, or even complex.
 
 The second way to teach quantum mechanics eschews a blow-by-blow account of its discovery, and instead _starts directly from the conceptual core_ – namely, a certain generalization of the laws of probability to allow minus signs (and more generally, complex numbers). Once you understand that core, you can _then_ sprinkle in physics to taste, and calculate the spectrum of whatever atom you want.</blockquote>
-
 
 Indeed, the sequence of experiments and debate has historical value. But the mathematics needed to have a basic understanding of quantum mechanics is quite simple, and it is often blurred by physicists in favor of discussing interpretations. To start thinking about quantum mechanics you only need to a healthy dose of linear algebra, and most of it we've covered in the [three linear algebra primers on this blog](http://jeremykun.com/primers/). More importantly for computing-minded folks, one only needs a basic understanding of quantum mechanics to understand quantum _computing. _
 
@@ -38,9 +36,7 @@ The position I want to assume on this blog is that we don't care about whether q
 
 So let's begin this process with a discussion of an experiment that motivates most of the ideas we'll need for quantum computing. Hopefully this will be the last experiment we discuss.
 
-
 ## Shooting Photons and The Question of Randomness
-
 
 Does the world around us have inherent randomness in it? This is a deep question open to a lot of philosophical debate, but what evidence do we have that there is randomness?
 
@@ -61,9 +57,7 @@ But that's _not_ what happens. Rather, _all the photons go to the top recepto
 [![awardplz](http://jeremykun.files.wordpress.com/2014/04/awardplz.png)
 ](http://jeremykun.files.wordpress.com/2014/04/awardplz.png)
 
-
 ## Complex Probabilities
-
 
 One interesting explanation is that the beam splitter modifies something intrinsic to the photon, something that carries with it until the next beam splitter. You can imagine the photon is carrying information as it shambles along, but regardless of the interpretation it can't follow the laws of classical probability.
 
@@ -71,14 +65,9 @@ The simplest classical probability explanation would go something like this:
 
 There are two states, RIGHT and UP, and we model the state of a photon by a probability distribution $(p, q)$ such that the photon has a probability $p$ of being in state RIGHT a probability $q$ of being in state UP, and like any probability distribution $p + q = 1$. A photon hence starts in state $(1,0)$, and the process of traveling through the beam splitter is the random choice to switch states. This is modeled by multiplication by a particular so-called _stochastic matrix_ (which just means the rows sum to 1)
 
-
 $\displaystyle A = \begin{pmatrix} 1/2 & 1/2 \\ 1/2 & 1/2 \end{pmatrix}$
 
-
-
-
 Of course, we chose this matrix because when we apply it to $(1,0)$ and $(0,1)$ we get $(1/2, 1/2)$ for both outcomes. By doing the algebra, applying it _twice_ to $(1,0)$ will give the state $(1/2, 1/2)$, and so the chance of ending up in the top receptor is the same as for the right receptor.
-
 
 But as we already know this isn't what happens in real life, so something is amiss. Here is an alternative explanation that gives a nice preview of quantum mechanics.
 
@@ -90,50 +79,22 @@ In fact, as we'll see later in this series using complex numbers is totally unne
 
 But back to our experiment. Now we can hypothesize that the beam splitter corresponds to the following transformation of states:
 
-
 $\displaystyle A = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 & i \\ i & 1 \end{pmatrix}$
-
-
-
 
 We'll talk a lot more about unitary matrices later, so for now the reader can rest assured that this is one. And then how does it transform the initial state $x =(1,0)$?
 
-
-
-
 $\displaystyle y = Ax = \frac{1}{\sqrt{2}}(1, i)$
-
-
-
 
 So at this stage the probability of being in the RIGHT state is $1/2 = (1/\sqrt{2})^2$ and the probability of being in state UP is also $1/2 = |i/\sqrt{2}|^2$. So far it matches the first experiment. Applying $A$ again,
 
-
-
-
 $\displaystyle Ay = A^2x = \frac{1}{2}(0, 2i) = (0, i)$
-
-
-
 
 And the photon is in state UP with probability 1. Stunning. This time Science is impressed by mathematics.
 
-
-
-
 Next time we'll continue this train of thought by generalizing the situation to the appropriate mathematical setting. Then we'll dive into the quantum circuit model, and start churning out some algorithms.
-
-
-
 
 Until then!
 
-
-
-
 **[Edit: Actually, if you make the model complicated enough, then you can achieve the result using classical probability. The experiment I described above, while it does give evidence that something more complicated is going on, it does not fully rule out classical probability. Mathematically, you can lay out the axioms of quantum mechanics (as we will from the perspective of computing), and mathematically this forces non-classical probability. But to the best of my knowledge there is no experiment or set of experiments that gives decisive proof that all of the axioms are necessary. In my search for such an experiment I asked [this question on stackexchange](http://physics.stackexchange.com/questions/205742/what-experiment-supports-the-axiom-that-quantum-operations-are-reversible) and didn't understand any of the answers well enough to paraphrase them here. Moreover, if you leave out the axiom that quantum circuit operations are reversible, you can do everything with classical probability. I read this somewhere but now I can't find the source :(**
-
-
-
 
 **One consequence is that I am more firmly entrenched in my view that I only care about quantum mechanics in how it produced quantum computing as a new paradigm in computer science. This paradigm doesn't need physics at all, and apparently the motivations for the models are still unclear, so we just won't discuss them any more. Sorry, physics lovers.]**

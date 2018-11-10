@@ -19,9 +19,7 @@ tags:
 
 I was recently an invited speaker in a series of STEM talks at Moraine Valley Community College. My talk was called "What can algorithms tell us about life, love, and happiness?" and it's on Youtube now so you can go watch it. The central theme of the talk was the lens of computation, that algorithms and theoretical computer science can provide new and novel explanations for the natural phenomena we observe in the world.
 
-
 [embed]https://www.youtube.com/watch?v=JH4DOjYX59Y[/embed]
-
 
 One of the main stories I told in the talk is about stable marriages and the deferred acceptance algorithm, which we [covered previously](http://jeremykun.com/2014/04/02/stable-marriages-and-designing-markets/) on this blog. However, one of the examples of the applications I gave was to kidney exchanges and school allocation. I said in the talk that it's a variant of the stable marriages, but it's not clear exactly how the two are related. This post will fill that gap and showcase some of the unity in the field of mechanism design.
 
@@ -29,17 +27,13 @@ Mechanism design, which is sometimes called market design, has a grand vision. 
 
 As usual, all of the code we used in this post is available in a [repository](https://github.com/j2kun/top-trading-cycles) on [this blog's Github page](https://github.com/j2kun/).
 
-
 ## Allocating houses with dictators
-
 
 In stable marriages we had $n$ men and $n$ women and we wanted to pair them off one to one in a way that there were no mutual incentives to cheat. Let's modify this scenario so that only one side has preferences and the other does not. The analogy here is that we have $n$ people and $n$ houses, but what do we want to guarantee? It doesn't make sense to say that people will cheat on each other, but it does make sense to ask that there's no way for people to swap houses and have everyone be at least as happy as before. Let's formalize this.
 
 Let $A$ be a set of people (agents) and $H$ be a set of houses, and $n = |A| = |H|$. A _matching_ is a one-to-one map from $A \to H$. Each agent is assumed to have a _strict_ preference over houses, and if we're given two houses $h_1, h_2$ and $a \in A$ prefers $h_1$ over $h_2$, we express that by saying $h_1 >_a h_2$. If we want to include the possibility that $h_1 = h_2$, we would say $h_1 \geq_a h_2$. I.e., either they're the same house, or $a$ strictly prefers $h_1$ more.
 
 **Definition:** A matching $M: A \to H$ is called _pareto-optimal _if there is no other matching $M$ with both of the following properties:
-
-
 
 	  * Every agent is at least as happy in $N$ as in $M$, i.e. for every $a \in A$, $N(a) \geq_a M(a)$.
 	  * Some agent is strictly happier in $N$, i.e. there exists an $a \in A$ with $N(a) >_a M(a)$.
@@ -54,9 +48,7 @@ First you pick an _arbitrary_ ordering of the agents and all houses are marked
 
 _Proof. _Let $M$ be the output of the algorithm. Suppose the theorem is false, that there is some $N$ that pareto-dominates $M$. Let $a$ be the first agent in the chosen ordering who gets a strictly better house in $N$ than in $M$. Whatever house $a$ gets, call it $N(a)$, it has to be a house that was unavailable at the time in the algorithm when $a$ got to pick (otherwise $a$ would have picked $N(a)$ during the algorithm!). This means that $a$ took the house chosen by some agent $b \in A$ whose turn to pick comes before $a$. But by assumption, $a$ was the _first_ agent to get a strictly better house, so $b$ has to end up with a worse house. This contradicts that every agent is at least as happy in $N$ than in $M$, so $N$ cannot pareto-dominate $M$.
 
-
 $\square$
-
 
 It's easy enough to implement this in Python. Each agent will be represented by its list of preferences, each object will be an integer, and the matching will be a dictionary. The only thing we need to do is pick a way to order the agents, and we'll just pick a random ordering. As usual, all of the code used in this post is available on [this blog's github page](https://github.com/j2kun/top-trading-cycles).
 
@@ -95,17 +87,13 @@ This algorithm is so simple it's almost hard to believe. But it get's better, be
 
 **Theorem [Svensson 98]: **Serial dictatorship is the only algorithm that produces a pareto-optimal matching and also has the following three properties:
 
-
-
 	  * Strategy-proof: no agent can improve their outcomes by lying about their preferences at the beginning.
 	  * Neutral: the outcome of the algorithm is unchanged if you permute the items (i.e., does not depend on the index of the item in some list)
 	  * Non-bossy: No agent can change the outcome of the algorithm without also changing the object they receive.
 
 And if we drop any one of these conditions there are other mechanisms that satisfy the rest. This theorem was proved [in this paper](http://www.eecs.harvard.edu/cs286r/courses/fall09/papers/svensson.pdf) by Lars-Gunnar Svensson in 1998, and it's not particularly long or complicated. The proof of the main theorem is about a page. It would be a great exercise in reading mathematics to go through the proof and summarize the main idea (you could even leave a comment with your answer!).
 
-
 ## Allocation with existing ownership
-
 
 Now we switch to a slightly different problem. There are still $n$ houses and $n$ agents, but now every agent already "owns" a house. The question becomes: can they improve their situation by trading houses? It shouldn't be immediately obvious whether this is possible, because a trade can happen in a "cycle" like the following:
 
@@ -117,8 +105,6 @@ Here A prefers the house of B, and B prefers the house of C, and C prefers the h
 This model was studied by [Shapley and Scarf in 1974](http://pareto.uab.es/jmasso/pdf/ShapleyScarfJME1974.pdf) (the same Shapley who did the deferred acceptance algorithm for stable marriages). Just as you'd expect, our goal is to find an optimal (re)-allocation of houses to agents in which there is no cycle the stands to improve. That is, there is no subset of agents that can jointly improve their standing. In formalizing this we call an "optimal" matching a _core matching. _Again $A$ is a set of agents, and $H$ is a set of houses.
 
 **Definition: **A matching $M: A \to H$ is called a _core_ matching if there is no subset $B \subset A$ and no matching $N: A \to H$ with the following properties:
-
-
 
 	  * For every $b \in B$, $N(b)$ is owned by some other agent in $B$ (trading only happens within $B$).
 	  * Every agent $b$ in $B$ is at least as happy as before, i.e. $N(b) \geq_b M(b)$ for all $b$.
@@ -147,21 +133,11 @@ The point is that when you remove a cycle, you can have the agents in that cyc
 
 The proof that this is a core matching is analogous to the proof that serial dictatorships were pareto-optimal. If there were some subset $B$ and some other matching $N$ under which $B$ does better, then one of these agents has to be the first to be removed in a cycle during the algorithm's run. But that agent got the best possible pick of a house, so by involving with $B$ that agent necessarily gets a worse outcome.
 
-
 $\square$
-
-
-
 
 This algorithm is commonly called the Top Trading Cycles algorithm, because it splits the set of agents and houses into a disjoint union of cycles, each of which is the best trade possible for every agent involved.
 
-
-
-
 Implementing the Top Trading Cycles algorithm in code requires us to be able to find cycles in graphs, but that isn't so hard. I implemented a simple data structure for a graph with helper functions that are specific to our kind of graph (i.e., every vertex has outdegree 1, so the algorithm to find cycles is simpler than something like [Tarjan's algorithm](https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm)). You can see the data structure on this [post's github repository](https://github.com/j2kun/top-trading-cycles) in the file graph.py. An example of using it:
-
-
-
 
 {{< highlight python >}}
 >>> G = Graph([1,'a',2,'b',3,'c',4,'d',5,'e',6,'f'])
@@ -192,7 +168,6 @@ def anyCycle(G):
       v = v.anyNext()
 
    return v
-
 
 # getAgents: graph, vertex -> set(vertex)
 # get the set of agents on a cycle starting at the given vertex
@@ -265,9 +240,7 @@ And that's it! We included a small suite of [test cases](https://github.com/j2ku
 
 One final nice thing about this algorithm is that it almost generalizes the serial dictatorship algorithm. What you do is rather than have each house point to its original owner, you just have all houses point to the first agent in the pre-specified ordering. Then a cycle will always have length 2, the first agent gets their preferred house, and in the next round the houses now point to the second agent in the ordering, and so on.
 
-
 ## Kidney exchange
-
 
 We still need one more ingredient to see the bridge from allocation problems to kidney exchanges. The setting is like this: say Manuel needs a kidney transplant, and he's lucky enough that his sister-in-law Anastasia wants to donate her kidney to Manuel. However, it turns out that Anastasia doesn't the same right blood/antibody type for a donation, and so even though she has a kidney to give, they can't give it to Manuel. Now one might say "just sell your kidney and use the money to buy a kidney with the right type!" Turns out that's illegal; at some point we as a society decided that it's immoral to sell organs. But it _is_ legal to exchange a kidney for a kidney. So if Manuel and Anastasia can find a pair of people both of whom happen to have the right blood types, they can arrange for a swap.
 

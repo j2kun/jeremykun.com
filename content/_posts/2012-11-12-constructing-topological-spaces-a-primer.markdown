@@ -12,9 +12,7 @@ categories:
 
 [Last time](http://jeremykun.wordpress.com/2012/11/04/topological-spaces-a-primer/) we investigated the (very unintuitive) concept of a topological space as a set of "points" endowed with a description of which subsets are open. Now in order to actually arrive at a discussion of interesting and useful topological spaces, we need to be able to take simple topological spaces and build them up into more complex ones. This will take the form of _subspaces _and_ quotients__, _and through these we will make rigorous the notion of "gluing" and "building" spaces.
 
-
 ## Subspaces of Euclidean Space
-
 
 One of the simpler spaces we looked at last time was the circle "sitting inside" the real place $\mathbb{R}^2$. But there is a disconnect in what makes this circle itself a topological space. Indeed, we can write down a description of the points in a circle, but what are the open sets?
 
@@ -22,29 +20,15 @@ The fact that the circle "sits inside" the real plane points us to the correct d
 
 **Definition:** Let $X$ be a topological space with topology $T$ and $Y \subset X$ a subset. The _subspace topology of _$Y$_ in _$X$ is defined as the topology
 
-
 $T' = \left \{ Y \cap U : U \in T \textup{ is an open set of } X \right \}$
-
-
-
 
 Let us verify that this is indeed a topology. Clearly the empty set and all of $Y$ are in $T'$ since $\emptyset = \emptyset \cap Y, Y = Y \cap X$. Now given a collection of open sets $Y \cap U_i$, their union is
 
-
-
-
 $\displaystyle \bigcup_i (Y \cap U_i) = Y \cap \left ( \bigcup_i U_i \right )$
-
-
-
 
 And as the union $\cup_i U_i$ is open in $X$, the right hand side is in $T'$. A similar argument shows that finite intersections are in $T'$, so this is a valid topology.
 
-
-
-
 Now there are two important spaces we need to define (as subspaces of Euclidean space) which will form the building blocks for all of our constructions. The first is the generalization of a sphere to any dimension.
-
 
 **Definition: **The set of points $S^1 = \left \{ (x,y) \in \mathbb{R}^2 : x^2 + y^2 = 1 \right \}$ is called the _circle_, or the _1-sphere_, and is a topological space with the subspace topology of $\mathbb{R}^2$.
 
@@ -63,55 +47,26 @@ The second space we'd like to define is called the _simplex_ (because it's so "
 
 **Definition:** The standard $n$-_simplex_ is the subset of $\mathbb{R}^{n+1}$ taken as the convex hull of the $n+1$ points:
 
-
 $(1,0,\dots,0), (0,1,0,\dots,0),\dots, (0,\dots,0,1)$
 
-
-
-
 As taken with the subspace topology.
-
-
-
 
 [caption id="" align="alignleft" width="96"][![](http://upload.wikimedia.org/wikipedia/commons/3/38/2D-simplex.svg)
 ](http://upload.wikimedia.org/wikipedia/commons/3/38/2D-simplex.svg) The 2-simplex (credit Wikipedia)[/caption]
 
-
 For example, the 0-simplex is a single point; the 1-simplex is a closed interval, which we usually write $[0,1]$; the 2-simplex is a filled-in triangle; the 3-simplex is a filled-in tetrahedron, and so on.
-
-
-
 
 The reader should note that topologically, the standard $n$-simplex is equivalent to _any_ convex hull of $n+1$ points in [general position](http://en.wikipedia.org/wiki/General_position). Indeed, it is not hard (but very tedious) to construct a homeomorphism between two such subsets. It is additionally obvious, but perhaps even harder to make rigorous, that an $n$-simplex is homeomorphic to an $n$-disk.
 
-
-
-
 In fact, we will soon be able to define the sphere in terms of the n-simplex, and for our applications to programming, we will build all of our spaces purely from simplices. As such, we will call them "simplicial complexes."
-
-
-
 
 Now there is a very important distinction we have to make in defining topological spaces. Even though we view one space as "sitting inside" another, for the purpose of the topological space itself nothing else in the universe exists. The circle is a circle disregarding the ambient space it lives in _or how it lives there_. To make this rigorous, we call the act of viewing a space as "being inside" another space an embedding.
 
-
-
-
 **Definition: **Let $X, Y$ be arbitrary topological spaces. An _embedding_ of $X$ into $Y$ is an injective map $f:X \to Y$ which is a homeomorphism onto its image. That is, we need $X$ to be homeomorphic to $f(X)$, where the latter has the subspace topology of $Y$.
-
-
-
 
 Notice that the injectivity condition forces the image $f(X)$ to not self-intersect. So last time our picture of the Klein Bottle was not an embedding in $\mathbb{R}^3$. (Instead, it was an _immersion_, but we aren't sophisticated enough to define this yet.)
 
-
-
-
 Here are six examples of the circle $S^1$ embedded into various topological spaces.
-
-
-
 
 [caption id="attachment_2560" align="aligncenter" width="584"][![](http://jeremykun.files.wordpress.com/2012/11/s1-examples.png)
 ](http://jeremykun.files.wordpress.com/2012/11/s1-examples.png) Various examples of the circle embedded in other spaces.[/caption]
@@ -122,15 +77,11 @@ Another important and simple example of an embedding is a _simple path_ in a sp
 
 So we're beginning to see precisely how wild and crazy these embeddings can be (and these examples are not even pathological!) which is part of what makes topology such a flexible and useful subject. Indeed, it's going to get crazier once we start to glue spaces together.
 
-
 ## Quotients of Sets: a Brief Tangent
-
 
 In order to get a good feel for what a quotient space looks like, we need to be familiar with the idea of a quotient of sets. In our primer on set theory we pointed the reader to the Wikipedia page on equivalence relations, but since we're actually going to use them in a nontrivial way, we should remind the reader of the basics. Roughly speaking, an equivalence relation is a generalization of "equality," in that we define a new way to identify two elements of a set as "equalivalent." The quotient of a set by an equivalence relation will then be the partition of the set into subsets of things which are identified as equivalent. Each subset in this partition is considered a single element of the quotient set. Let's make this rigorous.
 
 **Definition:** An equivalence relation $\sim$ on a set $X$ is a relation on $X \times X$ which satisfies the following three properties:
-
-
 
 	  * $x \sim x$ for all $x \in X$ (reflexivity).
 	  * if $x \sim y$ then $y \sim x$ (symmetry).
@@ -146,36 +97,19 @@ What we'd like to do now is simply forget that elements of one equivalence class
 
 A bit of notation: we will denote the equivalence class of an element $x \in X$ using square brackets $[x]$, and hence if any two elements $x,y \in X$ are equivalent, we will write $[x] = [y]$. This association defines an important map called the _projection_ of $X$ onto $X/\sim$:
 
-
 $\pi : X \to X /\sim$
-
-
-
 
 defined by $\pi(x) = [x]$. Naturally, this map is a surjection (since every equivalence class is nonempty), and it actually has a very important [universal property](http://en.wikipedia.org/wiki/Universal_property) which we will only mention briefly here, but will explore in more depth in future posts. That is, if $g: X \to Y$ is a function which preserves the equivalence relation structure (whenever $x \sim y$, it must be that $g(x) = g(y)$), then there is a unique map from the quotient $f: X / \sim \to Y$ so that $g$ "factors through" the quotient ($g = f \circ \pi$). Since we somehow think of this projection as a "universal" construction, we sometimes call $\pi$ the _canonical projection_. We are not saying much with that statement, but if it sounds mysterious the reader may ignore it. The important thing to take away from the projection map is that we will use it to define the open sets of $X/\sim$ when we return to topological spaces.
 
-
 A classic example of a quotient set is that of rational numbers. Indeed, when we think of two fractions, they are pairs of integers with a special equivalence relation. Specifically, $a/b = c/d$ as numbers if and only if $ad = bc$. To view this as a quotient set, let $X$ be the set $\mathbb{Z} \times (\mathbb{Z} - \left \{ 0 \right \})$ (that is, pairs of integers where the second is not zero). Define a relation $\sim$ on $X$ by $(a,b) \sim (c,d)$ if $ad - bc = 0$. It is easy to see this is an equivalence relation: reflexivity and symmetry are trivially satisfied. Suppose $(a,b) \sim (c,d), (c,d) \sim (e,f)$. Then $ad = bc, cf = ed,$ and since we want to prove $af = be$ we can investigate the quantity $af$:
-
 
 $(af)d = (ad)f = (bc)f = b(cf) = b(ed) = (be)d$
 
-
-
-
 In particular, since $d$ is a denominator (the second entry of a pair), it cannot be zero, and so we can divide through by $d$ to get $af = be$. There is a nice pictorial version of this argument as well, which we leave for the bored reader to think about.
-
-
-
 
 So now that $\sim$ is an equivalence relation, we can define the rational numbers $\mathbb{Q}$ to be the quotient $X/\sim$. As we just saw, this agrees with our usual notion of what it means for two fractions to be equal. Each equivalence class $[(a,b)]$ in this set can be represented (arbitrarily) by the pair $(a,b)$ which are relatively prime (since this uniquely determines a fraction). It is another story to ask whether the addition operation behaves well under this quotient (of course it does), and we will revisit this kind of question when we investigate the theory of groups.
 
-
-
-
-
 ## Quotient Spaces
-
 
 Now that we know what a quotient of a set is, it is not hard to define a quotient of a topological space. It is just the quotient as a set with a special topology.
 
@@ -201,35 +135,27 @@ As a second example, let us take a filled in unit square in the plane, and obser
 
 Note that this is homeomorphic to the disk, so we will just call it the disk. The first and simplest example is forming the Torus as a quotient of the disk by gluing opposite edges as shown.
 
-
 [![](http://jeremykun.files.wordpress.com/2012/11/torus-quotient.png)
 ](http://jeremykun.files.wordpress.com/2012/11/torus-quotient.png)
-
 
 That is, we create a partition by identifying points on the boundary which are either horizontally opposite or vertically opposite (we only glue blue to blue and red to red). One can think of simply attaching one edge to the other in the direction of the arrows. The colors indicate which edges are glued to each other. Gluing one edge first gives a cylinder, and gluing the other edges together (which are now circles) gives the torus.
 
 The second example is slightly more complicated: instead of gluing both of the edges in the same direction, switch one of the edges so that its glued _in opposite directions_. That is, glue according to the following picture:
 
-
 [![](http://jeremykun.files.wordpress.com/2012/11/klein-bottle-quotient.png)
 ](http://jeremykun.files.wordpress.com/2012/11/klein-bottle-quotient.png)
 
-
 Now imagine this as taking the cylinder again (gluing the edges which are still in the same direction) and gluing the boundary circles together, except with a twist. If this is hard to envision in three dimensions, that's because it's impossible. This space is the same Klein bottle we saw last time, and if you imagine one end of the cylinder passing through the cylinder meet the other boundary circle from _inside_, you start to see this picture:
-
 
 [![](http://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Klein_bottle.svg/240px-Klein_bottle.svg.png)
 ](http://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Klein_bottle.svg/240px-Klein_bottle.svg.png)
-
 
 The neat thing about this is that we can still define the quotient and it will make sense regardless of whether we can picture it. Part of the allure of topological spaces is that we can define them so simply, but understanding their structure is so difficult.
 
 A perfect example of this, and our last space to be defined as a quotient of a disk, is the real projective plane $\mathbb{R}\textup{P}^2$. In particular, it's the quotient of the disk where _both_ sides are glued in opposite directions.
 
-
 [![](http://jeremykun.files.wordpress.com/2012/11/projective-plane-quotient.png)
 ](http://jeremykun.files.wordpress.com/2012/11/projective-plane-quotient.png)
-
 
 Perhaps it is easier to see this as a quotient of a "circular" disk, since we are really just identifying the top and bottom semicircles by declaring antipodal points to be equivalent. Convince yourself that the following construction is homeomorphic to that in the above picture:
 
@@ -240,57 +166,30 @@ Now $\mathbb{R}\textup{P}^2$ is the most mysterious of the spaces we've seen so 
 
 We will explore the properties of $\mathbb{R}\textup{P}^2$, the Klein bottle, and the torus in future topology primers, but for now we still need to work on building up spaces.
 
-
 ## Disjoint Unions and Gluing along a Function
-
-
-
 
 Perhaps more useful than gluing one space to itself is gluing one space to another.
 
-
-
-
 **Definition:** Let $X,Y$ be topological spaces and let $f:U \to Y$ be a continuous function on some subspace $U \subset X$. To _glue _$X$ _to_ $Y$ _along _$f$ is to form the quotient space $(X \coprod Y)/\sim$, where $\coprod$ denotes a disjoint union and $\sim$ is defined by declaring the only non-trivial relations to be $x \sim f(x)$. We denote this space $X \coprod_f Y$.
-
-
-
 
 The disjoint union is just a formality: it says that even if our two spaces $X$ and $Y$ come from the same ambient space (say, two copies of the unit disk in the plane), we consider the points from $X$ to be formally disjoint from those of $Y$, and then take a union. There is a rigorous way to view this, but we will not need it on this blog until we reach category theory.
 
-
-
-
 For example, let's glue two disks together along their boundary to form $S^2$. That is, let $X = Y = D^2$, and consider $S^1 \subset D^2$ to be the boundary circle. Define $f:S^1 \to Y$ by mapping isomorphically onto the boundary of $Y$. Then the quotient $X \coprod_f Y$ is a sphere. To visualize this concretely, just imagine taking two open hemispheres and gluing them along their common equator.
-
-
-
 
 [caption id="attachment_2590" align="aligncenter" width="584"][![](http://jeremykun.files.wordpress.com/2012/11/disks-to-sphere.png)
 ](http://jeremykun.files.wordpress.com/2012/11/disks-to-sphere.png) Glue two disks along their common boundary by gluing the (black) boundary of one to the boundary of the other. This creates a sphere.[/caption]
 
-
 In a similar way, we can achieve the higher dimensional $n$-sphere by gluing two $n$-disks along their common boundary $S^{n-1}$. That is, every higher dimensional sphere is comprised of two "hemispheres." This gives us one potentially awkward way of viewing $S^3$ by taking two filled in spheres ($D^3$) and gluing them together along their boundary surfaces. Note that this would involve contorting one of the spheres into a very embarrassing position, and it is considered rude to do it in public.
-
-
-
 
 Now that we've unlocked this new ability to glue spaces together, there is a myriad of interesting spaces we can build and tinker with. As gratifying and fruitful as this may be, we should have some way of organizing a class of such spaces so that we may prove theorems about all of them simultaneously. This will be the class of simplicial complexes.
 
-
-
-
-
 ## Simplicial Complexes
-
 
 Now we will construct a large class of topological spaces which are particularly tractable for analysis and manipulation in a computer. They are called _simplicial complexes_, and they are built up from the $n$-simplices we defined earlier by gluing along sub-simplices.
 
 Recall that an $n$-simplex was the convex hull of any $n+1$ points in general position in $\mathbb{R}^{n+1}$. Let $\sigma$ be an $n$-simplex. We add a few natural definitions by calling each of the original $n+1$ points used to define $\sigma$ a _vertex_ of $\sigma$, and the convex hull of any subset of the vertices of $\sigma$ a _face_ of $\sigma$. In particular, this means that for a $3$-simplex (a tetrahedron), we consider each triangle on the boundary, each edge connecting two vertices, and each vertex itself a "face" of the simplex. If we need to distinguish a certain kind of face, we will prefix it by the number of points used to define it. i.e., an edge of the tetrahedron would be a $2$-face.
 
 **Definition:** A _simplicial complex_ is a topological space realized as a union of any collection of simplices (of possibly varying dimension) $\Sigma$ which has the following two properties:
-
-
 
 	  * Any face of a simplex $\Sigma$ is also in $\Sigma$.
 	  * The intersection of any two simplices of $\Sigma$ is also a simplex of $\Sigma$.

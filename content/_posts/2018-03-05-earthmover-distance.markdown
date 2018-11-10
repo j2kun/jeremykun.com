@@ -30,11 +30,9 @@ For example, if I have the following three "points" in the plane, as indicated b
 
 ![example-points.png](https://jeremykun.files.wordpress.com/2018/03/example-points.png)
 
-
 It's not obvious, and there are multiple factors at work: the red points have fewer samples, but we can be more certain about the position; the blue points are less certain, but the closest non-blue point to a blue point is green; and the green points are equally plausibly "close to red" and "close to blue." The centers of masses of the three sample sets are close to an equilateral triangle. In our example the "points" don't overlap, but of course they could. And in particular, there should probably be a nonzero distance between two points whose sample sets have the same center of mass, as below. The distance quantifies the uncertainty.
 
 ![same-centers.png](https://jeremykun.files.wordpress.com/2018/03/same-centers.png)
-
 
 All this is to say that it's not obvious how to define a distance measure that is consistent with perceptual ideas of what geometry and distance should be.
 
@@ -43,8 +41,6 @@ All this is to say that it's not obvious how to define a distance measure that i
 Each $x \in A$ corresponds to a pile of dirt of height $p_x$, and each $y \in B$ corresponds to a hole of depth $p_y$. The cost of moving a unit of dirt from $x$ to $y$ is the Euclidean distance $d(x, y)$ between the points (or whatever hipster metric you want to use).
 
 Let $z_{x, y}$ be a real variable corresponding to an amount of dirt to move from $x \in A$ to $y \in B$, with cost $d(x, y)$. Then the constraints are:
-
-
 
 	  * Each $z_{x, y} \geq 0$, so dirt only moves from $x$ to $y$.
 	  * Every pile $x \in A$ must vanish, i.e. for each fixed $x \in A$, $\sum_{y \in B} z_{x,y} = p_x$.
@@ -101,7 +97,6 @@ One might ask: why not use other measures of dissimilarity for probability distr
 
 ![Screen Shot 2018-03-03 at 6.11.00 PM.png](https://jeremykun.files.wordpress.com/2018/03/screen-shot-2018-03-03-at-6-11-00-pm.png)
 
-
 Also, why not just model the samples using, say, a normal distribution, and then compute the distance based on the parameters of the distributions? That is possible, and in fact makes for a potentially [more efficient technique](https://en.wikipedia.org/wiki/Wasserstein_metric#Normal_distributions), but you lose some information by doing this. Ignoring that your data might not be approximately normal (it might have some curvature), with Earthmover distance, you get point-by-point details about how each data point affects the outcome.
 
 This kind of attention to detail can be very important in certain situations. One that I've been paying close attention to recently is the problem of studying [gerrymandering from a mathematical perspective](https://sites.tufts.edu/gerrymandr/). [Justin Solomon](http://people.csail.mit.edu/jsolomon/) of MIT is a champion of the Earthmover distance ([see his fascinating talk here for more](https://www.youtube.com/watch?v=HJIAhW1FIZ0&t=141s), with [slides](https://sites.tufts.edu/gerrymandr/files/2017/07/solomon-aug2017-math_transport_parallel_session.pdf)) which is just one topic in a field called "optimal transport."
@@ -113,6 +108,5 @@ This has the potential to be useful in redistricting because of the nature of th
 Others in the field have come up with [transparency](https://arxiv.org/abs/1304.5784) techniques to make it clearer how the Earthmover distance relates to the geometry of the underlying space. This one is particularly fun because the explanations result in a path traveled from the start to the finish, and by setting up the underlying metric in just such a way, you can watch the distribution navigate a maze to get to its target. I like to imagine tiny ants carrying all that dirt.
 
 ![Screen Shot 2018-03-03 at 6.15.50 PM.png](https://jeremykun.files.wordpress.com/2018/03/screen-shot-2018-03-03-at-6-15-50-pm.png)
-
 
 Finally, work of Shirdhonkar and Jacobs provide [approximation](http://ttic.uchicago.edu/~ssameer/Research/Papers/WEMD_CVPR08.pdf) algorithms that allow linear-time computation, instead of the worst-case-cubic runtime of a linear solver.

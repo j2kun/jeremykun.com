@@ -50,84 +50,40 @@ Another, perhaps more famous version of their technique, since it was more widel
 
 This one gets to the heart of the question of what the eye sees at close range versus long range. And it turns out that you can address this question (and create brilliant works of art like the ones above) with some basic Fourier analysis.
 
-
 ## Intuitive Fourier analysis (and references)
-
 
 The basic idea of Fourier analysis is the idea that smooth functions are hard to understand, and realization of how great it would be if we could decompose them into simpler pieces. Decomposing complex things into simpler parts is one of the main tools in all of mathematics, and Fourier analysis is one of the clearest examples of its application.
 
 In particular, the things we care about are functions $f(x)$ with specific properties I won't detail here like "smoothness" and "finiteness." And the building blocks are the complex exponential functions
 
-
 $\displaystyle e^{2 \pi i kx}$
-
-
-
 
 where $k$ can be any integer. If you have done some linear algebra (and ignore this if you haven't), then I can summarize the idea succinctly by saying the complex exponentials form an orthonormal basis for the vector space of square-integrable functions.
 
-
-
-
 Back in colloquial language, what the Fourier theorem says is that _any_ function of the kind we care about can be broken down into (perhaps infinitely many) pieces of this form called _Fourier coefficients _(I'm abusing the word "coefficient" here). The way it's breaking down is also pleasingly simple: it's a linear combination. Informally that means you're just adding up all the complex exponentials with specific weights for each one. Mathematically, the conversion from the function to its Fourier coefficients is called the _Fourier transform,_ and the set of all Fourier coefficients together is called the _Fourier spectrum_. So if you want to learn about your function $f$, or more importantly _modify_ it in some way, you can inspect and modify its spectrum instead. The reason this is useful is that Fourier coefficients have very natural interpretations in sound and images, as we'll see for the latter.
-
-
-
 
 We wrote $f(x)$ and the complex exponential as a function of _one_ real variable, but you can do the same thing for two variables (or a hundred!). And, if you're willing to do some abusing and ignore the complexness of complex numbers, then you can visualize "complex exponentials in two variables" as images of stripes whose orientation and thickness correspond to two parameters (i.e., the $k$ in the offset equation becomes two coefficients). The video below shows how such complex exponentials can be used to build up an image of striking detail. The left frame shows which complex exponential is currently being added, and the right frame shows the layers all put together. I think the result is quite beautiful.
 
-
-
-
 [youtube=https://www.youtube.com/watch?v=D9ziTuJ3OCw]
-
-
-
 
 This just goes to show how powerful da Vinci's idea of fine layering is: it's as powerful as possible because it can create _any image! _
 
-
-
-
 Now for digital images like the one above, everything is finite. So rather than have an infinitely precise function and a corresponding infinite set of Fourier coefficients, you get a finite list of sampled values (pixels) and a corresponding grid of Fourier coefficients. But the important and beautiful theorem is, and I want to emphasize how groundbreakingly important this is:
-
-
-
 
 If you give me an image (or any function!) I can _compute _the decomposition very efficiently.
 
-
-
-
 And the same theorem lets you go the other way: if you give me the decomposition, I can compute the original function's samples quite easily. The algorithm to do this is called the Fast Fourier transform, and if _any_ piece of mathematics or computer science has a legitimate claim to changing the world, it's the Fast Fourier transform. It's hard to [pinpoint specific applications](http://dsp.stackexchange.com/questions/69/why-is-the-fourier-transform-so-important), because the transform is so ubiquitous across science and engineering, but we definitely would not have cell phones, satellites, internet, or electronics anywhere near as small as we do without the Fourier transform and the ability to compute it quickly.
-
-
-
 
 Constructing hybrid images is one particularly nice example of manipulating the Fourier spectrum of two images, and then combining them back into a single image. That's what we'll do now.
 
-
-
-
 As a side note, by the nature of brevity, the discussion above is a big disservice to the mathematics involved. I summarized and abused in ways that mathematicians would object to. If you want to see a much better treatment of the material, this blog has a long series of posts developing Fourier transforms and their discrete analogues from scratch. See our four [primers](http://jeremykun.com/primers/), which lead into the main content posts where we [implement the Fast Fourier transform](http://jeremykun.com/2012/07/18/the-fast-fourier-transform/) in Python and use it to [apply digital watermarks to an image](http://jeremykun.com/2013/12/30/the-two-dimensional-fourier-transform-and-digital-watermarking/). Note that in those posts, as in this one, all of the materials and code used are posted on [this blog's Github page](https://github.com/j2kun/).
-
-
-
-
 
 ## High and low frequencies
 
-
-
-
 For images, interpreting ranges of Fourier coefficients is easy to do. You can imagine the coefficients lying on a grid in the plane like so:
-
-
-
 
 [![sherlock-spectrum](http://jeremykun.files.wordpress.com/2013/12/sherlock-spectrum.png)
 ](http://jeremykun.files.wordpress.com/2013/12/sherlock-spectrum.png)
-
 
 Each dot in this grid corresponds to how "intense" the Fourier coefficient is. That is, it's the magnitude of the (complex) coefficient of the corresponding complex exponential. Now the points that are closer to the origin correspond informally to the broad, smooth changes in the image. These are called "low frequency" coefficients. And points that are further away correspond to sharp changes and edges, and are likewise called "high frequency" components. So the if you wanted to "hybridize" two images, you'd pick ones with complementary intensities in these regions. That's why Einstein (with all his wiry hair and wrinkles) and Monroe (with smooth features) are such good candidates. That's also why, when we layered the Fourier components one by one in the video from earlier, we see the fuzzy shapes emerge before the fine details.
 
@@ -135,16 +91,9 @@ Moreover, we can "extract" the high frequency Fourier components by simply remo
 
 **Definition: **The _Gaussian filter function_ with variance $\sigma$ and center $(a, b)$ is the function
 
-
 $\displaystyle g(x,y) = e^{-\frac{(x - a)^2 + (y - b)^2}{2 \sigma^2}}$
 
-
-
-
 It looks like this
-
-
-
 
 [caption id="attachment_5363" align="aligncenter" width="512"][![image credit Wikipedia](http://jeremykun.files.wordpress.com/2014/09/gaussian2d.png)
 ](https://jeremykun.files.wordpress.com/2014/09/gaussian2d.png) image credit Wikipedia[/caption]
@@ -243,9 +192,7 @@ Interestingly enough, doing it in reverse doesn't give quite as pleasing results
 
 You can see some of the other hybrid images Oliva et al constructed over at their [web gallery](http://cvcl.mit.edu/hybrid_gallery/gallery.html).
 
-
 ## Next Steps
-
 
 How can we take this idea further? There are a few avenues I can think of. The most obvious one would be to see how this extends to video. Could one come up with generic parameters so that when two videos are hybridized (frame by frame, using this technique) it is only easy to see one at close distance? Or else, could we apply a three-dimensional transform to a video and modify that in some principled way? I think one would not likely find anything astounding, but who knows?
 

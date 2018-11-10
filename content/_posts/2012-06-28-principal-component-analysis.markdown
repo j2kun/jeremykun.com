@@ -60,4 +60,3 @@ Because the principal components with larger eigenvalues correspond to features 
 
 In many cases of high-dimensional data, one can encapsulate more than 90% of the total variation using a small fraction of the principal components. In our post on eigenfaces we used a relatively homogeneous dataset of images; our recognition algorithm performed quite well using only about 20 out of 36,000 principal components. Note that there were also some linear algebra tricks to compute only those principal components which had nonzero eigenvalues. In any case, it is clear that if the data is nice enough, principal component analysis is a vey powerful tool.
 
-

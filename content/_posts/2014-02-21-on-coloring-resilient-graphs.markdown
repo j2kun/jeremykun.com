@@ -23,23 +23,11 @@ tags:
 
 I'm pleased to announce that [another paper of mine](http://arxiv.org/abs/1402.4376) is finished. This one just got accepted to [MFCS 2014](http://www.inf.u-szeged.hu/mfcs2014/), which is being held in Budapest this year (this whole research thing is exciting!). This is joint work with my advisor, Lev Reyzin. As with my [first paper](http://jeremykun.com/2013/09/09/anti-coordination-games-and-stable-graph-colorings/), I'd like to explain things here on my blog a bit more informally than a scholarly article allows.
 
-
 ## A Recent History of Graph Coloring
-
-
-
 
 One of the first important things you learn when you study graphs is that [coloring graphs is hard](http://jeremykun.com/2011/07/14/graph-coloring-or-proof-by-crayon/). Remember that _coloring_ a graph with $k$ colors means that you assign each vertex a color (a number in $\left \{ 1, 2, \dots, k \right \}$) so that no vertex is adjacent to a vertex of the same color (no edge is monochromatic). In fact, even _deciding_ whether a graph can be colored with just $3$ colors (not to mention _finding_ such a coloring) has no known polynomial time algorithm. It's what's called [NP-hard](http://jeremykun.com/2012/02/23/p-vs-np-a-primer-and-a-proof-written-in-racket/), which means that almost everyone believes it's hopeless to solve efficiently in the worst case.
 
-
-
-
 One might think that there's some sort of gradient to this problem, that as the graphs get more "complicated" it becomes algorithmically harder to figure out how colorable they are. There are some notions of "simplicity" and "complexity" for graphs, but they hardly fall on a gradient. Just to give the reader an idea, here are some ways to make graph coloring easy:
-
-
-
-
-
 
 	  * Make sure your graph is [planar](http://en.wikipedia.org/wiki/Planar_graph). Then deciding 4-colorability is easy because the answer is always yes.
 	  * Make sure your graph is triangle-free _and _planar. Then finding a 3-coloring is easy.
@@ -59,15 +47,11 @@ The best upper bounds, algorithms to find approximate colorings of 3-colorable g
 
 The lower bounds are a bit more hopeful; it's known to be NP-hard to color a $k$-colorable graph using $2^{\sqrt[3]{k}}$ colors if $k$ is sufficiently large. There are a handful of other linear lower bounds that work for all $k \geq 3$, but to my knowledge this is the best asymptotic result. The big open problem (which I doubt many people have their eye on considering how hard it seems) is to find an upper bound depending only on $k$. I wonder offhand whether a ridiculous bound like $k^{k^k}$ colors would be considered progress, and I bet it would.
 
-
 ## Our Idea: Resilience
-
 
 So without big breakthroughs on the front of approximate graph coloring, we propose a new front for investigation. The idea is that we consider graphs which are not only colorable, but remain colorable under the adversarial operation of adding a few new edges. More formally,
 
 **Definition:** A graph $G = (V,E)$ is called $r$-resiliently $k$-colorable if two properties hold
-
-
 
 	  1. $G$ is $k$-colorable.
 	  2. For any set $E'$ of $r$ edges disjoint from $E$, the graph $G' = (V, E \cup E')$ is $k$-colorable.
@@ -108,7 +92,6 @@ Unfortunately the only way that I know how to compute resilience properties is v
     3       21.3     2.1     0.2     0.0
     4       77.6    44.2    17.0     4.5
 
-
 The idea is this: if this trend continues, that only some small fraction of all 3-colorable graphs are, say, 2-resiliently 3-colorable graphs, then it should be easy to color them. Why? Because resilience imposes structure on the graphs, and that structure can hopefully be realized in a way that allows us to color easily. We don't know how to _characterize_ that structure yet, but we can give some structural implications for sufficiently resilient graphs.
 
 For example, a 7-resiliently 5-colorable graph can't have any subgraphs on 6 vertices with $\binom{6}{2} - 7$ edges, or else we can add enough edges to get a 6-clique which isn't 5-colorable. This gives an obvious general property about the sizes of subgraphs in resilient graphs, but as a more concrete instance let's think about 2-resilient 3-colorable graphs $G$. This property says that no set of 4 vertices may have more than $4 = \binom{4}{2} - 2$ edges in $G$. This rules out 4-cycles and non-isolated triangles, but is it enough to make 3-coloring easy? We can say that $G$ is a triangle-free graph and a bunch of disjoint triangles, but it's known 3-colorable non-planar triangle-free graphs can have arbitrarily large chromatic number, and so the coloring problem is hard. Moreover, 2-resilience isn't enough to make $G$ planar. It's not hard to construct a non-planar counterexample, but proving it's 2-resilient is a tedious task I relegated to my computer.
@@ -129,17 +112,12 @@ There is one additional lower bound comes from the fact that it's NP-hard to $2^
 
 [The paper](http://arxiv.org/abs/1402.4376) contains the details of how these observations are proved, in addition to the NP-hardness proof for 1-resiliently 3-colorable graphs. This leaves the following open problems:
 
-
-
 	  * Get an unconditional, concrete linear resilience lower bound for hardness.
 	  * Find an algorithm that colors graphs that are less resilient than $O(k^2)$. Even determining specific cells like (4,5) or (5,9) would likely give enough insight for this.
 	  * Classify the tantalizing (3,2) cell (determine if it's hard or easy to 3-color a 2-resiliently 3-colorable graph) or even better the (4,2) cell.
 	  * Find a way to relate resilient coloring back to general coloring. For example, if such and such cell is hard, then you can't approximate k-coloring to within so many colors.
 
-
-
 ## But Wait, There's More!
-
 
 Though this paper focuses on graph coloring, our idea of resilience doesn't stop there (and this is one reason I like it so much!). One can imagine a notion of resilience for almost _any_ combinatorial problem. If you're trying to [satisfy boolean formulas](http://en.wikipedia.org/wiki/Boolean_satisfiability_problem), you can define resilience to mean that you fix the truth value of some variable (we do this in the paper to build up to our main NP-hardness result of 3-coloring 1-resiliently 3-colorable graphs). You can define resilient [set cover](http://en.wikipedia.org/wiki/Set_cover) to allow the removal of some sets. And any other sort of graph-based problem (Traveling salesman, max cut, etc) can be resiliencified by adding or removing edges, whichever makes the problem more constrained.
 

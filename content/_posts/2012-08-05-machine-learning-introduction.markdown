@@ -11,7 +11,6 @@ categories:
 
 ## A Series on Machine Learning
 
-
 These days an absolutely staggering amount of research and development work goes into the very coarsely defined field of "machine learning." Part of the reason why it's so coarsely defined is because it borrows techniques from so many different fields. Many problems in machine learning can be phrased in different but equivalent ways. While they are often purely optimization problems, such techniques can be expressed in terms of statistical inference, have biological interpretations, or have a distinctly geometric and topological flavor. As a result, machine learning has come to be understood as a toolbox of techniques as opposed to a unified theory.
 
 It is unsurprising, then, that such a multitude of mathematics supports this diversified discipline. Practitioners (that is, algorithm designers) rely on statistical inference, linear algebra, convex optimization, and dabble in graph theory, functional analysis, and topology. Of course, above all else machine learning focuses on _algorithms_ and _data._
@@ -20,13 +19,9 @@ The general pattern, which we'll see over and over again as we derive and implem
 
 It is this author's personal belief that the most important part of machine learning is the mathematical foundation, followed closely by efficiency in implementation details. The thesis is that natural data has inherent structure, and that the goal of machine learning is to represent this and utilize it. To make true progress, one must represent and analyze structure abstractly. And so this blog will focus predominantly on mathematical underpinnings of the algorithms and the mathematical structure of data.
 
-
 ## General Plans
 
-
 While we do intend to cover the classical topics of machine learning, such as neural networks and decision trees, we would like to quickly approach more sophisticated modern techniques such as support vector machines and methods based on [Kolmogorov complexity](http://jeremykun.wordpress.com/2012/04/21/kolmogorov-complexity-a-primer/). And so we put forth the ambitious list of topics (in no particular order). **[update: it's been a while since this initial post, and we've covered some of the topics listed below, as indicated by the links]**
-
-
 
 	  * [K nearest neighbors](http://jeremykun.com/2012/08/26/k-nearest-neighbors-and-handwritten-digit-classification/)
 	  * [Decision trees](http://jeremykun.com/2012/10/08/decision-trees-and-political-party-classification/)

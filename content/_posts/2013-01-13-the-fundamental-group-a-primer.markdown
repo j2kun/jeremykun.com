@@ -18,9 +18,7 @@ tags:
 
 _Being part of the subject of algebraic topology, this post assumes the reader has read our previous primers on both [topology](http://jeremykun.wordpress.com/2012/11/04/topological-spaces-a-primer/) and [group theory](http://jeremykun.wordpress.com/2012/12/08/groups-a-primer/). As a warning to the reader, it is more advanced than most of the math presented on this blog, and it is woefully incomplete. Nevertheless, the aim is to provide a high level picture of the field with a peek at the details._
 
-
 ## An Intuitive Topological Invariant
-
 
 Our eventual goal is to get comfortable with the notion of the "homology group" of a topological space. That is, to each topological space we will associate a group (really, a family of groups) in such a way that whenever two topological spaces are homeomorphic their associated groups will be isomorphic. In other words, we will be able to distinguish between two spaces by computing their associated groups (if even one of the groups is different).
 
@@ -28,36 +26,17 @@ In general, there may be many many ways to associate a group with an object (for
 
 The simplest example of this is a circle $S^1$:
 
-
 ![](http://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Circle_-_black_simple.svg/500px-Circle_-_black_simple.svg.png)
-
-
-
-
 
 That is, we think of this space (not embedded in any particular Euclidean space) as having a single one-dimensional "hole" in it. Furthermore, a sphere $S^2$ has a two-dimensional "hole" in it (the hollow interior).
 
-
-
-
 So our approach to make "holes" rigorous will follow a commonly tread mathematical trail: come up with a definition which fits with our intuition for these special cases, and explore how the definition generalizes to other cases. In this post we will stick exclusively to one-dimensional holes (with a small exception when we take a peek at the chaos of higher homotopy groups at the end of this post), and the main object we use to represent them is called the _fundamental group_.
-
-
-
 
 On the other hand, we will find that the fundamental group is too unwieldy to compute (and for deep reasons). Since we want to be able to readily compute the number of holes in twisted and tied-up spaces, we will need to scrap the fundamental group and try something else. Instead, we'll derive various kinds of other groups associated to a topological space, which will collectively fall under the name _homology groups_. After that, we will be able to actually write a program which computes homology of sufficiently nice spaces (simplicial complexes). Our main use for this will actually be to compute the topological features of a _data set_, but let's cross that bridge when we get to it.
 
-
-
-
 For now, we will develop the idea of homotopy and the fundamental group. It will show us how to think geometrically about topology and give us our first interplay between topology and algebra.
 
-
-
-
-
 ## Paths and Homotopy
-
 
 For the remainder of this post (and all of our future posts in topology), a _map_ will always mean a continuous function. The categorical way to say this, which we will use increasingly often as we approach more advanced topics, is by saying that continuous maps are "the morphisms in the category of topological spaces."
 
@@ -70,46 +49,23 @@ Paths are necessarily oriented, and we can think of the starting point of the pa
 
 The language of paths already gives us a nice topological invariant. We call a space $X$ _path-connected_ if for every two points $a,b \in X$ there exists a path from $a$ to $b$. The knowledgeable reader will recognize that this is distinct from the [usual topological notion of connectedness](http://en.wikipedia.org/wiki/Connected_space) (which is in fact weaker than path-connectedness). It is not hard to see that if two topological spaces $X, Y$ are homeomorphic, then $X$ is path connected if and only if $Y$ is path connected. As a quick warmup proof, we note that any map giving a homeomorphism $\varphi: X \to Y$ is continuous, and the composition of a path with any map is again a path:
 
-
 $\displaystyle \varphi \circ f: [0,1] \to Y$
-
-
-
 
 By path connectivity in $X$ and the fact that $\varphi$ is surjective, we can always find a path between any two points $a,b \in Y$: just find a path between $\varphi^{-1}(a), \varphi^{-1}(b) \in X$ and shoot it through (compose it with) $\varphi$. The same argument goes in the reverse direction using $f^{-1}$, and this establishes the if and only if.
 
-
-
-
 Back to our mission of describing holes, we want to be able to continuously transform two paths into each other. That is, in the following picture, we want to be able to say that the red and blue paths are "equivalent" because we can continuously slide one to the other, while always keeping the endpoints fixed.
-
-
-
 
 [caption id="attachment_2857" align="aligncenter" width="500"][![We can continuously transform the red path into the blue path; these two paths are homotopic.](http://jeremykun.files.wordpress.com/2013/01/redblue-homotopic.png)
 ](http://jeremykun.files.wordpress.com/2013/01/redblue-homotopic.png) We can continuously transform the red path into the blue path; these two paths are homotopic.[/caption]
 
-
 On the other hand, if there is a hole in the space, as shown by the black disk below, no way to slide the red path to the blue path can be continuous; it would need to "jump" over the hole, which is a non-continuous operation. Indeed, no matter how small this hole is we can never overcome this problem; even if just a single point is missing, the nature of continuity ensures it.
-
-
-
 
 [caption id="attachment_2858" align="aligncenter" width="500"][![The black "hole" in this plane makes it so the red path cannot be continuously transformed into the blue path; these paths are not homotopic.](http://jeremykun.files.wordpress.com/2013/01/redblue-nothomotopic.png)
 ](http://jeremykun.files.wordpress.com/2013/01/redblue-nothomotopic.png) The black "hole" in this plane makes it so the red path cannot be continuously transformed into the blue path; these paths are not homotopic.[/caption]
 
-
 In order to make this rigorous, we need to define a "path of paths," so to speak. That is, we need a continuously parameterized family of continuous maps which for the parameter 0 gives the first path, and for 1 the second path.
 
-
-
-
 **Definition: **Let $f, g: [0,1] \to X$ be two paths in $X$ with the same endpoints. A _homotopy _from $f$ to $g$ is a family of paths $H_s: [0,1] \to X$ such that the following properties hold:
-
-
-
-
-
 
 	  * $H_0 = f$ as paths in $X$
 	  * $H_1 = g$ as paths in $X$
@@ -139,9 +95,7 @@ With loops or with paths, we need one more additional operation. The operation i
 
 And now we turn to the main theorem of this post.
 
-
 ## The Fundamental Group
-
 
 Instead of looking at paths, we will work with loops with a fixed basepoint. The amazing thing that happens is that the set of equivalence classes of loops (with respect to homotopy) forms a group.
 
@@ -151,8 +105,6 @@ Instead of looking at paths, we will work with loops with a fixed basepoint. The
 
 _Proof_. In order to prove this we must verify the group operations. Let's recall them here:
 
-
-
 	  * The group must be closed under the group operation: clearly the composition of two loops based at $x_0$ is again a loop at $x_0$, but we need to verify this is well-defined. That is, the operation gives the same value regardless of which representative we choose from the equivalence class.
 	  * The group operation must be associative.
 	  * The group must have an identity element: the constant path $t \mapsto x_0$ will fill this role.
@@ -160,10 +112,8 @@ _Proof_. In order to prove this we must verify the group operations. Let's recal
 
 To prove the first point, let $f, g$ be loops, and suppose $f', g'$ are homotopic to $f,g$ respectively. Then it should be the case that $fg$ is homotopic to $f'g'$. Suppose that $H^1, H^2$ are homotopies between relevant loops. Then we can define a new homotopy which runs the two homotopies simultaneously, and composes their paths for any fixed $s$. This is almost identical to the original definition of a path composition, since we simply need to define our new family of loops $H$ by composing the loops $H^1_s$ and $H^2_s$. That is,
 
-
 $H_s(t) = H^1_s(2t)$ for $t \in [0,1/2]$ and
 $H_s(t) = H^2_s(2t-1)$ for $t \in [1/2, 1]$
-
 
 So the operation is well-defined on equivalence classes.
 
@@ -171,10 +121,8 @@ Associativity is messier to prove, but has a similar mechanic. We just need to d
 
 For the identity, let $f$ be a path and $e$ denote the constant path at $late x_0$. Then we must find a homotopy from $ef$ to $f$ and $fe$ to $f$. Since the argument is symmetric we prove the former. The path $ef$ sits at $x_0$ for half of the time $t \in [0,1]$ and performs $f$ at twice speed for the rest. All we need to do is "continuously move" the time at which we stop $e$ and start $f$ from $t=1/2$ to $t=0$, and run $f$ faster for the remaining time. We can equivalently perform this idea backwards (the algebra is simpler) to get
 
-
 $H_s(t) = x_0$ for $t \in [0, s/2]$, and
 $H_s(t) = f((2t-s)/(2-s))$ for $t \in [s/2, 1]$.
-
 
 To verify this works, plugging in $s=0$ gives precisely the definition of the composition $ef$, and for $s=1$ we recover $f(t)$. Moreover for any value of $s$ setting $t=0$ gives $x_0$ and $t=1$ gives $f(1)$. Finally, the point at which the two pieces meet is $t = s/2$, and we only need verify that the piecewise definition agrees there. That is, the argument of $f$ must be zero for that value of $t$ regardless of the choice of $s$. Indeed it is.
 
@@ -193,9 +141,7 @@ Additionally, if the space $X$ is path-connected, then the choice of a basepoint
 
 More rigorously this operation induces a homomorphism on the fundamental group (we define this fully in the next section), and for path connected spaces this is an isomorphism of groups. And so we can speak of _the_ fundamental group $\pi_1(X)$ when we work with sufficiently nice spaces (and in practice we always will).
 
-
 ## Computing Fundamental Groups
-
 
 So now we have seen that the fundamental group is in fact a group, but how can we compute it? Groups can be large and wild, and so can topological spaces. So it's really impressive that we can compute these groups at all.
 
@@ -233,65 +179,29 @@ Here the two top edges and sides are identified, and so we can label the loops a
 
 Then the boundary of the original disk is just $aba^{-1}b^{-1}$. Since any loop bounding a disk is homotopic to a constant loop (the straight line homotopy works here), we see that the loop $aba^{-1}b^{-1} = 1$ in $\pi_1(X)$. That is, we still have two generators $a,b$ corresponding to the longitudinal and latitudinal circles, but traversing them in the right order is the same as doing nothing. [This youtube video](http://www.youtube.com/watch?v=nLcr-DWVEto) gives an animation showing the homotopy in action. So the fundamental group of the torus has presentation:
 
-
 $\displaystyle G = \left \langle a,b | aba^{-1}b^{-1} = 1 \right \rangle$
-
-
-
 
 This is obviously just $\mathbb{Z}^2$, since the defining relation is precisely saying that the two generators commute: $ab=ba$. That is, it is the free abelian group on two generators.
 
-
-
-
 Before we can prove the theorem in general we need to define an _induced homomorphism_. Given two spaces $X, Y$ and a map $f: X \to Y$, one gets a canonical _induced map_ $f^*: \pi_1(X) \to \pi_1(Y)$. If we consider basepoints, then we also require that $f$ preserves the basepoint. The induced map is defined by setting $f^*(p)$ to be the equivalence class of the loop $fp$ of $Y$. Recalling that $fp$ is indeed a loop whenever $f$ is continuous, it is not hard to see that this is a homomorphism of groups. It is certainly not in general an isomorphism; for instance the trivial map which sends all of $X$ to a single point will not preserve nontrivial loops. But as we will see in the van Kampen theorem, for some maps it is.
-
-
-
 
 One interesting example of an induced homomorphism is that of the inclusion map. Let $Y \subset X$ be a subspace, and let $i: Y \hookrightarrow X$ be the inclusion map $i(y) = y$. This will often _not_ induce an isomorphism $i^*$ on fundamental groups. For example, the inclusion of $S^1 \hookrightarrow \mathbb{R}^2$ is not a constant map, but it induces the constant map on fundamental groups since there is only one group homomorphism from any group to the trivial group $\mathbb{Z} \to 1$. That is, the kernel of $i^*$ is all of $\mathbb{Z}$. Intuitively we are "filling in" the hole in $S^1$ with the ambient space from $\mathbb{R}^2$ so that the loop generating $\mathbb{Z}$ is homotopic to the trivial loop. Thus, we are killing all of the loops of the circle.
 
-
-
-
 The more important remark for the van Kampen theorem is, recalling our [primer on group theory](http://jeremykun.com/2012/12/22/groups-a-second-primer/), that any collection of homomorphisms on groups $\varphi_{\alpha} : G_{\alpha} \to H$ extends uniquely to a homomorphism on the free product $\varphi: \ast_{\alpha} G_{\alpha} \to H$. The main goal of this theorem is to give us a way to build up fundamental groups in the same way we build up topological spaces. And it does so precisely by saying that this $\varphi$ map on the free product is surjective. Using the first isomorphism theorem (again see our primer), this will allow us to compute the fundamental group of a space $X$ given subspaces $A_{\alpha}$ and by analyzing the kernels of the homomorphisms induced by the inclusions $i_{\alpha}: A_{\alpha} \to X$.
 
-
-
-
 The last thing we need to set up this theorem is a diagram. If we have two subspaces $A_{\alpha}, A_{\beta}$ and we look at the inclusion $i: A_{\alpha} \cap A_{\beta} \to X$, we could define it in one of two equivalent ways: first by going through $A_{\alpha}$ and then to $X$, or else by going through $A_{\beta}$ first. The diagram is as follows:
-
-
-
 
 [![inclusion-diagram](http://jeremykun.files.wordpress.com/2013/01/inclusion-diagram.png)
 ](http://jeremykun.files.wordpress.com/2013/01/inclusion-diagram.png)
 
-
-
-
 However, the induced homomorphism will depend on this choice! So we denote $i_1^* : A_{\alpha} \cap A_{\beta} \to A_{\alpha}$ to include into the first piece, and $i_2^*$ to include on the second piece $A_{\beta}$. The diagram here is:
-
-
-
 
 [![inclusion-diagram-pi1](http://jeremykun.files.wordpress.com/2013/01/inclusion-diagram-pi1.png)
 ](http://jeremykun.files.wordpress.com/2013/01/inclusion-diagram-pi1.png)
 
-
-
-
 Now we can state the theorem (and it is still quite a mouthful).
 
-
-
-
 **Theorem: **(van Kampen) Let $X$ be the union of a family of path-connected open subspaces $A_{\alpha}$, each of which contains the chosen basepoint $x_0 \in X$. Let $i_{\alpha}: A_{\alpha} \to X$ be inclusions, $i_{\alpha}^*$ the induced homomorphisms, and $\varphi$ the unique extension of the inclusion $i_{\alpha}^*$ to the free product $\ast_{\alpha} \pi_1(A_{\alpha}, x_0)$.
-
-
-
-
-
 
 	  * If all intersections of pairs $A_{\alpha} \cap A_{\beta}$ are path-connected, then  $\varphi$ is a surjection.
 	  * If in addition all triple intersections $A_{\alpha} \cap A_{\beta} \cap A_{\gamma}$ are path-connected, then the kernel of $\varphi$ is the smallest normal subgroup $N$ generated by the elements $i_1^*(x)i_2^*(x)^{-1}$ for $x \in \pi_1(A_{\alpha} \cap A_{\beta})$.
@@ -326,9 +236,7 @@ So as we have seen, the fundamental group is a nice way to compute the number (o
 
 That is, for programmers the fundamental group is practically useless, though [there are some special cases](https://rjlipton.wordpress.com/2012/02/12/computational-topology/).
 
-
 ## Higher Homotopy Groups
-
 
 There is an obvious analogue for 2-, 3-, and n-dimensional holes. That is, we can define the $n$-th _homotopy group _of a space $X$, denoted $\pi_n(X)$ to be the set of homotopy equivalence classes of maps $S^n \to X$. Homotopy groups $\pi_n(X)$ for $n > 1$ are called _higher homotopy groups._
 

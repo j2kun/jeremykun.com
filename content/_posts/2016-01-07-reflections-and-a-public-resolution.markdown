@@ -17,8 +17,6 @@ And I have no intention to stop. These last few months have been slow due to j
 
 Indeed, the more I blog the more ideas I get. Here are just a few titles of unfinished drafts in my queue:
 
-
-
 	  1. The group theoretic view of quantum gates
 	  2. Singular value decomposition
 	  3. Matrix completion and recommender systems

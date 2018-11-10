@@ -77,8 +77,6 @@ The algorithm relies on the following theorem:
 
 **Theorem:** if $p$ is a prime, let $s$ be the maximal power of 2 dividing $p-1$, so that $p-1 = 2^{s}d$ and $d$ is odd. Then for any $1 \leq n \leq p-1$, one of two things happens:
 
-
-
 	  * $n^d = 1 \mod p$ or
 	  * $n^{2^j d} = -1 \mod p$ for some $0 \leq j < s$.
 

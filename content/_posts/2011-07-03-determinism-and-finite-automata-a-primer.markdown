@@ -26,9 +26,7 @@ tags:
 
 _This half of the theory of computing primer will cover the various finite automata, including deterministic, nondeterministic, and pushdown automata. We devote the second half [upcoming] entirely to Turing machines and the halting problem, but to facilitate the discussion of Turing machines we rely on the intuition and notation developed here._
 
-
 ## Defining Computation
-
 
 The first step in studying the sorts of possible computations (and more interestingly, those things which cannot be computed) is to define exactly what we mean by a "computation." At a high level, this is easy: a computation is simply a function. Given some input, produce the appropriate output.
 
@@ -52,15 +50,11 @@ Colloquially, we have defined "computation" as recognizing all inputs which sati
 
 The reason we have been heretofore vague in naming our model is that we will actually define four different models of progressively stronger computational ability, and this framework will hold for all of them. So here our first try.
 
-
 ## Deterministic Finite Automata
-
 
 This definition comes from the intuitive idea that a computation can be carried out via a set of states and transitions between those states. A very simple example is a light switch, which has the states 'on' and 'off', and which can accept as input 'switch' or 'do nothing'. This model is rigorized here:
 
 **Definition**: A _deterministic finite automaton_, abbreviated DFA, is a five-tuple $D = (S, \Sigma, \tau, s_0, F)$, where:
-
-
 
 	  * $S$ is a set of states, with initial state $s_0$.
 	  * $\Sigma$ is our working alphabet, and inputs come from $\Sigma^*$.
@@ -89,15 +83,11 @@ Indeed, it has been proven that no such DFA exists. The key to the proof lies in
 
 Before we increase our model's expressive power, let us make an "enhancement" to the DFA.
 
-
 ## Nondeterministic Finite Automata
-
 
 Following the colloquial definition of nondeterminism, we can design our computational system to make state transitions "branch out." This will be made clear by a slight modification of the DFA.
 
 **Definition**: A _nondeterministic finite automaton_, abbreviated NFA, is a DFA with the following two modifications:
-
-
 
 	  * Instead of having a single state $s_k$ at each step, we allow a set of possible states, which we denote $S_k \subset S$.
 	  * Our initial state $s_0$ is replaced with an initial set of states $S_0 \subset S$.
@@ -123,32 +113,19 @@ In other words, every NFA has a corresponding DFA which recognizes precisely the
 
 So we have discovered that regular languages, and hence the DFAs and NFAs which recognize them, are quite limited in expressive power. Now let's truly beef up our model with some mathematical steroids.
 
-
 ## Pushdown Automata
-
 
 Okay, so these steroids won't be that strong. Ideally, we just want to add as little as possible to our model and still make it more expressive. This way we can better understand the nuances of computational power, thus strengthening our intuition. While "little" is a subjective notion, [lots of "littler" things were tried](http://en.wikipedia.org/wiki/Regular_language) before arriving at a model that was not equivalent in power to a DFA. We will refrain from explaining them here, except to say that DFAs are equivalent in power to the class of formal Regular Expressions (hence the name, regular languages), which most programmers are familiar with on an informal level.
 
 **Definition**: A _pushdown automaton_, denoted PDA, is an NFA with two additional components: $\Gamma$ a set of _stack symbols _including $\varepsilon$, and a modified transition function $\tau$:
 
-
 $\tau: S \times \Sigma \times \Gamma \to P(S) \times \Gamma^*$
-
-
-
 
 Here, the left hand $\Gamma$ symbol represents the current top of the stack (which is always popped), and the right hand $\Gamma^*$ represents any modification to the stack during state transition. This modification is always a push, and can be an empty push, or a push of arbitrarily many symbols.
 
-
-
-
 For brevity of a description of $\tau$, which would otherwise be infinite as there are infinitely many possible stacks, we allow $\tau$ to be a partial function, not defined for some inputs. Then a PDA automatically rejects any encountered undefined input. Alternatively, we could construct $\tau$ as a total function, if we add edges for each undefined input going to some terminal state which is inescapable and not final. For the sake of this post, we will accept a partial transition function.
 
-
-
-
 Recalling our discussion of computational ability in our [post on Conway's Game of Life](http://jeremykun.wordpress.com/2011/06/29/conways-game-of-life/), we recognize that a PDA's new power is in its ability to grow without bound. Specifically, the stack has no limit to its size, and we can remember important pieces of input which would otherwise be discarded.
-
 
 This modification seems like it was made just for the $0^n1^n$ problem. Specifically, now we can just push the 0s we see on to the stack, and pop just 1's until we see an empty stack. Here is a PDA which does just that (making heavy use of epsilon transitions):
 

@@ -18,11 +18,6 @@ categories:
 
 Data is abundant, data is big, and big is a problem. Let me start with an example. Let's say you have a list of movie titles and you want to learn their genre: romance, action, drama, etc. And maybe in this scenario IMDB doesn't exist so you can't scrape the answer. Well, the title alone is almost never enough information. One nice way to get more data is to do the following:
 
-
-
-
-
-
  	  1. Pick a large dictionary of words, say the most common 100,000 non stop-words in the English language.
  	  2. Crawl the web looking for documents that include the title of a film.
  	  3. For each film, record the counts of all other words appearing in those documents.
@@ -34,7 +29,6 @@ One way to try to find genres is to cluster this (unlabeled) dataset of vectors
 
 A possible workaround is to try to come up with faster algorithms or be more patient. But a more interesting mathematical question is the following:
 
-
 <blockquote>
 
 > 
@@ -43,29 +37,17 @@ A possible workaround is to try to come up with faster algorithms or be more pa
 > 
 </blockquote>
 
-
-
-
 This goal is called _dimension reduction_. Indeed, all of the chatter on the internet is bound to encode redundant information, so for our movie title vectors it seems the answer should be "yes." But the questions remain, how does one _find_ a low-dimensional condensification? (Condensification isn't a word, the right word is embedding, but embedding is overloaded so we'll wait until we define it) And what mathematical guarantees can you prove about the resulting condensed data? After all, it stands to reason that different techniques preserve different aspects of the data. Only math will tell.
-
-
-
 
 In this post we'll explore this so-called "curse" of dimensionality, explain the formality of why it's seen as a curse, and implement a wonderfully simple technique called "the random projection method" which preserves pairwise distances between points after the reduction. As usual, and all the code, data, and tests used in the making of this post are on [Github](https://github.com/j2kun/johnson-lindenstrauss).
 
-
-
-
-
 ## Some curious issues, and the "curse"
-
 
 We start by exploring the curse of dimensionality with experiments on synthetic data.
 
 In two dimensions, take a circle centered at the origin with radius 1 and its bounding square.
 
 ![circle.png](https://jeremykun.files.wordpress.com/2016/01/circle.png)
-
 
 The circle fills up most of the area in the square, in fact it takes up exactly $\pi$ out of 4 which is about 78%. In three dimensions we have a sphere and a cube, and the ratio of sphere volume to cube volume is a bit smaller, $4 \pi /3$ out of a total of 8, which is just over 52%. What about in a thousand dimensions? Let's try by simulation.
 
@@ -144,19 +126,15 @@ In two dimensions, the histogram of distances between points looks like this
 
 ![2d-distances.png](https://jeremykun.files.wordpress.com/2016/01/2d-distances.png)
 
-
 However, as the dimension grows the distribution of distances changes. It evolves like the following animation, in which each frame is an increase in dimension from 2 to 100.
 
 ![distances-animation.gif](https://jeremykun.files.wordpress.com/2016/01/distances-animation.gif)
-
 
 The shape of the distribution doesn't appear to be changing all that much after the first few frames, but the center of the distribution tends to infinity ([in fact](http://mathoverflow.net/questions/163294/limit-of-distance-between-two-random-points-in-a-unit-n-cube), it grows like $\sqrt{n}$). The variance also appears to stay constant. This chart also becomes more variable as the dimension grows, again because we should be sampling exponentially many more points as the dimension grows (but we don't). In other words, as the dimension grows the average distance grows and the tightness of the distribution stays the same. So at a thousand dimensions the average distance is about 26, tightly concentrated between 24 and 28. When the average is a thousand, the distribution is tight between 998 and 1002. If one were to normalize this data, it would appear that random points are all becoming equidistant from each other.
 
 So in addition to the issues of runtime and sampling, the geometry of high-dimensional space looks different from what we expect. To get a better understanding of "big data," we have to update our intuition from low-dimensional geometry with analysis and mathematical theorems that are much harder to visualize.
 
-
 ## The Johnson-Lindenstrauss Lemma
-
 
 Now we turn to proving dimension reduction is possible. There are a few methods one might first think of, such as look for suitable subsets of coordinates, or sums of subsets, but these would all appear to take a long time or they simply don't work.
 
@@ -164,9 +142,7 @@ Instead, the key technique is to take a _random_ linear subspace of a certain 
 
 **Lemma [Johnson-Lindenstrauss (1984)]: **Given a set $X$ of $n$ points in $\mathbb{R}^d$, project the points in $X$ to a randomly chosen subspace of dimension $c$. Call the projection $\rho$. For any $\varepsilon > 0$, if $c$ is at least $\Omega(\log(n) / \varepsilon^2)$, then with probability at least 1/2** **the distances between points in $X$ are preserved up to a factor of $(1+\varepsilon)$. That is, with good probability every pair $v,w \in X$ will satisfy
 
-
 $\displaystyle \| v-w \|^2 (1-\varepsilon) \leq \| \rho(v) - \rho(w) \|^2 \leq \| v-w \|^2 (1+\varepsilon)$
-
 
 Before we do the proof, which is quite short, it's important to point out that the target dimension $c$ does not depend on the original dimension! It only depends on the number of points in the dataset, and logarithmically so. That makes this lemma seem like pure magic, that you can take data in an arbitrarily high dimension and put it in a much smaller dimension.
 
@@ -174,158 +150,75 @@ On the other hand, if you include all of the hidden constants in the bound on th
 
 ![boundplot](https://jeremykun.files.wordpress.com/2016/01/boundplot1.png)
 
-
-
-
 But keep in mind, this is just a _theoretical_ bound for potentially misbehaving data. Later in this post we'll see if the practical dimension can be reduced more than the theory allows. As we'll see, an algorithm run on the projected data is still effective even if the projection goes well beyond the theoretical bound. Because the theorem is known to be tight in the worst case (see the notes at the end) this speaks more to the robustness of the typical algorithm than to the robustness of the projection method.
 
 A second important note is that this technique does not necessarily avoid _all_ the problems with the curse of dimensionality. We mentioned above that one potential problem is that "random points" are roughly equidistant in high dimensions. Johnson-Lindenstrauss actually _preserves_ this problem because it preserves distances! As a consequence, you won't see strictly better algorithm performance if you project (which we suggested is possible in the beginning of this post). But you will alleviate slow runtimes if the runtime depends exponentially on the dimension. Indeed, if you replace the dimension $d$ with the logarithm of the number of points $\log n$, then $2^d$ becomes linear in $n$, and $2^{O(d)}$ becomes polynomial.
 
-
 ## Proof of the J-L lemma
-
 
 Let's prove the lemma.
 
 _Proof. _To start we make note that one can sample from the uniform distribution on dimension-$c$ linear subspaces of $\mathbb{R}^d$ by choosing the entries of a $c \times d$ matrix $A$ independently from a normal distribution with mean 0 and variance 1. Then, to project a vector $x$ by this matrix (call the projection $\rho$), we can compute
 
-
 $\displaystyle \rho(x) = \frac{1}{\sqrt{c}}A x$
-
 
 Now fix $\varepsilon > 0$ and fix two points in the dataset $x,y$. We want an upper bound on the probability that the following is **false**
 
-
 $\displaystyle \| x-y \|^2 (1-\varepsilon) \leq \| \rho(x) - \rho(y) \|^2 \leq \| x-y \|^2 (1+\varepsilon)$
-
-
-
 
 Since that expression is a pain to work with, let's rearrange it by calling $u = x-y$, and rearranging (using the linearity of the projection) to get the equivalent statement.
 
-
-
-
 $\left | \| \rho(u) \|^2 - \|u \|^2 \right | \leq \varepsilon \| u \|^2$
-
-
-
 
 And so we want a bound on the probability that this event does _not _occur, meaning the inequality switches directions.
 
-
-
-
 Once we get such a bound (it will depend on $c$ and $\varepsilon$) we need to ensure that this bound is true for every pair of points. The [union bound](https://en.wikipedia.org/wiki/Boole%27s_inequality) allows us to do this, but it also requires that the probability of the bad thing happening tends to zero faster than $1/\binom{n}{2}$. That's where the $\log(n)$ will come into the bound as stated in the theorem.
-
-
-
 
 Continuing with our use of $u$ for notation, define $X$ to be the random variable $\frac{c}{\| u \|^2} \| \rho(u) \|^2$. By expanding the notation and using the linearity of expectation, you can show that the expected value of $X$ is $c$, meaning that in expectation, distances are preserved. We are on the right track, and just need to show that the distribution of $X$, and thus the possible deviations in distances, is tightly concentrated around $c$. In full rigor, we will show
 
-
-
-
 $\displaystyle \Pr [X \geq (1+\varepsilon) c] < e^{-(\varepsilon^2 - \varepsilon^3) \frac{c}{4}}$
-
-
-
 
 Let $A_i$ denote the $i$-th column of $A$. Define by $X_i$ the quantity $\langle A_i, u \rangle / \| u \|$. This is a weighted average of the entries of $A_i$ by the entries of $u$. But since we chose the entries of $A$ from the normal distribution, and since a weighted average of normally distributed random variables is also normally distributed (has the same distribution), $X_i$ is a $N(0,1)$ random variable. Moreover, each column is independent. This allows us to decompose $X$ as
 
-
-
-
 $X = \frac{k}{\| u \|^2} \| \rho(u) \|^2 = \frac{\| Au \|^2}{\| u \|^2}$
-
-
-
 
 Expanding further,
 
-
-
-
 $X = \sum_{i=1}^c \frac{\| A_i u \|^2}{\|u\|^2} = \sum_{i=1}^c X_i^2$
-
 
 Now the event $X \leq (1+\varepsilon) c$ can be expressed in terms of the nonegative variable $e^{\lambda X}$, where $0 < \lambda < 1/2$ is parameter, to get
 
-
 $\displaystyle \Pr[X \geq (1+\varepsilon) c] = \Pr[e^{\lambda X} \geq e^{(1+\varepsilon)c \lambda}]$
-
-
-
 
 This will become useful because the sum $X = \sum_i X_i^2$ will split into a product momentarily. First we apply [Markov's inequality](http://jeremykun.com/2013/04/15/probabilistic-bounds-a-primer/), which says that for any nonnegative random variable $Y$, $\Pr[Y \geq t] \leq \mathbb{E}[Y] / t$. This lets us write
 
-
-
-
 $\displaystyle \Pr[e^{\lambda X} \geq e^{(1+\varepsilon) c \lambda}] \leq \frac{\mathbb{E}[e^{\lambda X}]}{e^{(1+\varepsilon) c \lambda}}$
-
-
-
 
 Now we can split up the exponent $\lambda X$ into $\sum_{i=1}^c \lambda X_i^2$, and using the i.i.d.-ness of the $X_i^2$ we can rewrite the RHS of the inequality as
 
-
-
-
 $\left ( \frac{\mathbb{E}[e^{\lambda X_1^2}]}{e^{(1+\varepsilon)\lambda}} \right )^c$
-
-
-
 
 A similar statement using $-\lambda$ is true for the $(1-\varepsilon)$ part, namely that
 
-
-
-
 $\displaystyle \Pr[X \leq (1-\varepsilon)c] \leq \left ( \frac{\mathbb{E}[e^{-\lambda X_1^2}]}{e^{-(1-\varepsilon)\lambda}} \right )^c$
-
 
 The last thing that's needed is to bound $\mathbb{E}[e^{\lambda X_i^2}]$, but since $X_i^2 \sim N(0,1)$, we can use the known density function for a normal distribution, and integrate to get the exact value $\mathbb{E}[e^{\lambda X_1^2}] = \frac{1}{\sqrt{1-2\lambda}}$. Including this in the bound gives us a closed-form bound in terms of $\lambda, c, \varepsilon$. Using standard calculus the optimal $\lambda \in (0,1/2)$ is $\lambda = \varepsilon / 2(1+\varepsilon)$. This gives
 
-
 $\displaystyle \Pr[X \geq (1+\varepsilon) c] \leq ((1+\varepsilon)e^{-\varepsilon})^{c/2}$
-
-
-
 
 Using the Taylor series expansion for $e^x$, one can show the bound $1+\varepsilon < e^{\varepsilon - (\varepsilon^2 - \varepsilon^3)/2}$, which simplifies the final upper bound to $e^{-(\varepsilon^2 - \varepsilon^3) c/4}$.
 
-
-
-
 Doing the same thing for the $(1-\varepsilon)$ version gives an equivalent bound, and so the total bound is doubled, i.e. $2e^{-(\varepsilon^2 - \varepsilon^3) c/4}$.
-
-
-
 
 As we said at the beginning, applying the union bound means we need
 
-
-
-
 $\displaystyle 2e^{-(\varepsilon^2 - \varepsilon^3) c/4} < \frac{1}{\binom{n}{2}}$
-
-
-
 
 Solving this for $c$ gives $c \geq \frac{8 \log m}{\varepsilon^2 - \varepsilon^3}$, as desired.
 
-
-
-
 $\square$
 
-
-
-
-
 ## Projecting in Practice
-
 
 Let's write a python program to actually perform the Johnson-Lindenstrauss dimension reduction scheme. This is sometimes called the Johnson-Lindenstrauss transform, or JLT.
 
@@ -462,9 +355,7 @@ Then the false negatives
 
 As we can see from these three charts, things don't _really_ change that much (for this dataset) even when we project down to around 200-300 dimensions. Note that for these parameters the "correct" theoretical choice for dimension was on the order of 5,000 dimensions, so this is a 95% savings from the naive approach, and 99.75% space savings from the original data. Not too shabby.
 
-
 ## Notes
-
 
 The $\Omega(\log(n))$ worst-case dimension bound is asymptotically tight, though there is some small gap in the literature that depends on $\varepsilon$. This result is due to Noga Alon, the very last result (Section 9) of [this paper](http://www.tau.ac.il/~nogaa/PDFS/extremal1.pdf). [Update: as djhsu points out in the comments, this gap is now closed thanks to [Larsen and Nelson](https://arxiv.org/abs/1609.02094)]
 
@@ -479,7 +370,6 @@ Note that the JLT is not the only method for dimensionality reduction. We previo
 Another interesting note, if your data is linearly separable (like the examples we saw in our age-old post on [Perceptrons](http://jeremykun.com/2011/08/11/the-perceptron-and-all-the-things-it-cant-perceive/)), then you can use the JLT to make finding a linear separator easier. First project the data onto the dimension given in the theorem. With high probability the points will still be linearly separable. And then you can use a perceptron-type algorithm in the smaller dimension. If you want to find out which side a new point is on, you project and compare with the separator in the smaller dimension.
 
 Beyond its interest for practical dimensionality reduction, the JLT has had many other interesting theoretical consequences. More generally, the idea of "randomly projecting" your data onto some small dimensional space has allowed mathematicians to get some of the best-known results on many optimization and learning problems, perhaps the most famous of which is called [MAX-CUT](https://en.wikipedia.org/wiki/Maximum_cut); the result is by [Goemans-Williamson](http://www-math.mit.edu/~goemans/PAPERS/maxcut-jacm.pdf) and it led to a mathematical constant being named after them, $\alpha_{GW} =.878567 \dots$. If you're interested in more about the theory, Santosh Vempala wrote a wonderful (and short!) [treatise](http://www.amazon.com/gp/product/0821837931/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0821837931&linkCode=as2&tag=mathinterpr00-20&linkId=W4LBOXOSI5UMDVDP) dedicated to this topic.
-
 
 [![randomprojectionbook](https://jeremykun.files.wordpress.com/2016/02/randomprojectionbook.jpg)
 ](http://jeremykun.com/?attachment_id=8258#main)

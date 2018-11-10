@@ -16,21 +16,13 @@ tags:
 
 ## or, How I Learned to Love Functional Programming
 
-
 We recognize that not every reader has an appreciation for functional programming. Yet here on this blog, we've done most of our work in languages teeming with functional paradigms. It's time for us to take a stand and shout from the digital mountaintops, "I love functional programming!" In fact, functional programming was part of this author's inspiration for Math ∩ Programming.
 
 And so, to help the reader discover the joys of functional programming, we present an introduction to programming in [Racket](http://racket-lang.org/), with a focus on why functional programming is amazing, and a functional solution to a problem on [Project Euler](http://projecteuler.net). As usual, [the entire source code](https://github.com/j2kun/a-taste-of-racket) for the examples in this post is available on [this blog's Github page](https://github.com/j2kun).
 
-
 ![](http://racket-lang.org/logo.png)
 
-
-
-
-
-
 ## Lists
-
 
 Lists are the datatype of choice for functional programmers. In particular, a list is either the empty list or a pair of objects:
 
@@ -38,12 +30,10 @@ Lists are the datatype of choice for functional programmers. In particular, a li
     list = empty
          | (x list)
 
-
 Here () denotes a pair, the first thing in the pair, "x", is any object, and the second thing is another list. In Racket, all lists have this form, and they are constructed with a special function called "cons". For instance, the following program outputs the list containing 7 and 8, in that order.
 
     
     (cons 7 (cons 8 empty))
-
 
 The reader will soon get used to the syntax: every function application looks like (function arguments...), including the arithmetic operators.
 
@@ -54,18 +44,15 @@ Of course, Racket has a shorthand for constructing lists, which doesn't require 
     
     (list 7 9)
 
-
 gives us the same list as before, without the nested parentheses. Now, if we wanted to _add_ a single element to the front of this list, "cons" is still the best tool for the job. If the variable "my-list" is bound to a list, we would call
 
     
     (cons 6 my-list)
 
-
 to add the new element. For lists of things which are just numbers, symbols, or strings , there is an additional shorthand, using the "quote" macro:
 
     
     '(1 2 3 4 "hello" my-symbol!)
-
 
 Note that Racket does not require such lists are homogeneous, and it automatically converts the proper types for us.
 
@@ -79,12 +66,9 @@ To access the elements of a list, we only need two functions: first and rest. Th
     > (first (rest my-list))
     9
 
-
 In particular, we can access any element of a list with sufficiently many calls to first and rest. But for most problems this is unnecessary. We are about to discover far more elegant methods for working with lists. This is where functional programming truly shines.
 
-
 ## Double-List, Triple-List, and Sub-List
-
 
 Suppose we want to take a list of numbers and double each number. If we just have what we know now about lists, we can write a function to do this. The general function definition looks like:
 
@@ -112,7 +96,6 @@ Indeed, we may test double-list:
     > (double-list '(1 2 3 5))
     '(2 4 6 10)
 
-
 And we are confident that it works. Now say we wanted to instead triple the elements of the list. We could rewrite this function with but a single change:
 
 {{< highlight python >}}(define (triple-list my-list)
@@ -136,9 +119,7 @@ This is much better, but now instead of multiplying the elements of our list by 
 
 Of course, we have the insight to make it generic and accept any subtraction argument, but this is the problem we tried to avoid by writing multiply-list! We obviously need to step things up a notch.
 
-
 ## Map
-
 
 In all of this work above, we've only been changing one thing: the operation applied to each element of the list. Let's create a new function, which accepts as input a list and _a function_ which operates on each element of the list. This special operation is called _map_, and it is only possible to make because Racket treats functions like any other kind of value (they can be passed as arguments to functions, and returned as values; functions are _first class objects_).
 
@@ -166,14 +147,11 @@ With map we have opened quite a large door. Given any function at all, we may _e
     for (i = 0; i < list.length; i++):
        list.set(i, f(list.get(i)))
 
-
 Every time we want to loop over a list, we have to deal with all of this indexing nonsense (not to mention the extra code needed to make a new list if we don't want to mutate the existing list, and that iterator shortcuts prohibit mutation). And the Racket haters will have to concede, the imperative method has just as many parentheses :)
 
 Of course, we must note that map _always_ creates a new list. In fact, in languages that are so-called "purely" functional, it is impossible to change the value of a variable (i.e., there is no such thing as mutation). The advantages and disadvantages of this approach are beyond the scope of this post, but we will likely cover them in the future.
 
-
 ## Fold and Filter
-
 
 Of course, map is just one kind of loop we might want. For instance, what if we wanted to sum up all of the numbers in a list, or pick out the positive ones? This is where fold and filter come into play.
 
@@ -190,12 +168,10 @@ Here the base case is to simply return "val", while the induction step is to com
     
     (define (sum my-list) (fold + 0 my-list))
 
-
 And similarly, make a multiplying function:
 
     
     (define (prod my-list) (fold * 1 my-list))
-
 
 Notice now that we've extracted the essential pieces of the problem: what operation to apply, and what the base value is. In fact, this is the only relevant information to the summing and multiplying functions. In other words, we couldn't possibly make our code any simpler!
 
@@ -219,9 +195,7 @@ Again, the only relevant pieces of this algorithm are the selection function and
 
 There is one important variant of fold, in particular, the function we're using to fold may depend on the order in which it's applied to elements of the list. We might require that folding begin at the _end_ of a list instead of the beginning. Fold functions are usually distinguished as left- or right-folds. Of course, Racket has map, fold, and filter built in, but the fold functions are renamed "foldl" and "foldr". We have implemented foldl, and we leave foldr as an exercise to the reader.
 
-
 ## A Brighter, More Productive World
-
 
 Any loop we ever want to implement can be done with the appropriate calls to map, fold, and filter. We will illustrate this by solving a [Project Euler](http://projecteuler.net/) problem, specifically [problem 67](http://projecteuler.net/problem=67). For those too lazy to click a link, the problem is to find the maximal sum of paths from the apex to the base of a triangular grid of numbers. For example, consider the following triangle:
 
@@ -230,7 +204,6 @@ Any loop we ever want to implement can be done with the appropriate calls to map
       7 4
      2 4 6
     8 5 9 3
-
 
 Here the maximal path is 3,7,4,9, whose sum is 23. In the problem, we are provided with a file containing a triangle with 100 rows ($2^{99}$ paths!) and are asked to find the maximal path.
 
@@ -241,13 +214,11 @@ First, we recognize a trick. Suppose that by travelling the optimal route in the
        7     4
      10   13   15
 
-
 where we replace the second-to-last row with the sum of the entries and the larger of the two possible subsequent steps. Now, performing the reduction again on this reduced triangle, we get
 
     
        3
     20   19
-
 
 And performing the reduction one last time, we arrive at our final, maximal answer of 23.
 

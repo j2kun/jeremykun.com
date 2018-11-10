@@ -21,9 +21,7 @@ tags:
 
 It's often that a student's first exposure to rigorous mathematics is through set theory, as originally studied by [Georg Cantor](http://en.wikipedia.org/wiki/Georg_Cantor). This means we will not treat set theory axiomatically (as in [ZF set theory](http://en.wikipedia.org/wiki/Zermelo-Fraenkel_set_theory)), but rather we will take the definition of a set for granted, and allow any operation to be performed on a set. This will be clear when we present examples, and it will be clear why this is a bad idea when we present paradoxes.
 
-
 ## The Basics of Sets
-
 
 **Definition**: A _set _$S$ is a collection of distinct objects, each of which is called an _element_ of S. For a potential element $x$, we denote its membership in $S$ and lack thereof by the infix symbols $\in, \notin$, respectively. The proposition $x \in S$ is true if and only if $x$ is an element of $S$.
 
@@ -33,44 +31,21 @@ The elements of a set can in principal be anything: numbers, equations, cats, mo
 
 There are many ways to construct sets, and for finite sets it suffices to list the objects:
 
-
 $S = \left \{ 0, 2,4,6,8,10 \right \}$
-
-
-
 
 Clearly this set has cardinality six. The left and right curly braces are standard notation for the stuff inside a set. Another shorter construction is to simply state the contents of a set (let $S$ be the set of even numbers between 0 and 10, inclusive). Sometimes, it will be very important that we construct the sets in a more detailed way than this, because, as we will see, sets can become rather convoluted.
 
-
-
-
 We may construct sets using an implied pattern, i.e. for the positive evens:
-
-
-
 
 $E = \left \{ 2, 4, 6, 8, \dots \right \}$
 
-
-
-
 For now, we simply allow that this set has infinite cardinality, though we will revisit this notion in more detail later. In this way we define two basic sets of numbers:
-
-
-
 
 $\mathbb{N} = \left \{ 1, 2, 3, \dots \right \} \\ \mathbb{Z} = \left \{ 0, -1, 1, -2, 2, \dots \right \}$
 
-
-
-
 We name $\mathbb{N}$ the _natural numbers_, and $\mathbb{Z}$ the _integers_. Yet another construction allows us to populate a set with all values that satisfy a particular equation or proposition. We denote this $\left \{ \textup{variable} | \textup{condition} \right \}$. For example, we may define $\mathbb{Q}$, the _rational numbers_ (fractional numbers) as follows:
 
-
-
-
 $\displaystyle \mathbb{Q} = \left \{ \frac{p}{q} | p \in \mathbb{Z} \textup{ and } q \in \mathbb{Z} q \neq 0 \right \}$
-
 
 This is not quite a complete description of how rational numbers work: some fractions are "equivalent" to other fractions, like 2/4 and 1/2. There is an additional piece of data called a "relation" that's imposed on this set, and any two things which are related are considered equivalent. We're not going to go into the details of this, but the interested reader should look up an [equivalence relation](http://en.wikipedia.org/wiki/Equivalence_relation).
 
@@ -92,9 +67,7 @@ Elements of this set are sets themselves, and there are two trivial, yet importa
 
 For a finite set $S$, power sets are strictly larger in size, since there exists a _singleton_ set $\left \{ x \right \} \in P(S)$ for each $x \in S$. As an exercise for the reader, determine the size of $P(S)$ for any finite set $S$, expressed in terms of $|S|$. For infinite sets, we simply admit that their power sets are also infinite, since we don't yet have a way to describe "larger" infinities.
 
-
 ## Building Sets From Other Sets
-
 
 We have a couple of nice operations we may define on sets, which are rather trivial to define.
 
@@ -110,9 +83,7 @@ The next definition requires one to remember what an _ordered tuple_ $(a_1,a_2,
 
 This is just like in defining the Cartesian Plane $\mathbb{R}^2 = \mathbb{R} \times \mathbb{R}$ as ordered pairs of real numbers. We can extend this even further by defining $\mathbb{S}^n$ to be the set of all $n$-tuples of elements in $S$.
 
-
 ## Functions, and Their -Jections
-
 
 Now that we have sets and ways to build interesting sets, we may define mathematical objects which do stuff with them.
 
@@ -148,9 +119,7 @@ A bijection specifically represents a "relabeling" of a given set, in that each 
 
 Note that for finite sets, since a bijection is both a surjection and an injection, the domain and codomain of a bijection must have the same cardinality! What's better, is we can extend this to infinite sets.
 
-
 ## To Infinity, and Beyond! (Literally)
-
 
 **Definition**: Two infinite sets have equal cardinality if there exists a bijection between them.
 
@@ -164,10 +133,7 @@ Let's try to push bijections a bit further. Let's see if we can construct a bije
 
 It suffices to show that the natural numbers are equal in cardinality to the nonnegative rationals. Here is a picture describing the bijection:
 
-
 ![](http://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Pairing_natural.svg/429px-Pairing_natural.svg.png)
-
-
 
 We arrange the rationals into a grid, such that each blue dot above corresponds to some $\frac{p}{q}$, where $p$ is the x-coordinate of the grid, and $q$ is the y-coordinate. Then, we assign to each blue dot a nonnegative integer in the diagonal fashion described by the sequence of arrows. Note these fractions are not necessarily in lowest terms, so some rational numbers correspond to more than one blue dot. To fix this, we simply eliminate the points $(p,q)$ for which their greatest common divisor is not 1. Then, in assigning the blue dots numbers, we just do so in the same fashion, skipping the places where we deleted bad points.
 
@@ -179,10 +145,8 @@ Unfortunately, try as we might, no such bijection exists. This was a huge result
 
 First, we recognize that every real number has a representation in base 2 as an infinite sequence of 0's and 1's. Thus, if there were such a bijection between the natural numbers and reals, we could list the reals in order of their corresponding naturals, as:
 
-
 $1 \mapsto d_{1,1}d_{1,2}d_{1,3} \dots \\ 2 \mapsto d_{2,1}d_{2,2}d_{2,3} \dots \\ 3 \mapsto d_{3,1}d_{3,2}d_{3,3} \dots$
 $\vdots$
-
 
 Here each $d_{i,j} \in \left \{ 0,1 \right \}$ corresponds to the $j$th digit of the $i$th number in the list. Now we may build a real number $r = d_{1,1}d_{2,2}d_{3,3} \dots$, the diagonal elements of this matrix. If we take $r$ and flip each digit from a 0 to a 1 and vice versa, we get the complement of $r$, call it $r'$. Notice that $r'$ differs from every real number at some digit, because the $i$th real number shares digit $i$ with $r$, and hence differs from $r'$ at the same place. But $r'$ is a real number, so it must occur somewhere in this list! Call that place $k \mapsto r'$. Then, $r'$ differs from $r'$ at digit $k$, a contradiction.
 
@@ -194,9 +158,7 @@ Georg Cantor went on to [prove this in general](http://en.wikipedia.org/wiki/Can
 
 We have still only scratched the surface of set theory, and we have even left out a lot of basic material to expedite our discussion of uncountability. There is a huge amount of debate that resulted from Cantor's work, and it inspired many to further pick apart the foundations of mathematics, leading to more rigorous formulations of set theory, and extensions or generalizations such as category theory.
 
-
 ## Sets of Sets of Sets, and so on Ad Insanitum
-
 
 We wrap up this post with a famous paradox, which makes one question whether all of the operations performed in set theory are justified. It is called Russell's Paradox, after Bertrand Russell.
 

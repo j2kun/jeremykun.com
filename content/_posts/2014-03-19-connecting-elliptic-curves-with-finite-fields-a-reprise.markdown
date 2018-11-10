@@ -55,9 +55,7 @@ Ideal
 
 There are some subtle issues, though, in that we shouldn't use the code we have to work over _any_ finite field. But we've come very far and covered a lot of technical details, so let's briefly remember how we got here.
 
-
 ## Taking a Step Back
-
 
 At the beginning there was only $\mathbb{Q}$, the field of rational numbers. We had a really nice geometric picture of elliptic curves over this field, and using that picture we developed an algorithm for (geometrically) adding points.
 
@@ -76,16 +74,9 @@ So what can we do?
 
 Well it turns out that there is a more _general _Weierstrass normal form, unsurprisingly called the _generalized Weierstrass normal form_. It looks like this
 
-
 $\displaystyle y^2 + a_1 xy + a_3y = x^3 + a_2x^2 + a_4x + a_6$
 
-
-
-
 The same geometric idea of drawing lines works for this curve as well. It's just that now the formula is way more complicated. It involves computing a bunch of helper constants and computing far more arithmetic. My colleague Daniel Ngheim was kind enough to code up the algorithm, and here it is
-
-
-
 
 {{< highlight python >}}
     def __add__(self, Q):

@@ -19,9 +19,7 @@ The singular value decomposition (SVD) of a matrix is a fundamental tool in comp
 
 I want to spend the first post entirely on motivation and background. As part of this, I think we need a little reminder about how linear algebra equivocates linear subspaces and matrices. I say "I think" because what I'm going to say seems rarely spelled out in detail. Indeed, I was confused myself when I first started to read about linear algebra applied to algorithms, machine learning, and data science, despite having a solid understanding of linear algebra from a mathematical perspective. The concern is the connection between matrices as transformations and matrices as a "convenient" way to organize data.
 
-
 ## Data vs. maps
-
 
 Linear algebra aficionados like to express deep facts via statements about _matrix factorization. _That is, they'll say something opaque like (and this is the complete statement for SVD we'll get to in the post):
 
@@ -39,11 +37,9 @@ The way these two ideas combine is that the data is thought of as the _image_ o
 
 ![movieratings](https://jeremykun.files.wordpress.com/2015/11/movieratings.png)
 
-
 In reality they're rated on a scale from 1 to 5 stars, but to keep things simple we'll just say that the ratings can be any real numbers (they just happened to pick integers). So this matrix represents a linear map. The domain is $\mathbb{R}^3$, and the basis vectors are called _people_, and the codomain is $\mathbb{R}^8$, whose basis vectors are movies.
 
 ![moviemapping.png](https://jeremykun.files.wordpress.com/2015/11/moviemapping.png)
-
 
 Now the _data set_ is represented by $A(\vec e_{\textup{Aisha}}),A(\vec e_{\textup{Bob}}),A(\vec e_{\textup{Chandrika}})$, and by the definition of how a matrix represents a linear map, the entires of these vectors are exactly the columns of $A$. If the codomain is really big, then the image of $A$ is a small-dimensional linear subspace of the codomain. This is an important step, that we've increased our view from just the individual data points to all of their linear combinations as a subspace.
 
@@ -57,8 +53,6 @@ Likewise, movie ratings aren't literally a linear map, but if we pretend they ar
 
 And now we get to the key: factoring the matrix via SVD provides an alternative and more useful way to represent the _process of people rating movies._ By changing the basis of one or both vector spaces involved, we isolate the different (orthogonal) characteristics of the process. In the context of our movie example, "factorization" means the following:
 
-
-
 	  1. Come up with a special list of vectors $v_1, v_2, \dots, v_8$ so that every movie can be written as a linear combination of the $v_i$.
 	  2. Do the analogous thing for people to get $p_1, p_2, p_3$.
 	  3. Do (1) and (2) in such a way that the map $A$ is diagonal with respect to both new bases simultaneously.
@@ -71,8 +65,6 @@ To be completely clear, the singular value decomposition does _not_ find the id
 
 With this perspective we're almost ready to talk about the singular value decomposition. I just want to take a moment to write down a list of the assumptions that we'd need if we want to ensure that, given a data set of movie ratings, we can use linear algebra to make _exact_ claims about world.
 
-
-
 	  1. All people rate movies via the same linear map.
 	  2. Every person can be expressed (for the sole purpose of movie ratings) as linear combinations of "ideal" people. Likewise for movies.
 	  3. The "idealized" movies and people can be expressed as linear combinations of the movies/people in our particular data set.
@@ -80,9 +72,7 @@ With this perspective we're almost ready to talk about the singular value decomp
 
 One could have a deep and interesting discussion about the philosophical (or ethical, or cultural) aspects of these assumptions. But since the internet prefers to watch respectful discourse burn, we'll turn to algorithms instead.
 
-
 ## Approximating subspaces
-
 
 In our present context, the singular value decomposition (SVD) isn't meant to be a complete description of a mapping in a new basis, as we said above. Rather, we want to use it to _approximate _the mapping $A$ by low-dimensional linear things. When I say "low-dimensional linear things" I mean that given $A$, we'd want to find another matrix $B$ which is measurably similar to $A$ in some way, and has low rank compared to $A$.
 
@@ -100,13 +90,9 @@ That's it, as far as intuitively understanding what the SVD is. I should add t
 
 The second bit of intuition is the following. It's only slightly closer to rigor, but somehow this little insight really made SVD click for me personally:
 
-
 The SVD is what you get when you iteratively solve the greedy optimization problem of fitting data to a line.
 
-
 By that I mean, you can compute the SVD by doing the following:
-
-
 
 	  1. What's the best line fitting my data?
 	  2. Okay, ignoring that first line, what's the next best line?
@@ -116,9 +102,7 @@ By that I mean, you can compute the SVD by doing the following:
 
 It should be shocking that this works. For most problems, in math and in life, the greedy algorithm is far from optimal. When it happens, once every blue moon, that [the greedy algorithm is the _best_ solution](http://jeremykun.com/2014/08/26/when-greedy-algorithms-are-perfect-the-matroid/) to a natural problem (and not obviously so, or just [approximately so](http://jeremykun.com/2014/07/07/when-greedy-algorithms-are-good-enough-submodularity-and-the-1-1e-approximation/)), it's our intellectual duty to stop what we're doing, sit up straight, and really understand and appreciate it. These wonders transcend political squabbles and sports scores. And we'll start the [next post](https://jeremykun.com/2016/05/16/singular-value-decomposition-part-2-theorem-proof-algorithm/) immediately by diving into this greedy optimization problem.
 
-
 ## The geometric perspective
-
 
 There are two other perspectives I want to discuss here, though it may be more appropriate for a reader who is not familiar with the SVD to wait to read this after the sequel to this post. I'm just going to relate my understanding (in terms of the greedy algorithm and data approximations) to the geometric and statistical perspectives on the SVD.
 
@@ -128,9 +112,7 @@ To me, the key that's missing from this explanation is the emphasis on the appr
 
 Another geometric perspective that highlights this is that the rank-$k$ approximation provided by the SVD is a geometric projection of a matrix onto the space of rank at-most-k matrices with respect to the "spectral norm" on matrices (the spectral norm of $A$ is the largest eigenvalue of $A^TA$). The change of basis described above makes this projection very easy: given a singular value decomposition you just take the top $k$ singular vectors. Indeed, the Eckart-Young theorem formalizes this with the statement that the rank-$k$ SVD $B_k$ minimizes the distance (w.r.t. the spectral norm) between the original matrix $A$ and _any_ rank $k$ matrix. So you can prove that SVD gives you the best rank $k$ approximation of $A$ by some reasonable measure.
 
-
 ## Next time: algorithms
-
 
 [Next time](https://jeremykun.com/2016/05/16/singular-value-decomposition-part-2-theorem-proof-algorithm/) we'll connect all this to the formal definitions and rigor. We'll study the greedy algorithm approach, and then we'll implement the SVD and test it on some data.
 

@@ -24,9 +24,7 @@ Machine learning is broadly split into two camps, statistical learning and non-s
 
 As usual, [all of the code](https://github.com/j2kun/linear-regression) presented in this post is available on [this blog's Github page](https://github.com/j2kun?tab=repositories).
 
-
 ## The Linear Model, in Two Variables
-
 
 And so given a data set we start by splitting it into independent variables and dependent variables. For this section, we'll focus on the case of two variables, $X, Y$. Here, if we want to be completely formal, $X,Y$ are real-valued random variables on the same probability space (see our [primer on probability theory](http://jeremykun.com/2013/01/04/probability-theory-a-primer/) to keep up with this sort of terminology, but we won't rely on it heavily in this post), and we choose one of them, say $X$, to be the _independent variable_ and the other, say $Y$, to be the _dependent variable_. All that means in is that we are assuming there is a relationship between $X$ and $Y$, and that we intend to use the value of $X$ to predict the value of $Y$. Perhaps a more computer-sciencey terminology would be to call the variables _features_ and have _input features _and_ output features, _but we will try to stick to the statistical terminology.
 
@@ -47,86 +45,37 @@ The word "minimize" might evoke long suppressed memories of torturous Calculus l
 
 To explicitly formalize the problem, given a set of data points $(x_i, y_i)_{i=1}^n$ and a potential prediction line $\hat{f}(x) = ax + b$, we define the error of $\hat{f}$ on the examples to be
 
-
 $\displaystyle S(a,b) = \sum_{i=1}^n (y_i - \hat{f}(x_i))^2$
-
-
-
 
 Which can also be written as
 
-
-
-
 $\displaystyle S(a,b) = \sum_{i=1}^n (y_i - ax_i - b)^2$
-
-
-
 
 Note that since we're fixing our data sample, the function $S$ is purely a function of the variables $a,b$. Now we want to minimize this quantity with respect to $a,b$, so we can take a gradient,
 
-
-
-
 $\displaystyle \frac{\partial S}{\partial a} = -2 \sum_{i=1}^n (y_i - ax_i - b) x_i$
-
-
-
 
 $\displaystyle \frac{\partial S}{\partial b} = -2 \sum_{i=1}^n (y_i -ax_i - b)$
 
-
-
-
 and set them simultaneously equal to zero. In the first we solve for $b$:
-
-
-
 
 $\displaystyle 0 = -2 \sum_{i=1}^n y_i - ax_i - b = -2 \left (-nb + \sum_{i=1}^n y_i - ax_i \right )$
 
-
-
-
 $\displaystyle b = \frac{1}{n} \sum_{i=1}^n y_i - ax_i$
-
-
-
 
 If we denote by $x_{\textup{avg}} = \frac{1}{n} \sum_i x_i$ this is just $b = y_{\textup{avg}} - ax_{\textup{avg}}$. Substituting $b$ into the other equation we get
 
-
-
-
 $\displaystyle -2 \sum_{i=1}^n (y_ix_i - ax_i^2 - y_{\textup{avg}}x_i - ax_{\textup{avg}}x_i ) = 0$
-
-
-
 
 Which, by factoring out $a$, further simplifies to
 
-
-
-
 $\displaystyle 0 = \sum_{i=1}^n y_ix_i - y_{\textup{avg}}x_i - a \sum_{i=1}^n (x_i^2 - x_{\textup{avg}}x_i)$
-
-
-
 
 And so
 
-
-
-
 $\displaystyle a = \frac{\sum_{i=1}^n (y_i - y_{\textup{avg}})x_i }{\sum_{i=1}^n(x_i - x_{\textup{avg}})x_i}$
 
-
-
-
 And it's not hard to see (by taking second partials, if you wish) that this corresponds to a minimum of the error function. This closed form gives us an immediate algorithm to compute the optimal linear estimator. In Python,
-
-
-
 
 {{< highlight python >}}avg = lambda L: 1.0* sum(L)/len(L)
 
@@ -154,96 +103,43 @@ and a quick example of its use on synthetic data points:
     >>> bestLinearEstimator(points)[0]
     (0.49649543577814137, 6.993035962110321)
 
-
-
-
 ## Many Variables and Matrix Form
-
 
 If we take those two variables $x,y$ and tinker with them a bit, we can represent the solution to our regression problem in a different (a priori strange) way in terms of matrix multiplication.
 
 First, we'll transform the prediction function into matrixy style. We add in an extra variable $x_0$ which we force to be 1, and then we can write our prediction line in a _vector form_ as $\mathbf{w} = (a,b)$. What is the benefit of such an awkward maneuver? It allows us to write the _evaluation_ of our prediction function as a dot product
 
-
 $\displaystyle \hat{f}(x_0, x) = \left \langle (x_0, x), (b, a) \right \rangle = x_0b + ax = ax + b$
-
-
-
 
 Now the notation is starting to get quite ugly, so let's rename the coefficients of our line $\mathbf{w} = (w_0, w_1)$, and the coefficients of the input data $\mathbf{x} = (x_0, x_1)$. The output is still $y$. Here we understand implicitly that the indices line up: if $w_0$ is the constant term, then that makes $x_0 = 1$ our extra variable (often called a _bias_ variable by statistically minded folks), and $x_1$ is the linear term with coefficient $w_1$. Now we can just write the prediction function as
 
-
-
-
 $\hat{f}(\mathbf{x}) = \left \langle \mathbf{w}, \mathbf{x} \right \rangle$
-
-
-
 
 We still haven't really seen the benefit of this vector notation (and we won't see it's true power until we extend this to kernel ridge regression in the next post), but we do have at least one additional notational convenience: we can add arbitrarily many input variables without changing our notation.
 
-
-
-
 If we expand our horizons to think of the random variable $Y$ depending on the $n$ random variables $X_1, \dots, X_n$, then our data will come in tuples of the form $(\mathbf{x}, y) = ((x_0, x_1, \dots, x_n), y)$, where again the $x_0$ is fixed to 1. Then expanding our line $\mathbf{w} = (w_0 , \dots, w_n)$, our evaluation function is still $\hat{f}(\mathbf{x}) = \left \langle \mathbf{w}, \mathbf{x} \right \rangle$. Excellent.
-
-
-
 
 Now we can write our error function using the same style of compact notation. In this case, we will store all of our input data points $\mathbf{x}_j$ as rows of a matrix $X$ and the output values $y_j$ as entries of a vector $\mathbf{y}$. Forgetting the boldface notation and just understanding everything as a vector or matrix, we can write the deviation of the predictor (on all the data points) from the true values as
 
-
-
-
 $y - Xw$
-
-
-
 
 Indeed, each entry of the vector $Xw$ is a dot product of a row of $X$ (an input data point) with the coefficients of the line $w$. It's just $\hat{f}$ applied to all the input data and stored as the entries of a vector. We still have the sign issue we did before, and so we can just take the square norm of the result and get the same effect as before:
 
-
-
-
 $\displaystyle S(w) = \| y - Xw \|^2$
-
-
-
 
 This is just taking a dot product of $y-Xw$ with itself. This form is awkward to differentiate because the variable $w$ is nested in the norm. Luckily, we can get the same result by viewing $y - Xw$ as a 1-by-$n$ matrix, transposing it, and multiplying by $y-Xw$.
 
-
-
-
 $\displaystyle S(w) = (y - Xw)^{\textup{T}}(y-Xw) = y^{\textup{T}}y -2w^{\textup{T}}X^{\textup{T}}y + w^{\textup{T}}X^{\textup{T}}Xw$
-
-
-
 
 This notation is widely used, in particular because we have [nice formulas for calculus on such forms](http://orion.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf). And so we can compute a gradient of $S$ with respect to each of the $w_i$ variables in $w$ at the same time, and express the result as a vector. This is what taking a "partial derivative" with respect to a vector means: we just represent the system of partial derivates with respect to each entry as a vector. In this case, and using formula 61 from page 9 and formula 120 on page 13 of [The Matrix Cookbook](http://orion.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf), we get
 
-
-
-
 $\displaystyle \frac{\partial S}{\partial w} = -2X^{\textup{T}}y + 2X^{\textup{T}}Xw$
-
-
-
 
 Indeed, it's quite trivial to prove the latter formula, that for any vector $x$, the partial $\frac{\partial x^{\textup{T}}x}{\partial x} = 2x$. If the reader feels uncomfortable with this, we suggest taking the time to unpack the notation (which we admittedly just spent so long packing) and take a classical derivative entry-by-entry.
 
-
-
-
 Solving the above quantity for $w$ gives $w = (X^{\textup{T}}X)^{-1}X^{\textup{T}}y$, assuming the inverse of $X^{\textup{T}}X$ exists. Again, we'll spare the details proving that this is a minimum of the error function, but inspecting second derivatives provides this.
 
-
-
-
 Now we can have a slightly more complicated program to compute the linear estimator for one input variable and many output variables. It's "more complicated" in that much more mathematics is happening behind the code, but just admire the brevity!
-
-
-
 
 {{< highlight python >}}from numpy import array, dot, transpose
 from numpy.linalg import inv
@@ -259,17 +155,11 @@ def bestLinearEstimatorMV(points):
    return w, lambda x: dot(w, x)
 {{< /highlight >}}
 
-
-
 Here are some examples of its use. First we check consistency by verifying that it agrees with the test used in the two-variable case (note the reordering of the variables):
-
-
-
 
     
     >>> print(bestLinearEstimatorMV(points)[0])
     [ 6.97687136  0.50284939]
-
 
 And a more complicated example:
 
@@ -280,12 +170,9 @@ And a more complicated example:
     >>> print(bestLinearEstimatorMV(points)[0])
     [-3.02698484  1.03984389  2.01999929  3.0046756   4.01240348  4.99515123]
 
-
 As a quick reminder, [all of the code used in this post](https://github.com/j2kun/linear-regression) is available on [this blog's Github page](https://github.com/j2kun?tab=repositories).
 
-
 ## Bias and Variance
-
 
 There is a deeper explanation of the linear model we've been studying. In particular, there is a general technique in statistics called [maximum likelihood estimation](http://en.wikipedia.org/wiki/Maximum_likelihood). And, to be as concise as possible, the linear regression formulas we've derived above provide the maximum likelihood estimator for a line with symmetric "Gaussian noise." Rather than go into maximum likelihood estimation in general, we'll just describe what it means to be a "line with Gaussian noise," and measure the linear model's bias and variance with respect to such a model. We saw this very briefly in the test cases for the code in the past two sections. Just a quick warning: the proofs we present in this section will use the notation and propositions of basic probability theory [we've discussed on this blog before](http://jeremykun.com/2013/01/04/probability-theory-a-primer/).
 
@@ -297,60 +184,26 @@ More realistically, the noise isn't chosen uniformly from $\pm 1$, but is rather
 
 Moving back to the case of many variables, we assume our data points $y$ are given by $y = Xw + H$ where $X$ is the observed data and $H$ is Gaussian noise with mean zero and some (unknown) standard deviation $\sigma$. Then if we call $\hat{w}$ our predicted linear coefficients (randomly depending on which samples are drawn), then its expected value conditioned on the data is
 
-
 $\displaystyle \textup{E}(\hat{w} | X) = \textup{E}((X^{\textup{T}}X)^{-1}X^{\textup{T}}y | X)$
-
-
-
 
 Replacing $y$ by $Xw + H$,
 
-
-
-
 $\displaystyle \begin{array} {lcl} \textup{E}(\hat{w} | X) & = & \textup{E}((X^{\textup{T}}X)^{-1}X^{\textup{T}}(Xw + H) | X) \\ & = & \textup{E}((X^{\textup{T}}X)^{-1}X^{\textup{T}}Xw + (X^{\textup{T}}X)^{-1}X^{\textup{T}}H | X) \end{array}$
-
-
-
 
 Notice that the first term is a fat matrix ($X^{\textup{T}}X$) multiplied by its own inverse, so that cancels to 1. By linearity of expectation, we can split the resulting expression up as
 
-
-
-
 $\textup{E}(w | X) + (X^{\textup{T}}X)^{-1}X^{\textup{T}}\textup{E}(H | X)$
-
-
-
 
 but $w$ is constant (so its expected value is just itself) and $\textup{E}(H | X) = 0$ by assumption that the noise is symmetric. So then the expected value of $\hat{w}$ is just $w$. Because this is true for all choices of data $X$, the bias of our estimator is zero.
 
-
-
-
 The question of variance is a bit trickier, because the variance of the entries of $\hat{w}$ actually do depend on which samples are drawn. Briefly, to compute the covariance matrix of the $w_i$ as variables depending on $X$, we apply the definition:
-
-
-
 
 $\textup{Var}(\hat{w} | X) = \textup{E}(\| w - \textup{E}(w) \|^2 | X)$
 
-
-
-
 And after some tedious expanding and rewriting and recalling that the covariance matrix of $H$ is just the diagonal matrix $\sigma^2 I_n$, we get that
-
-
-
 
 $\textup{Var}(\hat{w} | X) = \sigma^2 (X^{\textup{T}}X)^{-1}$
 
-
-
-
 This means that if we get unlucky and draw some sample which makes some entries of $(X^{\textup{T}}X)^{-1}$ big, then our estimator will vary a lot from the truth. This can happen for a variety of reasons, one of which is including irrelevant input variables in the computation. Unfortunately a deeper discussion of the statistical issues that arise when trying to make hypotheses in such situations. However, the concept of a bias-variance tradeoff is quite relevant. As we'll see next time, a technique called _ridge-regression_ sacrifices some bias in this standard linear regression model in order to dampen the variance. Moreover, a "kernel trick" allows us to make non-linear predictions, turning this simple model for linear estimation into a very powerful learning tool.
-
-
-
 
 Until then!

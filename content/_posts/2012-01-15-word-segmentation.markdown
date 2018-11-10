@@ -22,17 +22,11 @@ tags:
 ## [![](http://jeremykun.files.wordpress.com/2012/01/hp-main.jpg)
 ](http://jeremykun.files.wordpress.com/2012/01/hp-main.jpg)
 
-
-
-
 ## A First Look at Google's N-Gram Corpus
-
 
 In this post we will focus on the problem of finding the appropriate word boundaries in strings like "homebuiltairplanes", as is common in web URLs like [www.homebuiltairplanes.com](http://www.homebuiltairplanes.com/). This is an interesting problem because humans do it so easily, but there is no obvious programmatic solution. We will begin this article by addressing the complexity of this problem, continue by implementing a simple model using a subset of [Google's n-gram corpus](http://books.google.com/ngrams), and finish by describing our future plans to enhance the model. As usual, [all of the code and data](https://github.com/j2kun/segment) used in this post is available from [this blog's Github page](https://github.com/j2kun/).
 
-
 ## Word Segmentation
-
 
 We just claimed word segmentation is a hard problem, but in fact the segmentation part is quite easy! We'll give a quick overview of the segmentation algorithm which assumes that we can evaluate a segmentation for optimality.
 
@@ -54,14 +48,12 @@ First, we implement the "splitPairs" function, which accepts a string $s$ as inp
     def splitPairs(word):
        return [(word[:i+1], word[i+1:]) for i in range(len(word))]
 
-
 Indeed, "word[a:b]" computes a substring of "word" including the indices from $a$ to $b-1$, where blank entries for $a$ and $b$ denote the beginning and end of the string, respectively. For example, on the input string "hello", this function computes:
 
     
     >>> splitPairs("hello")
     [('h', 'ello'), ('he', 'llo'), ('hel', 'lo'),
      ('hell', 'o'), ('hello', '')]
-
 
 Note that the last entry in this list is crucial, because we may not want to segment the input word at all, and in the following we assume that "splitPairs" returns all of our possible choices of action. Next we define the "segment" function, which computes the optimal segmentation of a given word. In particular, we assume there is a global function called "wordSeqFitness" which reliably computes the fitness of a given sequence of words, with respect to whether or not it's probably the correct segmentation.
 
@@ -72,14 +64,11 @@ Note that the last entry in this list is crucial, because we may not want to seg
                            for (first, rest) in splitPairs(word)]
        return max(allSegmentations, key = wordSeqFitness)
 
-
 In particular, we are working by induction on the length of a word. Assuming we know the optimal segmentations for all substrings not including the first letter, we can construct the best segmentation which includes the first letter. The first line is the base case (there is only one choice for the empty string), and the second line is the meat of the computation. Here, we look at all possible split pairs, including the one which considers the entire word as a good segmentation, and we find the maximum of those segmentations with respect to "wordSeqFitness". By induction we know that "segment" returns the optimal segmentation on every call, since each "rest" variable contains a strictly smaller substring which does not include the first letter. Hence, we have covered all possible segmentations, and the algorithm is correct.
 
 Again, note how simple this algorithm was. Call it Python's syntactic sugar if you will, but the entire segmentation was a mere four lines of logic. In other words, the majority of our work will be in figuring out exactly how to judge the fitness of a segmented word. For that, we turn to Google.
 
-
 ## Google's N-Gram Corpus
-
 
 The biggest obstacle in "word segmentation" turns out to be identifying what words are, or rather what strings are most likely to have meaning. If we stick to a naive definition of what a word is, i.e., anything found in the Oxford English Dictionary, we end up with a very weak program. It wouldn't be able to tell that "bbc" should be a word, as in our above example, and further it wouldn't be able to tell which words are more likely than others (the OED has some pretty obscure words in it, but no mention of which are more common).
 
@@ -108,7 +97,6 @@ Each line in Norvig's data file has the form $word \left \langle tab \right \ran
     i	3086225277
     you	2996181025
 
-
 While the last few are (quite uselessly):
 
     
@@ -127,12 +115,9 @@ While the last few are (quite uselessly):
     gollgo	12711
     golgw	12711
 
-
 The important aspect here is that the words have associated _counts_, and we can use them to probabilistically compare the fitness of two segmentations of a given word. In particular, we need to define a probabilistic model that evaluates the likelihood of a given sequence of words being drawn from a theoretical distribution of all sequences of words.
 
-
 ## Naive Bayes, the Reckless Teenager of Probability Models
-
 
 The simplest useful model we could create is one in which we simply take the probability of each word in the segmentation and multiply them together. This is [Bayes's Rule](http://en.wikipedia.org/wiki/Bayes'_rule), with the added assumption that each event (the occurrence of a word) is independent of the others. In common parlance, this is the equivalent to saying that the probability of a sequence of words occurring is the probability that the first word occurs (anywhere in the sequence) AND the second word occurs AND the third word occurs, and so on. Obviously the independence assumption is very strong. For a good counterexample, the sequence "united states of america" is far more common than the sequence "states america of united", even though in this model they have the same probability.
 
@@ -142,9 +127,7 @@ For word segmentation, however, it's a sensible simplification. Indeed, it is qu
 
 For a general model not pertaining just to segmentation, we'd truly love it if we could take into account $n$-grams for any $n$, because indeed some (very long) texts include words which have high probability of being placed together, but are far apart. Take, for instance, a text about sports in the UK. It is quite unlikely to see the word "soccer", and more likely to see the word "wimbledon," if the word United Kingdom shows up anywhere in the text (or, say, words like "Manchester"). There are some models which try to account for this (for instance, see the work on the ["sequence memoizer"](http://www.stat.columbia.edu/~fwood/Talks/sequence_memoizer.ppt) done at Columbia). However, here we expect relatively few tokens, so once we get there, we can limit our concerns to 5-grams at most. And, as most mathematicians and programmers agree, the best solution is often the simplest one.
 
-
 ## Implementation
-
 
 Our naive Bayes probability model will end up being a class in Python. Upon instantiating the class, we will read in the data file, organize the word counts, and construct a way to estimate the probability of a word occurring, given our smaller data set.
 
@@ -152,7 +135,6 @@ In particular, our class will _inherit_ the functionality of a dictionary. The 
 
     
     class OneGramDist(dict):
-
 
 This allows us to treat any instance of the class as if it were a dictionary. We can further override the different methods of a dictionary, extending the functionality in any way we wish, but for this application we won't need to do that.
 
@@ -172,7 +154,6 @@ The relevant methods we need to implement are an initialization, which reads the
           else:
              return 1.0 / self.gramCount
 
-
 In the init function, we take each line in the "one-grams.txt" file, which has the form discussed above, and extract the word and count from it. We then store this data into the "self" object (which, remember, is also a dictionary), and then tally up all of the counts in the variable "gramCount". In the call function, we simply return the number of times the word was counted, divided by the total "gramCount". If a word has not been seen before, we assume it has a count of 1, and return the appropriate probability. We also note that this decision will come back to bite us soon, and we will need to enhance our model to give a better guess on unknown probabilities.
 
 To plug this in to our segmentation code from earlier, we instantiate the distribution and implement "wordSeqFitness()" as follows:
@@ -183,18 +164,14 @@ To plug this in to our segmentation code from earlier, we instantiate the distri
        return functools.reduce(lambda x,y: x+y,
          (math.log10(singleWordProb(w)) for w in words))
 
-
 First, this requires us to import both the "math" and "functools" libraries. The "reduce" function is the same as the "fold" function (see our [primer on Racket and functional programming](http://jeremykun.wordpress.com/2011/10/02/a-taste-of-racket/)), and it combines a list according to a given function. Here the function is an _anonymous_ _function_, and the syntax is
 
     
     lambda arg1, arg2, ..., argN: expression
 
-
 Here our lambda is simply adding two numbers. The list we give simply computes the probabilities of each word, and takes their logarithms. This actually does compute what we want to compute, but in logarithmic coordinates. In other words, we use the simple observation that $\log(ab) = \log(a) + \log(b)$. The reason for this is that each single word probability is on the order of $10^{-10}$, and so taking a product of around forty words will give a probability of near $10^{-400}$, which is smaller than the smallest floating point number Python allows. Python would report a probability of zero for such a product. In order to remedy this, we use this logarithm trick, and we leave it as an exercise to the reader to compute how ridiculously small the numbers we can represent in this coordinate system are.
 
-
 ## Drawbacks, and Improvements
-
 
 Now let us see how this model fares with a few easy inputs.
 
@@ -203,13 +180,11 @@ Now let us see how this model fares with a few easy inputs.
     >>> segment("hellothere")
     ['hello', 'there']
 
-
 So far so good.
 
     
     >>> segment("himynameisjeremy")
     ['himynameisjeremy']
-
 
 What gives?! Let's fiddle with this a bit:
 
@@ -227,24 +202,13 @@ What gives?! Let's fiddle with this a bit:
     >>> wordSeqFitness(['hi', 'my', 'name', 'is'])
     -11.88328049583244
 
-
 There we have it. Even though we recognize that the four words above are common, their combined probability is lower than the probability of a single long word! In fact, this is likely to happen for any long string. To fix this, we need to incorporate information about the frequency of words based on their length. In particular, assume we have an unknown word $w$. It is unlikely to be a word if it's longer than, say, ten characters long. There are some [well-known distributions](http://plus.maths.org/content/mystery-zipf) describing the frequency of _actual_ words by their length, and it roughly fits the curve:
-
 
 $f = aL^bc^L; a = 0.16, b = 2.33, c = 0.5$
 
-
-
-
 Unfortunately this doesn't help us. We want to know among all strings of a given length what proportion of them are words. With that, we can better model the probability of an unseen word actually being a word.
 
-
-
-
 Luckily, we aren't helpless nontechnical lambs. We are programmers! And we have a huge dictionary of words from Google's n-gram corpus sitting right here! A quick python script (after loading in the dictionary using our existing code above) gives us the necessary numbers:
-
-
-
 
     
     >>> for i in range(1,15):
@@ -266,7 +230,6 @@ Luckily, we aren't helpless nontechnical lambs. We are programmers! And we have 
     2.54478475236e-15
     5.68594239398e-17
 
-
 Looking at the exponents, we see it's roughly exponential with a base of $1/10$ for each length after 2, and we verify this by looking at a log plot in Mathematica:
 
 [![](http://jeremykun.files.wordpress.com/2012/01/word-length-vs-frequency.png)
@@ -280,7 +243,6 @@ The linearity of the picture tells us quite immediately that it's exponential. A
              return float(self[word]) / self.gramCount
           else:
              return 1.0 / (self.gramCount * 10**(len(key) - 2))
-
 
 And indeed, our model now fares much better:
 
@@ -303,7 +265,6 @@ And indeed, our model now fares much better:
     >>> segment(s)
     ['diffuse', 'pan', 'bronchiolitis', 'dpb', 'is', 'an', 'inflammatory', 'lung', 'disease', 'of', 'unknown', 'cause', 'it', 'is', 'a', 'severe', 'progressive', 'form', 'of', 'bronchiolitis', 'an', 'inflammatory', 'condition', 'of', 'the', 'bronchioles', 'small', 'air', 'passages', 'in', 'the', 'lungs', 'the', 'term', 'diffuse', 'signifies', 'that']
 
-
 Brilliant! The last bit is from the wikipedia page on [diffuse panbronchiolitis](http://en.wikipedia.org/wiki/Diffuse_panbronchiolitis), and it only mistakes the "pan" part of the admittedly obscure technical term. However, we are much more impressed by how our model embraces internet slang :). We can further verify intended behavior by deliberately misspelling a long word to see how the model fares:
 
     
@@ -312,16 +273,13 @@ Brilliant! The last bit is from the wikipedia page on [diffuse panbronchiolitis]
     >>> segment("antidisestablishmentarianasm")
     ['anti', 'disestablishment', 'ariana', 'sm']
 
-
 That second segmentation is certainly more likely than the original misspelled word (well, if we assume that no words are misspelled _before_ segmentation).
 
 Perhaps the most beautiful thing here is that this entire program is independent of the data used. If we wanted to instead write a program to segment, say, German words, all we'd need is a data file with the German counts (which Google also provides with its [book corpus](http://books.google.com/ngrams/datasets), along with Russian, Chinese, French, Spanish, and Hebrew). So we've written a much more useful program than we originally intended. Now compare this to the idea of a program which _hard codes_ rules for a particular language, which was [common practice](http://en.wikipedia.org/wiki/Natural_language_processing#History) until the 1980's. Of course, it's obvious now how ugly that method is, but apparently it's still sometimes used to augment statistical methods for language-specific tasks.
 
 Of course, we still have one flaw: the data is sloppy. For instance, the segmentation of "helloworld" is just "helloworld." It turns out that this token appears on the internet in various forms, and commonly enough to outweigh the product of "hello" and "world" alone. Unfortunately, we can't fix this by fiddling with the data we already have. Instead, we would need to extend the model to look at frequency counts of _sequences_ of words (here, sequences of length 2). Google provides sequence counts of up to length 5, but they quickly grow far too large to fit in memory. One possible solution, which we postpone for a future post, would be to set up a database containing all 1-gram and 2-gram data, and therein bypass the need to store a big dictionary in memory. Indeed, then we could avoid truncating the 1-gram data as we did in this post.
 
-
 ## The Next Steps
-
 
 Next time, we will look at another application of our truncated corpus: cryptanalysis. In particular, we will make an effort to break [substitution ciphers](http://en.wikipedia.org/wiki/Substitution_cipher) via a local search method. In the not so near future, we also plan to investigate some other aspects of information representation. One idea which seems promising is to model a document as a point in some high dimensional space (perhaps each dimension corresponds to a count of a particular 1-gram), and then use our familiar friends from geometry to compare document similarity, filter through information, and determining the topic of a document via [clustering](http://en.wikipedia.org/wiki/Cluster_analysis).  The idea is called the [vector space model](http://en.wikipedia.org/wiki/Vector_space_model) for information retrieval. In addition, we can use the corpus along with our friendly [Levenshtein metric](http://jeremykun.wordpress.com/2011/12/19/metrics-on-words/) to implement a spell-checker. Finally, we could try searching for phonetically similar words using a Levenshteinish metric on letter $n$-grams (perhaps $n$ is between 2 and 4).
 

@@ -30,9 +30,7 @@ We are about to begin a series where we analyze large corpora of English words. 
 
 As usual, [the code implemented in this post](https://github.com/j2kun/metrics-on-words-levenshtein) is available from [this blog's Github page](https://github.com/j2kun/), and we encourage the reader to use the code to implement our suggested exercises. But before we get there, we should investigate some properties of our domain: the set of all finite strings of letters.
 
-
 ## Words, Words, Words.
-
 
 If we consider a fixed alphabet $\Sigma$ (any [set](http://jeremykun.wordpress.com/2011/07/09/set-theory-a-primer/), really, but for our purposes a finite one), we may consider the set $\Sigma^*$ of all finite strings of elements from $\Sigma$, also called _words_. For example, given $\Sigma = \left \{ u,v,w \right \}$, we have the word $u \cdot w \cdot w \cdot v \cdot u \in \Sigma^*$. Also, we allow the _empty word_ $\varepsilon$ to be a string of length zero. The formal name for the "star" operation is the _[Kleene star](http://en.wikipedia.org/wiki/Kleene_star)_. Most of our work here will be done over the English alphabet of letters $\Sigma = \left \{ a, b, c, \dots , z \right \}$.
 
@@ -52,20 +50,12 @@ A more complex example which shows up in functional programming has to do with l
 
 Now for any fixed operation $g : X \to Y$, we may form the _map homomorphism_ $\mu_g: X^* \to Y^*$ inductively as follows:
 
-
 $\mu_g(\varepsilon) = \varepsilon$
 $\mu_g(x_1 \dots x_n) = g(x_1) \mu_g(x_2 \dots x_n))$
 
-
-
-
 This is precisely the map operation defined in our [primer on functional programming](http://jeremykun.wordpress.com/2011/10/02/a-taste-of-racket/). We encourage the reader to investigate how to phrase the other two functions (filter and fold) as monoid homomorphisms, or prove it cannot be done (thanks to Matt for pointing out this author's mistake with regards to that).
 
-
-
-
 **Metrics, and String Comparisons**
-
 
 Since our goal is to do things like spelling correction, we are quite interested in strings of letters which are not actually words. We want to be able to tell someone that the word "beleive" is probably a misspelling of the word "believe." So let us fix our alphabet $\Sigma = \left \{ a, b, c, \dots , z \right \}$ and consider the free monoid $\Sigma^*$. As we have noted, this is the set of all words one could type with the lowercase English alphabet, so it includes all of our egregious typos. It is a simplistic model, since we ignore punctuation, capitalization, and stylistic marks that convey meaning. But it is as good a place as any to start our investigation.
 
@@ -74,8 +64,6 @@ To mathematically describe what it means for a misspelled word to be "almost" th
 Of course, the hard part is describing the right metric. But before we get there, we must define a metric so we know what properties to aim for in constructing a metric on words.
 
 **Definition**: A _metric_ $d : X \times X \to \mathbb{R}$ is a function on a set $X$ which has the following three properties for all $x,y,z \in X$
-
-
 
 	  * $d(x,y) \geq 0$, and $d(x,y) = 0$ if and only if $x = y$.
 	  * $d(x,y) = d(y,x)$
@@ -89,8 +77,6 @@ If we think for a minute we can come up with a list of ways that people make typ
 
 More rigorously, let $u = u_1 \dots u_k$ be the unique way to write $u$ as a product of letters, and let $v = v_1 \dots v_j$ be the same for $v$. An _elementary edit_ of $u$ is one of the following:
 
-
-
 	  * a _deletion:_ the transformation $u_1 \dots u_i \dots u_k \to u_1 \dots \widehat{u_i} \dots u_k$ for some $1 \leq i \leq k$, where the hat omits omission in the $i$-th spot.
 	  * an _insertion:_ the transformation $u_1 \dots u_k \to u_1 \dots u_i x \dots u_k $ for some $1 \leq i \leq k$, and some letter $x \in \Sigma$.
 	  * a _substitution:_ the transformation $u_1 \dots u_i \dots u_k \to u_1 \dots u_{i-1}xu_{i+1} \dots u_k$ for some $1 \leq i \leq k-1$ and some letter $x$.
@@ -103,9 +89,7 @@ Last, we must verify the triangle inequality. Let $x,y,z$ be words; we want to s
 
 So $d$ is in fact a metric, and historically it is called Levenshtein's metric.
 
-
 ## A Topological Aside
-
 
 Before we get to implementing this metric, we have a few observations to make. First, we note that the shortest edit between two words is far from unique. In particular, the needed substitutions, insertions, and deletions often commute (i.e. the order of operations is irrelevant). Furthermore, instead of simply counting the number of operations required, we could assign each operation a _cost_, and call the total cost of an edit the sum of the costs of each elementary edit. This yields a large class of different metrics, and one could conceivably think of new operations (combinations of elementary operations) to assign lower costs. Indeed, we will do just that soon enough.
 
@@ -113,15 +97,11 @@ Second, and more interestingly, this metric provides quite a bit of structure on
 
 For those of us unfamiliar with topology or [graph theory](http://jeremykun.wordpress.com/2011/06/26/teaching-mathematics-graph-theory/), we can still imagine geometric notions that get to the intuitive heart of what "induced topology" means for words. For example, we can describe a circle of radius $r$ centered at a word $w$ quite easily: it is just the set of all words whose edit distance from $w$ is exactly $r$. As a concrete example, the circle of radius 1 centered at the word $a$ is
 
-
 $\left \{ \varepsilon, b, c, \dots , z, aa, ab, ac, \dots , az, ba, ca, \dots , za \right \}$
-
 
 In fact, any geometric construction that can be phrased entirely in terms of distance has an interpretation in this setting. We encourage the reader to think of more.
 
-
 ## Python Implementation, and a Peek at Dynamic Programming
-
 
 Of course, what use are these theoretical concerns to us if we can't use it to write a spell-checker? To actually implement the damn thing, we need a nontrivial algorithm. So now let's turn to Python.
 
@@ -152,7 +132,6 @@ To fix this, we need to keep track of prior computations. The technical term is 
           cache[args] = doTheComputation(args)
        return cache[args]
 
-
 To actually implement this, it turns out we don't need to change the above code at all. Instead, we will use a [decorator](http://stackoverflow.com/questions/739654/understanding-python-decorators) to modify the function as we wish. Here's the code, which is essentially an extra layer of indirection applied to the above pseudocode.
 
     
@@ -167,7 +146,6 @@ To actually implement this, it turns out we don't need to change the above code 
        memoizedFunction.cache = cache
        return memoizedFunction
 
-
 Here the function memoize() will accept our distance function, and return a new function which encapsulates the memo behavior. To use it, we simply use
 
     
@@ -176,14 +154,12 @@ Here the function memoize() will accept our distance function, and return a new 
     
     equivalentButMemoizedFunction = memoize(f)
 
-
 But luckily, Python gives a nice preprocessor macro to avoid writing this for every function we wish to memoize. Instead, we may simply write
 
     
     @memoize
     def f(x):
        ...
-
 
 And Python will make the appropriate replacements of calls to f with the appropriate calls to the memoized function. Convenient! For further discussion, see our [post on this technique in the program gallery](http://jeremykun.wordpress.com/2012/03/22/caching-and-memoization/).
 
@@ -193,9 +169,7 @@ To this author, this approach is the most natural implementation, but there are 
 
 In the future, we plan to provide another Python primer, with a focus on dynamic algorithms. Other methods for solving this problem will arise there. Indeed, I'm teaching an introductory Python programming course next semester, so this will be a good refresher.
 
-
 ## Transpositions, and Other Enhancements
-
 
 One other significant kind of typo is a _transposition_. Often times we type the correct letters in a word, but jumble the order of two words. In a spell checker, we want the word $thier$ to be closer to the word $their$ than it is to the word $cheer$, but with the Levenshtein metric the two pairs have equal distance (two substitutions each). We can enhance the metric by making transpositions have a cost of 1. Historically, this extended metric is called the _Damerau-Levenshtein metric_. Indeed, [Damerau himself gave evidence](http://dl.acm.org/citation.cfm?id=363994) that transpositions, along with the other three elementary edits, account for over 85% of human typing errors. Then again, that was back in the sixties, and typing has changed in many ways since then (not the least of which is a change in a typist's vocabulary).
 

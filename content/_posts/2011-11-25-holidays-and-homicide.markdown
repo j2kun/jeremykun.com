@@ -20,9 +20,7 @@ tags:
 [![](http://jeremykun.files.wordpress.com/2011/11/sherlock.jpg)
 ](http://patrickmate.blogspot.com/2010/11/423-thanksgiving-murder.html)
 
-
 ## A Study In Data
-
 
 Just before midnight on Thanksgiving, there was [a murder by gunshot](http://www.suntimes.com/news/9053912-418/suspect-held-in-fatal-shooting-at-uic-medical-center.html) about four blocks from my home. Luckily I was in bed by then, but all of the commotion over the incident got me thinking: is murder disproportionately more common on Thanksgiving? What about Christmas, Valentine's Day, or Saint Patrick's Day?
 
@@ -40,8 +38,6 @@ Here the red grid lines mark the highest ten homicide counts, the green grid lin
 Now it would be a terrible thing to "conclude" something about general human behavior from this particular data set. But I'm going to do it anyway because it's fun, and it lets me make fascinating and controversial observations. Plus, I need interesting tidbits of information to drop at parties with math and statistics students.
 
 Here are my observations:
-
-
 
 	  * There is a correlation between some holidays and homicide.
 	  * New Year's Day is by far the most violent day of the year, followed by Christmas Day. On the other hand, Christmas _Eve_ is only slightly above average.
@@ -96,7 +92,6 @@ For your viewing pleasure, here are the homicide counts on each day for the top 
      {"05/28", 14}, {"06/19", 14}, {"06/24", 14}, {"07/20", 14},
      {"07/31", 14}, {"08/10", 14}, {"10/22", 14}, {"12/22", 14},
      {"01/07", 15}, {"01/14", 15}, {"01/16", 15}}
-
 
 Unfortunately many holidays are defined year by year. Thanksgiving, Easter, Mother's Day, Father's Day, MLK Jr. Day, Memorial Day, and the Chinese New Year all can't be analyzed with this chart because they fall on different days each year. It would not be very difficult to organize this data set according to the rules of those special holidays. We leave it as an exercise to the reader to do so. Remember that [the data and Mathematica notebook](https://github.com/j2kun/holidays-and-homicide) used in this post are available from [this blog's Github page](https://github.com/j2kun).
 

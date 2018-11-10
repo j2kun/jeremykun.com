@@ -24,14 +24,9 @@ Similarly, there are at most $\sqrt{n}$ square numbers less than $n$, since if $
 
 At worst the two numbers $r, s^2$ will be unrelated, so the total number of factorizations $rs^2$ is at most the product $2^{\pi(n)}\sqrt{n}$. In other words,
 
-
 $2^{\pi(n)}\sqrt{n} \geq n$
 
-
-
-
 The rest is algebra: divide by $\sqrt{n}$ and take logarithms to see that $\pi(n) \geq \frac{1}{2} \log(n)$. Since $\log(n)$ is unbounded as $n$ grows, so must $\pi(n)$. Hence, there are infinitely many primes.
-
 
 **Discussion:** This is a classic analytical argument originally discovered by
 [Paul Erdős](http://en.wikipedia.org/wiki/Paul_Erd%C5%91s). One of the

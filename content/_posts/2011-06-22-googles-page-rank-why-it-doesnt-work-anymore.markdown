@@ -16,27 +16,15 @@ tags:
 
 ## A Bully By Any Other Name
 
-
 From the [New York Times](http://www.nytimes.com/2010/11/28/business/28borker.html):
-
 
 "Shopping online in late July, Clarabelle Rodriguez typed the name of her favorite eyeglass brand into Google’s search bar.
 
-
-
-
 In moments, she found the perfect frames — made by a French company called Lafont — on a Web site that looked snazzy and stood at the top of the search results. Not the tippy-top, where the paid ads are found, but under those, on Google’s version of the gold-medal podium, where the most relevant and popular site is displayed.
-
-
-
 
 Ms. Rodriguez placed an order for both the Lafonts and a set of doctor-prescribed Ciba Vision contact lenses on that site, DecorMyEyes.com. The total cost was $361.97.
 
-
-
-
 It was the start of what Ms. Rodriguez would later describe as one of the most maddening and miserable experiences of her life..." [[continue reading]](http://www.nytimes.com/2010/11/28/business/28borker.html)
-
 
 For those without the patience to read the seven page article, the owner of DecorMyEyes.com, Vitaly Borker, deliberately mischarged his clients, and then bullied any who complained. Constantly dishing out vulgar threats, Borker committed wire-fraud, impersonation, and stalking as part of his business strategy.
 
@@ -44,9 +32,7 @@ Of course, every angry customer went directly to online web forums and business 
 
 Shortly after the New York Times's article stirred up a serious conversation about DecorMyEyes's business practice, the police struck up an investigation, and Borker was promptly arrested.
 
-
 ## The Honest Algorithm
-
 
 This story illustrates a compelling point. Once Google released the information behind their ranking algorithm (of course, it happened before Google was even a company), people could take advantage of it! A staggeringly large number of services exist to [boost your page rank](http://www.google.com/search?sourceid=chrome&ie=UTF-8&q=boost+your+page+rank) (129 million results on Google search). And so the intended way to get a high page rank (others like your content and link to it) is superseded by some method of manufacturing backlinks.
 

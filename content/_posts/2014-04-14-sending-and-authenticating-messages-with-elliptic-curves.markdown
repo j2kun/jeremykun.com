@@ -23,9 +23,7 @@ tags:
 
 Just as a reminder, the Python implementations of these protocols are not at all meant for practical use, but for learning purposes. We provide the code on [this blog's Github page](github.com/j2kun), but for the love of security don't actually _use_ them.
 
-
 ## Shamir-Massey-Omura
-
 
 Recall that there are lots of ways to send encrypted messages if you and your recipient share some piece of secret information, and the Diffie-Hellman scheme allows one to securely generate a piece of shared secret information. Now we'll shift gears and assume you don't have a shared secret, nor any way to acquire one. The first cryptosystem in that vein is called the Shamir-Massey-Omura protocol. It's only slightly more complicated to understand than Diffie-Hellman, and it turns out to be equivalently difficult to break.
 
@@ -52,9 +50,7 @@ Once we know it's a square, we can compute the square root depending on whether 
 
 I have struggled to find information about the history of the Shamir-Massey-Omura protocol; every author claims it's not widely used in practice, and the only reason seems to be that this protocol doesn't include a suitable method for authenticating the validity of a message. In other words, some "man in the middle" could be intercepting messages and tricking you into thinking he is your intended recipient. Coupling this with the difficulty of encoding a message as a point seems to be enough to make cryptographers look for other methods. Another reason could be that the system [was patented in 1982](http://www.google.com/patents/US4567600) and is currently held by SafeNet, one of the US's largest security providers. All of their products have generic names so it's impossible to tell if they're actually using Shamir-Massey-Omura. I'm no patent lawyer, but it could simply be that nobody else is allowed to implement the scheme.
 
-
 ## Digital Signatures
-
 
 Indeed, the discussion above raises the question: how does one authenticate a message? The standard technique is called a _digital signature_, and we can implement those using elliptic curve techniques as well. To debunk the naive idea, one cannot simply attach some static piece of extra information to the message. An attacker could just copy that information and replicate it to forge your signature on another, potentially malicious document. In other words, a signature should only work for the message it was used to sign. The technique we'll implement was originally proposed by [Taher Elgamal](http://en.wikipedia.org/wiki/Taher_Elgamal), and is called the ElGamal signature algorithm. We're going to look at a special case of it.
 
@@ -62,68 +58,30 @@ So Alice wants to send a message $m$ with some extra information that is unique 
 
 Then, as in Diffie-Hellman, she picks a base point $Q$ that has order $r$ and a secret integer $s$ (which is permanent), and computes $P = sQ$. Alice publishes everything except $s$:
 
-
 Public information: $\mathbb{F}_q, E, b, r, Q, P &fg=000000$
-
-
-
 
 Let Alice's message $m$ be represented as an integer at most $r$ (there are a few ways to get around this if your message is too long). Now to sign $m$ Alice picks a **message specific** $k < r$ and computes what I'll call the _auxiliary point _$A = kQ$. Let $A = (x, y)$. Alice then computes the signature $g = k^{-1}(m + s x) \mod r$. The signed message is then $(m, A, g)$, which Alice can safely send to Bob.
 
-
-
-
 Before we see how Bob verifies the message, notice that the signature integer involves everything: Alice's secret key, the message-specific secret integer $k$, and most importantly the message. Remember that this is crucial: we want the signature to work only for the message that it was used to sign. If the same $k$ is used for multiple messages then the attacker can find out your secret key! (And this has happened in practice; see the end of the post.)
 
-
-
-
 So Bob receives $(m, A, g)$, and also has access to all of the public information listed above. Bob authenticates the message by computing the auxiliary point via a different route. First, he computes $c = g^{-1} m \mod r$ and $d = g^{-1}x \mod r$, and then $A' = cQ + dP$. If the message was signed by Alice then $A' = A$, since we can just write out the definition of everything:
-
-
-
 
 [![authentication-formula](http://jeremykun.files.wordpress.com/2014/04/authentication-formula.gif)
 ](http://jeremykun.files.wordpress.com/2014/04/authentication-formula.gif)
 
-
-
-
 Now to analyze the security. The attacker wants to be able to take any message $m'$ and produce a signature $A', g'$ that will pass validation with Alice's public information. If the attacker knew how to solve the discrete logarithm problem efficiently this would be trivial: compute $s$ and then just sign like Alice does. Without that power there are still a few options. If the attacker can figure out the message-specific integer $k$, then she can compute Alice's secret key $s$ as follows.
-
-
-
 
 Given $g = k^{-1}(m + sx) \mod r$, compute $kg \equiv (m + sx) \mod r$. Compute $d = gcd(x, r)$, and you know that this congruence has only $d$ possible solutions modulo $r$. Since $s$ is less than $r$, the attacker can just try all options until they find $P = sQ$. So that's bad, but in a properly implemented signature algorithm finding $k$ is equivalently hard to solving the discrete logarithm problem, so we can assume we're relatively safe from that.
 
-
-
-
 On the other hand one could imagine being able to conjure the pieces of the signature $A', g'$ by some method that doesn't involve directly finding Alice's secret key. Indeed, this problem is less well-studied than the Diffie-Hellman problem, but most cryptographers believe it's just as hard. For more information, [this paper surveys the known attacks](https://www.iacr.org/archive/pkc2003/25670309/25670309.pdf) against this signature algorithm, including a successful attack for fields of characteristic two.
-
-
-
-
 
 ## Signature Implementation
 
-
-
-
 We can go ahead and implement the signature algorithm once we've picked a suitable elliptic curve. For the purpose of demonstration we'll use a small curve, $E: y^2 = x^3 + 3x + 181$ over $F = \mathbb{Z}/1061$, whose number of points happens to have the a suitable prime factorization ($1047 = 3 \cdot 349$). If you're interested in counting the number of points on an elliptic curve, there are [many theorems and efficient algorithms](http://en.wikipedia.org/wiki/Counting_points_on_elliptic_curves) to do this, and if you've been reading this whole series something then an algorithm [based on the Baby-Step Giant-Step](http://en.wikipedia.org/wiki/Counting_points_on_elliptic_curves#Baby-step_giant-step) idea would be easy to implement. For the sake of brevity, we leave it as an exercise to the reader.
-
-
-
 
 Note that the code we present is based on the [elliptic curve](http://jeremykun.com/2014/02/24/elliptic-curves-as-python-objects/) and [finite field](http://jeremykun.com/2014/03/13/programming-with-finite-fields/) code we're been implementing as part of this series. [All of the code used in this post](https://github.com/j2kun/elliptic-curve-signature) is available on [this blog's Github page](https://github.com/j2kun/).
 
-
-
-
 The basepoint we'll pick has to have order 349, and $E$ has plenty of candidates. We'll use $(2, 81)$, and we'll randomly generate a secret key that's less than $349$ (eight bits will do). So our setup looks like this:
-
-
-
 
 {{< highlight python >}}
 if __name__ == "__main__":
@@ -137,12 +95,7 @@ if __name__ == "__main__":
    publicKey = secretKey * basePoint
 {{< /highlight >}}
 
-
-
 Then so sign a message we generate a random key, construct the auxiliary point and the signature, and return:
-
-
-
 
 {{< highlight python >}}
 def sign(message, basePoint, basePointOrder, secretKey):
@@ -156,17 +109,9 @@ def sign(message, basePoint, basePointOrder, secretKey):
    return (message, auxiliaryPoint, signature)
 {{< /highlight >}}
 
-
-
 So far so good. Note that we generate the message-specific $k$ at random, and this implies we need a high-quality source of randomness (what's called a [cryptographically-secure pseudorandom number generator](http://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator)). In absence of that there are proposed deterministic methods for doing it. See [this draft proposal of Thomas Pornin](http://tools.ietf.org/html/rfc6979), and [this paper of Daniel Bernstein](http://ed25519.cr.yp.to/ed25519-20110926.pdf) for another.
 
-
-
-
 Now to authenticate, we follow the procedure from earlier.
-
-
-
 
 {{< highlight python >}}
 def authentic(signedMessage, basePoint, basePointOrder, publicKey):
@@ -191,47 +136,20 @@ Continuing with our example, we pick a message represented as an integer smaller
 True
 {{< /highlight >}}
 
-
-
 So there we have it, a nice implementation of the digital signature algorithm.
-
-
-
-
 
 ## When Digital Signatures Fail
 
-
-
-
 As we mentioned, it's _extremely important _to avoid using the same $k$ for two different messages. If you do, then you'll get two signed messages $(m_1, A_1, g_1), (m_2, A_2, g_2)$, but by definition the two $g$'s have a ton of information in common! An attacker can recognize this immediately because $A_1 = A_2$, and figure out the secret key $s$ as follows. First write
-
-
-
 
 $\displaystyle g_1 - g_2 \equiv k^{-1}(m_1 + sx) - k^{-1}(m_2 + sx) \equiv k^{-1}(m_1 - m_2) \mod r$.
 
-
-
-
 Now we have something of the form $\text{known}_1 \equiv (k^{-1}) \text{known}_2 \mod r$, and similarly to the attack described earlier we can try all possibilities until we find a number that satisfies $A = kQ$. Then once we have $k$ we have already seen how to find $s$. Indeed, it would be a good exercise for the reader to implement this attack.
-
-
-
 
 The attack we just described it not an idle threat. Indeed, the Sony corporation, producers of the popular Playstation video game console, made this mistake in signing software for Playstation 3. A digital signature algorithm makes sense to validate software, because Sony wants to ensure that only Sony has the power to publish games. So Sony developers act as one party signing the data on a disc, and the console will only play a game with a valid signature. Note that the asymmetric setup is necessary because if the console had shared a secret with Sony (say, stored as plaintext within the hardware of the console), anyone with physical access to the machine could discover it.
 
-
-
-
 Now here come the cringing part. Sony made the mistake of using the same $k$ to sign _every game!_ Their mistake was discovered in 2010 and made public at a cryptography conference. [This video of the humorous talk](http://youtu.be/84WI-jSgNMQ?t=8m24s) includes a description of the variant Sony used and the attacker describe how the mistake should have been corrected. Without a firmware update (I believe Sony's public key information was stored locally so that one could authenticate games without an internet connection), anyone could sign a piece of software and create games that are indistinguishable from something produced by Sony. That includes malicious content that, say, installs software that sends credit card information to the attacker.
 
-
-
-
 So here we have a tidy story: a widely used cryptosystem with a scare story of what will go wrong when you misuse it. In the future of this series, we'll look at other things you can do with elliptic curves, including factoring integers and testing for primality. We'll also see some normal forms of elliptic curves that are used in place of the Weierstrass normal form for various reasons.
-
-
-
 
 Until next time!

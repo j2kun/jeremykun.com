@@ -44,9 +44,7 @@ This algorithm is also efficient. By efficient here we mean that the expected ru
 
 Indeed, the expected running time is $\sum_{i=0}^\infty \frac{i^n}{2^i}$. Showing that this sum is a constant is an easy calculus exercise: using the ratio test we get that
 
-
 $\displaystyle \textup{limsup}_{i \to \infty} \left | \frac{\frac{(i+1)^n}{2^{i+1}}}{\frac{i^n}{2^i}} \right | = \limsup_{i\to\infty} \frac{\left(\frac{i+1}{i}\right)^n}{2} = \frac{1}{2} < 1$,
-
 
 thus the series is convergent.
 

@@ -24,9 +24,7 @@ I've arrived at what I feel is a stable state. Here's what I use.
 
 First, my general setup. At home I run OS X Mavericks (10.9.5), and I carry a Chromebook with me to campus and when I travel.
 
-
 ## For on-the-fly note taking
-
 
 I haven't found a better tool than [StackEdit](https://stackedit.io/).
 
@@ -36,8 +34,6 @@ I haven't found a better tool than [StackEdit](https://stackedit.io/).
 **Mindset:** somewhere in between writing an email with one or two bits of notation (just write TeX source and hope they can read it) and writing a document that needs to look good. These are documents for which you have no figures, don't want to keep track of sections and theorem numbering, and have no serious bibliography.
 
 **Use cases:**
-
-
 
 	  * **In class notes:** where I need to type **fast** and can sacrifice on prettiness.** **Any other workflow besides Markdown with TeX support is just awfully slow, because the boilerplate of LaTeX proper involves so much typing (\begin{theorem} \end{theorem}, etc.)
 	  * **Notes during talks:** these notes usually have fewer formulas and more sentences, but the ability to use notation when I want it really helps.
@@ -51,9 +47,7 @@ Also, any time something needs to be aligned (such as a matrix or piecewise nota
 
 **Caveats:** Additional features, such as exporting from StackEdit to pdf requires you to become a donor ($5/year, a more than fair price for the amount I use it). I would find the service significantly less useful if I could not export to pdf.
 
-
 ## For work while travelling
-
 
 My favorite so far is [ShareLaTeX](https://www.sharelatex.com/).
 
@@ -63,8 +57,6 @@ My favorite so far is [ShareLaTeX](https://www.sharelatex.com/).
 **Mindset:** An editor I can use on my Chromebook or a public machine, yet still access my big papers and projects in progress. Needs support for figures, bibliographies, the whole shebang. Basically I need a browser replacement for a desktop LaTeX setup. I generally **do not** need collaboration services, because the de facto standard among everyone I've ever interacted with is that you can only expect people to have Dropbox. You cannot expect them to sign up for online services just to work with you.
 
 **Use cases:**
-
-
 
 	  * **Drafting actual research papers**
 	  * **Writing slides/talks**
@@ -81,9 +73,7 @@ _Github integration._ Though literally no mathematicians I know use Github for 
 
 **Caveats: **Integration comes at a premium of $8/month for students, and $15/month for non-students.
 
-
 ## Work at home
-
 
 This is where we get into the nitty gritty of terminal tools. Because naively writing papers in TeX on a desktop has a lot of lame steps and tricks. There are (multiple types of) bibliography files to manage, you have to run like four commands to compile a document, and the TeX compiler errors are often nonsense.
 
@@ -92,8 +82,6 @@ I used to have a simple script to compile;display;clean for me, but then I came 
 Of course lots of random TeX distributions come with crusty GUIs that (with configuration) do what latexmk does. But I love my vim, and you have your favorite editor, too. The key part is that latexmk and Skim don't care what editor you use.
 
 For reference, here's how I got it all configured on OS X Mavericks.
-
-
 
 	  1. Install latexmk (move the perl script downloadable from [their website](http://users.phys.psu.edu/~collins/software/latexmk-jcc/) to anywhere on your $PATH).
 	  2. Add `alias latexmk='latexmk.pl -pvc'` to your `.profile`. The -pvc flag makes latexmk watch for changes.
@@ -112,19 +100,13 @@ Now the workflow is: browse to your working directory; run `latexmk yourfile.tex
 
 Finally, I have two lines in my .vimrc to auto-save every second that the document is idle (or when the window loses focus) so that I don't have to type :w every time I want the updates to display. To make this happen only when you open a tex file, add these lines instead to `~/.vim/ftplugin/tex.vim`
 
-
 ` set updatetime=1000
 autocmd CursorHoldI,CursorHold,BufLeave,FocusLost silent! wall
 `
 
-
 **Caveats: **I haven't figured out how to configure latexmk to do anything more complicated than this. Apparently it's possible to get it setup to work with "Sync support," which means essentially you can go back and forth between the source file lines and the corresponding rendered document lines by clicking places. I think reverse search (pdf->vim) isn't possible with regular vim (it is apparently with macvim), but forward search (vim->pdf) is if you're willing to install some plugins and configure some files. So here is the place where Skim does care what editor you use. I haven't yet figured out how to do it, but it's not a feature I care much for.
 
-
-
 * * *
-
-
 
 One deficiency I've found: there's no good bibliography manager. Sorry, Mendeley, I really can't function with you. I'll just be hand-crafting my own bib files until I find or make a better solution.
 

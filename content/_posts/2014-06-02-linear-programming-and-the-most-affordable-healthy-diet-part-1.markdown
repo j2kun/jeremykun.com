@@ -22,9 +22,7 @@ Optimization is by far one of the richest ways to apply computer science and mat
 
 The mathematical field is called _combinatorial optimization_, and the name comes from the goal of finding optimal solutions more efficiently than an exhaustive search through every possibility. This post will introduce the most central problem in all of combinatorial optimization, known as the _linear program_. Even better, we know how to efficiently solve linear programs, so in future posts we'll write a program that computes the most affordable diet while meeting the recommended health standard.
 
-
 ## Generalizing a Specific Linear Program
-
 
 Most optimization problems have two parts: an _objective function_, the thing we want to maximize or minimize, and _constraints, _rules we must abide by to ensure we get a valid solution. As a simple example you may want to minimize the amount of time you spend doing your taxes (objective function), but you certainly can't spend a _negative_ amount of time on them (a constraint).
 
@@ -40,56 +38,31 @@ We can set up this nutrition problem mathematically, just using a few toy variab
     Whole milk   276             0                  87         0.100
     Oranges      40              53.2               87         0.272
 
-
 Some observations: broccoli is more expensive but gets the most of all three nutrients, whole milk doesn't have _any_ vitamin C but gets a ton of calcium for really cheap, and oranges are a somewhere in between. So you could probably tinker with the quantities and figure out what the cheapest healthy diet is. The problem is what happens when we incorporate hundreds or thousands of food items and tens of nutrient recommendations. This simple example is just to help us build up a nice formality.
 
 So let's continue doing that. If we denote by $b$ the number of 100g units of broccoli we decide to buy, and $m$ the amount of milk and $r$ the amount of oranges, then we can write the daily cost of food as
 
-
 $\displaystyle \text{cost}(b,m,r) = 0.381 b + 0.1 m + 0.272 r$
-
-
-
 
 In the interest of being compact (and again, building toward the general linear programming formulation) we can extract the price information into a single cost vector $c = (0.381, 0.1, 0.272)$, and likewise write our variables as a vector $x = (b,m,r)$. We're implicitly fixing an ordering on the variables that is maintained throughout the problem, but the choice of ordering doesn't matter. Now the cost function is just the inner product (dot product) of the cost vector and the variable vector $\left \langle c,x \right \rangle$. For some reason lots of people like to write this as $c^Tx$, where $c^T$ denotes the [transpose](http://en.wikipedia.org/wiki/Transpose) of a matrix, and we imagine that $c$ and $x$ are matrices of size $3 \times 1$. I'll stick to using the inner product bracket notation.
 
-
-
-
 Now for each type of food we get a specific amount of each nutrient, and the sum of those nutrients needs to be bigger than the minimum recommendation. For example, we want at least 1,000 mg of calcium per day, so we require that $1000 \leq 47b + 276m + 40r$. Likewise, we can write out a table of the constraints by looking at the columns of our table above.
-
-
-
 
 $\displaystyle \begin{matrix} 91b & + & 87m & + & 87r & \geq & 3700 & \text{(water)}\\ 47b & + & 276m & + & 40r & \geq & 1000 & \text{(calcium)} \\ 89.2b & + & 0m & + & 53.2r & \geq & 90 & \text{(vitamin C)} \end{matrix}$
 
-
 In the same way that we extracted the cost data into a vector to separate it from the variables, we can extract all of the nutrient data into a matrix $A$, and the recommended minimums into a vector $v$. Traditionally the letter $b$ is used for the minimums vector, but for now we're using $b$ for broccoli.
-
 
 $A = \begin{pmatrix} 91 & 87 & 87 \\ 47 & 276 & 40 \\ 89.2 & 0 & 53.2 \end{pmatrix}$
 
-
-
-
 $v = \begin{pmatrix} 3700 \\ 1000 \\ 90 \end{pmatrix}$
-
 
 And now the constraint is that $Ax \geq v$, where the $\geq$ means "greater than or equal to in every coordinate." So now we can write down the more general form of the problem for our specific matrices and vectors. That is, our problem is to minimize $\left \langle c,x \right \rangle$ subject to the constraint that $Ax \geq v$. This is often written in offset form to contrast it with variations we'll see in a bit:
 
-
 $\displaystyle \text{minimize} \left \langle c,x \right \rangle \\ \text{subject to the constraint } Ax \geq v$
-
-
-
 
 In general there's no reason you can't have a "negative" amount of one variable. In this problem you can't buy negative broccoli, so we'll add the constraints to ensure the variables are nonnegative. So our final form is
 
-
-
-
 $\displaystyle \text{minimize} \left \langle c,x \right \rangle \\ \text{subject to } Ax \geq v \\ \text{and } x \geq 0$
-
 
 In general, if you have an $m \times n$ matrix $A$, a "minimums" vector $v \in \mathbb{R}^m$, and a cost vector $c \in \mathbb{R}^n$, the problem of finding the vector $x$ that minimizes the cost function while meeting the constraints is called a _linear programming problem_ or simply a _linear program_.
 
@@ -100,9 +73,7 @@ To satiate the reader's burning curiosity, the solution for our calcium/vitamin 
 
 [1] [Water content of fruits and veggies](http://www2.ca.uky.edu/enri/pubs/enri129.pdf), [Food costs in March 2014 in the midwest](http://www.bls.gov/ro3/apmw.htm), and [basic known facts about the water density/nutritional content of various foods](https://www.google.com/search?q=compare+broccoli+and+oranges&oq=compare+broccoli+and+oranges&aqs=chrome..69i57j0l5.3919j0j4&sourceid=chrome&es_sm=91&ie=UTF-8).
 
-
 ## Duality
-
 
 Now that we've seen the general form a linear program and a cute example, we can ask the real meaty question: is there an efficient algorithm that solves arbitrary linear programs? Despite how widely applicable these problems seem, the answer is yes!
 
@@ -114,51 +85,31 @@ In linear programming duality is between maximization and minimization. In parti
 
 So you have this optimization problem
 
-
 $\displaystyle \begin{matrix}
 \text{minimize} & 4x_1+3x_2+9x_3 & \\
 \text{subject to} & x_1+x_2+x_3 & \geq 6 \\
 & 2x_1+x_3 & \geq 2 \\
 & x_2+x_3 & \geq 1 & \\ & x_1,x_2,x_3 & \geq 0 \end{matrix}$
 
-
 Just for giggles let's write out what $A$ and $c$ are.
-
 
 $\displaystyle A = \begin{pmatrix} 1 & 1 & 1 \\ 2 & 0 & 1 \\ 0 & 1 & 1 \end{pmatrix}, c = (4,3,9), v = (6,2,1)$
 
-
 Say you want to come up with a lower bound on the optimal solution to your problem. That is, you want to know that you can't make $4x_1 + 3x_2 + 9x_3$ smaller than some number $m$. The constraints can help us derive such lower bounds. In particular, every variable has to be nonnegative, so we know that $4x_1 + 3x_2 + 9x_3 \geq x_1 + x_2 + x_3 \geq 6$, and so 6 is a lower bound on our optimum. Likewise,
-
 
 $\displaystyle \begin{aligned}4x_1+3x_2+9x_3 & \geq 4x_1+4x_3+3x_2+3x_3 \\ &=2(2x_1 + x_3)+3(x_2+x_3) \\ & \geq 2 \cdot 2 + 3 \cdot 1 \\ &=7\end{aligned}$
 
-
-
-
 and that's an even better lower bound than 6. We could try to write this approach down in general: find some numbers $y_1, y_2, y_3$ that we'll use for each constraint to form
-
-
-
 
 $\displaystyle y_1(\text{constraint 1}) + y_2(\text{constraint 2}) + y_3(\text{constraint 3})$
 
-
-
-
 To make it a valid lower bound we need to ensure that the coefficients of each of the $x_i$ are smaller than the coefficients in the objective function (i.e. that the coefficient of $x_1$ ends up less than 4). And to make it the best lower bound possible we want to _maximize_ what the right-hand-size of the inequality would be: $y_1 6 + y_2 2 + y_3 1$. If you write out these equations and the constraints you get our "lower bound" problem written as
-
-
-
 
 $\displaystyle \begin{matrix} \text{maximize} & 6y_1 + 2y_2 + y_3 & \\ \text{subject to} & y_1 + 2y_2 & \leq 4 \\ & y_1 + y_3 & \leq 3 \\ & y_1+y_2 + y_3 & \leq 9 \\ & y_1,y_2,y_3 & \geq 0 \end{matrix}$
 
-
 And wouldn't you know, the matrix providing the constraints is $A^T$, and the vectors $c$ and $v$ switched places.
 
-
 $\displaystyle A^T = \begin{pmatrix} 1 & 2 & 0 \\ 1 & 0 & 1 \\ 1 & 1 & 1 \end{pmatrix}$
-
 
 This is no coincidence. All linear programs can be transformed in this way, and it would be a useful exercise for the reader to turn the above maximization problem back into a minimization problem by the same technique (computing linear combinations of the constraints to make upper bounds). You'll be surprised to find that you get back to the original minimization problem! This is part of what makes it "duality," because the dual of the dual is the original thing again. Often, when we fix the "original" problem, we call it the _primal _form to distinguish it from the _dual_ form. Usually the primal problem is the one that is easy to interpret.
 
@@ -170,24 +121,13 @@ Now we can actually _prove_ that the objective function for the dual provides 
 
 **Weak Duality Theorem:** Let $c, A, b$ be the data of a linear program in the primal form (the minimization problem) whose objective function is $\left \langle c, x \right \rangle$. Recall that the objective function of the dual (maximization) problem is $\left \langle b, y \right \rangle$. If $x,y$ are feasible solutions (satisfy the constraints of their respective problems), then
 
-
 $\left \langle b, y \right \rangle \leq \left \langle c, x \right \rangle$
-
-
-
 
 In other words, the maximum of the dual is a lower bound on the minimum of the primal problem and vice versa. Moreover, _any_ feasible solution for one provides a bound on the other.
 
-
-
-
 _Proof_. The proof is pleasingly simple. Just inspect the quantity $\left \langle A^T y, x \right \rangle = \left \langle y, Ax \right \rangle$. The constraints from the definitions of the primal and dual give us that
 
-
-
-
 $\left \langle y, b \right \rangle \leq \left \langle y, Ax \right \rangle = \left \langle A^Ty, x \right \rangle \leq \left \langle c,x \right \rangle$
-
 
 The inequalities follow from the linear algebra fact that if the $u$ in $\left \langle u,v \right \rangle$ is nonnegative, then you can only increase the size of the product by increasing the components of $v$. This is why we need the nonnegativity constraints.
 
@@ -203,18 +143,14 @@ In fact, you can do a bit better than the strong duality theorem, in terms of co
 
 **Theorem (Complementary Slackness Conditions):** Let $A, c, b$ be the data of the primal form of a linear program, "minimize $\left \langle c, x \right \rangle$ subject to $Ax \geq b, x \geq 0$." Then $x^*, y^*$ are optimal solutions to the primal and dual problems if any only if all of the following conditions hold.
 
-
-
 	  * $x^*, y^*$ are both feasible for their respective problems.
 	  * Whenever $x^*_i > 0$ the corresponding constraint $A^T_i y^* = c_i$ is an equality.
 	  * Whenever $y^*_j > 0$ the corresponding constraint $A_j x^* = b_j$ is an equality.
 
 Here we denote by $M_i$ the $i$-th row of the matrix $M$ and $v_i$ to denote the $i$-th entry of a vector. Another way to write the condition using vectors instead of English is
 
-
 $\left \langle x^*, A^T y^* - c \right \rangle = 0$
 $\left \langle y^*, Ax^* - b \right \rangle$
-
 
 The proof follows from the duality theorems, and just involves pushing around some vector algebra. See [section 6.2 of these notes](http://www.statslab.cam.ac.uk/~ff271/teaching/opt/notes/notes6.pdf).
 

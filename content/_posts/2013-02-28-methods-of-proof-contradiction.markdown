@@ -21,17 +21,13 @@ tags:
 
 In this post we'll expand our toolbox of proof techniques by adding the proof by contradiction. We'll also expand on our knowledge of functions on sets, and tackle our first nontrivial theorem: that there is more than one kind of infinity.
 
-
 ## Impossibility and an Example Proof by Contradiction
-
 
 Many of the most impressive results in all of mathematics are proofs of impossibility. We see these in lots of different fields. In number theory, [plenty of numbers](http://en.wikipedia.org/wiki/Irrational_number) cannot be expressed as fractions. In geometry, [certain geometric constructions](http://en.wikipedia.org/wiki/Squaring_the_circle) are impossible with a straight-edge and compass. In computing theory, [certain programs](http://en.wikipedia.org/wiki/Halting_problem) cannot be written. And in logic even [certain mathematical statements](http://en.wikipedia.org/wiki/G%C3%B6del's_incompleteness_theorems) can't be proven or disproven.
 
 In some sense proofs of impossibility are hardest proofs, because it's unclear to the layman how anyone could prove it's _not_ possible to do something. Perhaps this is part of human nature, [that nothing is too impossible](http://onlinelibrary.wiley.com/doi/10.1111/j.2044-835X.1991.tb00865.x/abstract) to escape the realm of possibility. But perhaps it's more surprising that the main line of attack to prove something is impossible is to _assume_ it's possible, and see what follows as a result. This is precisely the method of proof by contradiction:
 
-
 <blockquote>Assume the claim you want to prove is false, and deduce that something obviously impossible must happen.</blockquote>
-
 
 There is a simple and very elegant example that I use to explain this concept to high school students in my guest lectures.
 
@@ -41,9 +37,7 @@ If we believe this is true, and we can't seem to find a direct proof, then we ca
 
 There are certainly other proofs of this fact (I know of a direct proof which is essentially the same proof as the one given above), and there are [more mathematical ways to think about the problem](http://jeremykun.com/2011/06/26/teaching-mathematics-graph-theory/). But this is a wonderful example of a proof which requires little else than the method of contradiction.
 
-
 ## A Reprise on Truth Tables, and More Examples
-
 
 Just as with our post on [contrapositive implication](http://jeremykun.com/2013/02/22/methods-of-proof-contrapositive/), we can analyze proof by contradiction from the standpoint of truth tables. Recall the truth table for an implication $p \to q$:
 
@@ -53,7 +47,6 @@ Just as with our post on [contrapositive implication](http://jeremykun.com/2013/
     T  F   F
     F  T   T
     F  F   T
-
 
 We notice that an implication can only be false if the hypothesis $p$ is true _and__ _the consequence $q$ is false. This is the motivation for a proof by contradiction: if we show this case can't happen, then there's no other option: the statement $p \to q$ must be true. In other words, if supposing "p and not q" is true implies something which we know to be false, then by the very same truth table argument it must be that either "q" is true or "p" is false. In any of these cases "p implies q" is true.
 
@@ -75,16 +68,11 @@ Indeed, if we suppose that there are finitely many prime numbers, we can write t
 
 Here are some exercises to practice the proof by contradiction:
 
-
-
 	  1. Prove that the base 2 logarithm of 3 is irrational.
 	  2. More generally that $\log_a(b)$ is irrational if there is any prime $p$ dividing $a$ but not $b$, or vice versa.
 	  3. Prove the fundamental theorem of arithmetic, that every natural number $n \geq 2$ is a product of primes (hint: inspect the smallest failing example).
 
-
-
 ## A Few More Words on Functions and Sets
-
 
 [Last time](http://jeremykun.com/2013/02/22/methods-of-proof-contrapositive/) we defined what it means for a function $f: X \to Y$ on sets to be injective: different things in $X$ get mapped to different things in $Y$. Indeed, there is another interesting notion called _surjectivity_, which says that $f$ "hits" everything in $Y$ by something in $X$.
 
@@ -102,9 +90,7 @@ So we can say two infinite sets have the same cardinality if we can construct a 
 
 So we have proved, as curious as it sounds to say it, that there are just as many even numbers as all natural numbers. Even more impressive, one can construct a bijection between the natural numbers and the _rational_ numbers. Mathematicians denote the latter by $\mathbb{Q}$, and typically this proof is done by first finding a bijection from $\mathbb{N} \to \mathbb{Z}$ and then from $\mathbb{Z} \to \mathbb{Q}$. We are implicitly using the fact that a composition of two bijections is a bijection. The diligent reader has already proved this for injections, so if one can also prove it for surjections, by definition it will be satisfied for bijections.
 
-
 ## Diagonalization, and a Non-Trivial Theorem
-
 
 We now turn to the last proof of this post, and our first non-trivial theorem: that there is no bijection between the set of real numbers and the set of natural numbers. Before we start, we should mention that calling this theorem 'non-trivial' might sound insulting to the non-mathematician; the reader has been diligently working to follow the proofs in these posts and completing exercises, and they probably all feel non-trivial. In fact, mathematicians don't use trivial with the intent to insult (most of the time) or to say something is easy or not worth doing. Instead, 'trivial' is used to say that a result follows naturally, that it comes from nothing but applying the definitions and using the basic methods of proof. Of course, since we're learning the basic methods of proof nothing can really be trivial, but if we say a theorem is _non-trivial _that means the opposite: there is some genuinely inspired idea that sits at the focal point of the proof, more than just direct or indirect inference. Even more, a proof is called "highly non-trivial" if there are multiple novel ideas or a menagerie of complicated details to keep track of.
 
@@ -122,41 +108,19 @@ So now we can state the theorem.
 
 The proof, as we said, is non-trivial, but it starts off in a familiar way: we assume there is such a bijection. Suppose to the contrary that $f : \mathbb{N} \to [0,1]$ is a bijection. Then we can list the values of $f$ in a table. Since we want to use $b_i$ for all of the values of $f$, we will call
 
-
 $\displaystyle f(n) = (b_{n,i}) = b_{n,1}, b_{n,2}, \dots$
-
-
-
 
 This gives us the following infinite table:
 
-
-
-
 $\displaystyle \begin{matrix} f(1) &=& b_{1,1}, & b_{1,2}, & \dots \\ f(2) &=& b_{2,1}, & b_{2,2}, & \dots \\ f(3) &=& b_{3,1}, & b_{3,2}, & \dots \\ \vdots & & \vdots & & \end{matrix}$
 
-
-
-
 Now here is the tricky part. We are going to define a _new_ binary sequence which we can guarantee does not show up in this list. This will be our contradiction, because we assumed at first that this list consisted of all of the binary sequences.
-
-
-
 
 The construction itself is not so hard. Start by taking $c_i = b_{i,i}$ for all $i$. That is, we are using all of the diagonal elements of the table above. Now take each $c_i$ and replace it with its opposite (i.e., flip each bit in the sequence, or equivalently apply $b \mapsto 1-b$ to each entry). The important fact about this new sequence is it differs from every entry in this table. By the way we constructed it, no matter which $lateex n$ one chooses, this number differs from the table entry $f(n)$ at digit $n$ (and perhaps elsewhere). Because of this, it can't occur as an entry in the table. So we just proved our function $f$ isn't surjective, contradicting our original hypothesis, and proving the theorem._
 _
 
-
-
-
 The discovery of this fact was an [important step forward](http://en.wikipedia.org/wiki/Cantor's_theorem#History) in the history of mathematics. The particular technique though, using the diagonal entries of the table and changing each one, comes with a name of its own: the _diagonalization argument_. It's quite a bit more specialized of a proof technique than, say, the contrapositive implication, but it shows up in quite a range of mathematical literature (for instance, diagonalization is by far the most common way to prove that [the Halting problem is undecidable](http://en.wikipedia.org/wiki/Halting_problem#Sketch_of_proof)). It is worth noting diagonalization was not the first known way to prove this theorem, just the cleanest.
 
-
-
-
 The fact itself has interesting implications that lends itself nicely to confusing normal people. For instance, it implies not only that there is more than one kind of infinity, but that there are an _infinity of _infinities. Barring a full discussion of how far down the set-theory rabbit hole one can go, we look forward to next time, when we meet the final of the four basic methods of proof: proof by induction.
-
-
-
 
 Until then!

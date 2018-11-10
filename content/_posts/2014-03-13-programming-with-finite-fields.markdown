@@ -46,9 +46,7 @@ But despite not writing a language of my own, programming with weird number syst
 
 Instead of taking the long and winding road, we'll just state the important facts with links to proofs, prove the easy stuff, and focus more heavily than usual on the particular Python implementation details. As usual, [all of the code](https://github.com/j2kun/finite-fields) used in this post is available on [this blog's Github page](https://github.com/j2kun?tab=repositories).
 
-
 ## Integers Modulo Primes
-
 
 The simples kind of finite field is the set of integers modulo a prime. We've dealt with this number field extensively on this blog (in [groups](http://jeremykun.com/2012/12/08/groups-a-primer/), [rings](http://jeremykun.com/2013/04/30/rings-a-primer/), [fields](http://jeremykun.com/2014/02/26/finite-fields-a-primer/), with [RSA](http://jeremykun.com/2011/07/29/encryption-rsa/), etc.), but let's recall what it is. The _modulo_ operator $\mod$ (in programming it's often denoted %) is a binary operation on integers such that $x \mod y$ is the unique positive remainder of $x$ when divided by $y$.
 
@@ -170,9 +168,7 @@ So let's take a quick break to implement a tiny type system with implicit typeca
 [1] The reader familiar with our series on [category theory](http://jeremykun.com/2013/05/24/universal-properties/) will recognize this as the _product_ of two integers in a category whose arrows represent divisibility. So by abstract nonsense, this proves that gcd's are unique up to multiplication by a unit in any ring. ↑
 [2] In the process of writing the code for this post, I was sorely missing the stronger type systems of Java and Haskell. Never thought I'd say that, but it's true. ↑
 
-
 ## A Tiny Generic Type System
-
 
 The main driving force behind our type system will be a decorator called @typecheck. We covered decorators toward the end of our [primer on dynamic programming](http://jeremykun.com/2012/01/12/a-spoonful-of-python/), but in short a decorator is a Python syntax shortcut that allows some pre- or post-processing to happen to a function in a reusable way. All you need to do to apply the pre/post-processing is prefix the function definition with the name of the decorator.
 
@@ -270,9 +266,7 @@ So enough Python hacking: let's get on with implementing finite fields!
 [3] This also compels us to make some slight modifications to the constructor for IntegersModP, but they're not significant enough to display here. Check out [the Github repo](https://github.com/j2kun/finite-fields) if you want to see. ↑
 [4] This is truly a hack, and we've considered submitting a feature request to the Python devs. It is conceivably useful for the operator-overloading aficionado. I'd be interested to hear your thoughts in the comments as to whether this is a reasonable feature to add to Python. ↑
 
-
 ## Polynomial Arithmetic
-
 
 Recall from our [finite field primer](http://jeremykun.com/2014/02/26/finite-fields-a-primer/) that every finite field can be constructed as a quotient of a polynomial ring with coefficients in $\mathbb{Z}/p$ by some prime ideal. We spelled out exactly what this means in fine detail in the primer, so check that out before reading on.
 
@@ -425,9 +419,7 @@ True
 [5] The mathematical name for the abs() function that we're using is a _[valuation](http://en.wikipedia.org/wiki/Valuation_(algebra))._ ↑
 [6] One day we will talk a lot more about polynomial long division on this blog. You can do a lot of cool algebraic geometry with it, and the ideas there lead you to awesome applications like robot motion planning and automated geometry theorem proving. ↑
 
-
 ## Generating Irreducible Polynomials
-
 
 Now that we've gotten Polynomials out of the way, we need to be able to generate irreducible polynomials over $\mathbb{Z}/p$ of any degree we want. It might be surprising that irreducible polynomials of any degree exist [7], but in fact we know a lot more.
 
@@ -575,9 +567,7 @@ And that's it! Now we can do arithmetic over any finite field we want.
 
 [7] Especially considering that other wacky things happen like this: $x^4 +1$ is reducible over _every_ finite field! ↑
 
-
 ## Some Words on Efficiency
-
 
 There are a few things that go without stating about this program, but I'll state them anyway.
 

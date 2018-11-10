@@ -24,17 +24,9 @@ tags:
 ## [![](http://jeremykun.files.wordpress.com/2012/01/cipher_jefferson.jpg)
 ](http://jeremykun.files.wordpress.com/2012/01/cipher_jefferson.jpg)
 
-
-
-
 _This post is the third post in a series on computing with natural language data sets. For the first two posts, see the relevant section of our [main content page](http://jeremykun.wordpress.com/main-content/)._
 
-
-
-
-
 ## A Childish Bit of Fun
-
 
 In this post, we focus on the problem of decoding substitution ciphers. First, we'll describe a few techniques humans use to crack ciphers. We'll find these unsatisfactory, and move on to a simplistic algorithm which does a local search on the space of all possible decryptions, where we utilize our word segmentation algorithm from last time to determine the likelihood that a decryption is correct. We will continue this series's trend of working in Python, so that we can reuse our code from previous posts. Finally, we'll experiment by running the code on actual substitution ciphers used in history. And next time, we'll work on improving the search algorithm for speed and accuracy. As usual, [all of the code](https://github.com/j2kun/cryptanalysis-n-grams) used in this blog post is available on [this blog's Github page](https://github.com/j2kun/).
 
@@ -58,12 +50,9 @@ To explain this in plain English, the substitution key is a one-way matching-up 
     
     Ciphertext: ubyl fchzbav ongzna
 
-
 This particular key has a famous name ([rot13](http://rot13.com/index.php)), because it is simply a rotation of the alphabet by 13 letters. Also, we note that if we call $r$ the substitution cipher induced by this key, then we see $r$ has the very special property that $r = r^{-1}$ or equivalently $r^2 = \textup{id}_{\Sigma^*}$. So applying the encryption method twice actually gives us back the original plaintext message. But of course a rotation cipher is too simplistic; in general a substitution key can match any two letters together to make for a more complex code.
 
 Decoding the substitution ciphers in my childhood puzzle book involved a few tricks, which when combined and applied (more or less at random) likely yielded the right decryption. These included:
-
-
 
 	  * Looking at one-letter words, and picking I, A, and occasionally O as the substitution.
 	  * Looking at short two letter words and three letter words, and trying words like "to," "an," and "the" in their place. In other words, partially decipher part of the text, and see if using that partial substitution leads to absurd decryptions of other parts of the message.
@@ -76,9 +65,7 @@ In other words, the messages in the puzzle book were flawless and designed to be
 
 That being said, the patterns we used as a child give insight into how we might construct an algorithm to decrypt messages. During manual decryption, one would often get very close to the solution and notice that one incorrectly substituted two letters, but that the rest of the message is correct. By twiddling the incorrectly substituted letters, one would arrive at the correct decryption, and pat oneself on the back. This is the key behind the algorithm that follows, in that we will start with a random decryption, and incrementally improve it until we can't do so any more. But before we get there, we need to figure out how to represent our data appropriately.
 
-
 ## Representing a Cipher as a Piece of Data
-
 
 One easy way to represent a cipher key is much like the example above: simply use a 26-character string of letters like "nopqrstuvwxyzabcdefghijklm" where we assume that the letter 'a' maps to the first character of the string, 'b' to the second, and so on. This representation will benefit us later when we want to make slight adjustments to a key: we can simply swap any two letters in the list, or do permutations of triples of letters.
 
@@ -99,7 +86,6 @@ For example, with the following key we can encrypt some test messages:
     >>> encrypt("why hello there", key)
     'vin itssg zitkt'
 
-
 And a decryption function is quite similar:
 
 {{< highlight python >}}def decrypt(msg, key):
@@ -111,7 +97,6 @@ See that decrypting the encrypted message above works as expected:
     >>> decrypt("vin itssg zitkt", key)
     'why hello there'
 
-
 Next, we need to be able to "twiddle" a key. Our ultimate algorithm will start with a random key, and improve it incrementally by changing two letters at a time. We can use the same "translate" function again to do so:
 
 {{< highlight python >}}def keySwap(key, a, b):
@@ -119,9 +104,7 @@ Next, we need to be able to "twiddle" a key. Our ultimate algorithm will start w
 
 In other words, if the letter $x$ is mapped to $a$, and $y$ is mapped to $b$, then this function returns a key that maps $x$ to $b$ and $y$ to $a$. So now that we've got a representation for a key, let's figure out how to "make a key better."
 
-
 ## Letter Trigrams
-
 
 Our general strategy is as follows: start with a random key, and then come up with some sort of way to judge the key based on its decryption. From there, swap pairs of letters in the key to look at keys which are "close by." If any swap is judged to be better than the current key, use that as the new key, and start the process over again. We stop looking for new keys after a certain number of steps, or we get a decryption with a certain level of accuracy.
 
@@ -152,7 +135,6 @@ For bigrams:
     qz	4293975
     jq	2858953
 
-
 And trigrams:
 
     
@@ -169,12 +151,9 @@ And trigrams:
     jzq	7180
     zgq	6254
 
-
 Note that even though we aren't discerning words themselves, a true decryption will definitely contain the common trigrams and bigrams, but if our key is wrong, there are likely (just by randomness) some uncommon trigrams and bigrams in the resulting decryption. Thus, we can take the set of all letter trigrams in a sequence, compute the probability of each trigram occuring at random, and take the product of all of them to get a score for a given decryption.
 
-
 ## Implementation: Steepest Ascent, and Generating Neighbors
-
 
 The steepest ascent algorithm is pretty much the same for any problem. In pseudo-python, it looks something like:
 
@@ -240,7 +219,6 @@ So our "evaluatePosn" function above will simple be this "trigramStringProb" fun
     tcjjpxtcbcqbkcov, -88.000009
     burrpvbujuajgusk, -75.768519
     fkmmbxfkvkqvyknl, -94.509938
-
 
 And so we see that for incorrect decryptions, the score is orders of magnitude smaller: they naturally contain many uncommon letter trigrams.
 
@@ -314,9 +292,7 @@ def crackSubstitution(msg, numSteps = 5000, restarts = 30):
 
 We first preprocess the message to ensure everything is lowercase characters (we remove anything else), and then generate a bunch of random starting keys, perform the steepest ascent on those keys, and display the results, along with the most probable, as chosen by word segmentation. Let's see how it performs in the real world.
 
-
 ## The Germans and the Russians: Real Codes Decrypted
-
 
 Let's try running our code on a test message:
 
@@ -331,7 +307,6 @@ Let's try running our code on a test message:
     precisely the same moment a beautiful but vacuous showgirl
     arrived at the door'
 
-
 In addition to being correct, most of the attempts were very close as well, giving the first few letters such decodings as "coroti" or "gorothy". Let's try a harder one. This message was sent by Baron August Schluga, a German spy in WWI ([source](http://books.google.com/books?id=Ew0yhEGzvwUC&pg=PA85&lpg=PA85&dq=August+Schulga&source=bl&ots=WNt8cJ-iqo&sig=z1XnIkeR1yYpyC2MF3ZfQ1DXefs&hl=en&sa=X&ei=a2QnT8bdNaer2AWxgtTfAg&ved=0CCAQ6AEwAA#v=onepage&q=August%20Schulga&f=false)):
 
     
@@ -344,7 +319,6 @@ In addition to being correct, most of the attempts were very close as well, givi
     that the promised support of the french attack north of
     arras is not possible on account of munition
     insufficiency wa'
-
 
 Here's a code sent by [Aldrich Ames](http://en.wikipedia.org/wiki/Aldrich_Ames), the most notorious CIA mole to have ever been caught. It was a portion of a message sent in 1992 that was found on his person when he was arrested:
 
@@ -360,7 +334,6 @@ Here's a code sent by [Aldrich Ames](http://en.wikipedia.org/wiki/Aldrich_Ames)
      to indicate what de add rom will be used next to give
      your o minion about caracas p eeting in october xab'
 
-
 This is a bit more disheartening because it's obviously close to correct, but not quite there.   A human can quickly fix the errors, switching p with m, and z and k. That being said, perhaps by slightly increasing the number of steps we could find our way to the right decryption.
 
 Here's another, from the same source above, sent by Confederate General J.E. Johnston during the Siege of Vicksburg, May 25, 1863 during the U.S. Civil War. It was intercepted and then deciphered by Lincoln's three-man team of cryptanalysts:
@@ -375,7 +348,6 @@ Here's another, from the same source above, sent by Confederate General J.E. Joh
     you which do you thing the x est route how and where is the \
     enemy encambedwhatisyourkorepepohnstonja'
 
-
 Again, we are close but not quite there. In fact, this time the decryption even fails to segment the last block, even when there are useful pieces inside it. This is a side-effect of our zealous segmentation model that punishes unknown words exponentially in their length.
 
 Unfortunately, our program seems to fail more often than succeed. Indeed, the algorithm is not all that good. One might hope the following function is usually the identity on any given message, but it rarely is:
@@ -383,7 +355,6 @@ Unfortunately, our program seems to fail more often than succeed. Indeed, the al
     
     def testDecryption(msg):
        crackSubstitution(encrypt(msg, shuffled(alphabet)))
-
 
 In fact I have yet to see one example of this function returning sensible output for _any_ input.
 
@@ -405,14 +376,12 @@ In fact I have yet to see one example of this function returning sensible output
     andshoesandsealingcaboumappagesandkingsouchytheseaispoiling\
     hotandchethefrigshazecings'
 
-
 That last one was _close_, but still rather far off. What's more, for random small inputs the function seems to generate sensible output!
 
     
     >>> testDecryption("slkfhlakjhahlaweirhurv")
     [... some output ...]
     'l some store test and he chi'
-
 
 Disregarding the fun we could have decrypting random message, we cry, "What gives?!" It seems that there's some sort of measure of entropy that comes into play here, and messages with less entropy have a larger number of interpretations. Here entropy could mean the number of letters used in the message, the number of _distinct_ letters used in the message, or some combination of both.
 

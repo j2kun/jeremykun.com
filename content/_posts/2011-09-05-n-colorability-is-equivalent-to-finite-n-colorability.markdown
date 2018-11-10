@@ -23,8 +23,6 @@ And so we will convert this graph coloring problem into a logical set of proposi
 
 We may think of a coloring of a graph $G$ as a function on the set of vertices: $c:V \to \left \{ 1, 2, \dots, n \right \}$. Define our set of propositional atoms as $A = V \times \left \{ 1, 2, \dots, n \right \}$. In other words, we identify a proposition $p_{v,i}$ to each vertex and possible color. So we will define three sets of propositions using these atoms, which codify the conditions of a valid coloring:
 
-
-
 	  * $\left \{ p_{v,1} \vee p_{v,2} \vee \dots \vee p_{v,n} : v \in V \right \}$ i.e. every vertex must have some color,
 	  * $\left \{ \lnot (p_{v,i} \wedge p_{v,j}) : i,j = 1, \dots, n, i \neq j, v \in V \right \}$ i.e. no vertex may have two colors, and
 	  * $\left \{ \lnot (p_{v,i} \wedge p_{w,i}) : \textup{whenever } (v,w) \textup{ is an edge in } G \right \}$ i.e. no two adjacent vertices may have the same color.

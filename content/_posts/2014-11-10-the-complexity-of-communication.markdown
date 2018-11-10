@@ -30,9 +30,7 @@ Despite its huge applicability, the basic results in this area are elementary. 
 
 As a quick side note before we start, the question we're asking is different from the one of determining the information _content_ of a specific message. That is the domain of information theory, which was posed (and answered) decades earlier. Here we're trying to determine the complexity of a problem, where more complex messages require more information about their inputs.
 
-
 ## The Basic Two-Player Model
-
 
 The most basic protocol is simple enough to describe over a dinner table. Alice and Bob each have one piece of information $x,y$, respectively, say they each have a number. And together they want to compute some operation that depends on both their inputs, for example whether $x > y$. But in the beginning Alice has access only to her number $x$, and knows nothing about $y$. So Alice sends Bob a few bits. Depending on the message Bob computes something and replies, and this repeats until they have computed an answer. The question is: what is the minimum number of bits they need to exchange in order for both of them to be able to compute the right answer?
 
@@ -56,20 +54,11 @@ The input to these functions $A(x, h)$ should be thought of as follows: $x$ is t
 
 So to define the communication complexity, we let the function $L_{A,B}(n)$ be the maximum length of the protocol $A, B$ when run on strings of length $n$ (the worst-case for a given input size). Then the _communication complexity_ of a function $f$ is the minimum of $L_{A,B}$ over all valid protocols $A, B$. In symbols,
 
-
 $\displaystyle CC_f(n) = \min_{A,B \textup{ is valid for } f} L_{A,B}(n)$
-
-
-
 
 We will often abuse the notation by writing the communication complexity of a function as $CC(f)$, understanding that it's measured asymptotically as a function of $n$.
 
-
-
-
-
 ## Matrices and Lower Bounds
-
 
 Let's prove a lower bound, that to compute the equality function you need to send a linear number of bits in the worst case. In doing this we'll develop a general algebraic tool.
 
@@ -99,9 +88,7 @@ As we said, if there are $t$ steps in a valid communication protocol for $f$, t
 
 _Proof._ Pick any protocol that achieves the communication complexity of $f$, and apply the process we described above to subdivide $M(f)$. This will take exactly $CC(f)$, and produce no more than $2^{CC(f)}$ rectangles.
 
-
 $\square$
-
 
 This already gives us a bunch of theorems. Take the EQ function, for example. Its matrix is the identity matrix, and it's not hard to see that every monochromatic tiling requires $2^n$ rectangles, one for each entry of the diagonal. I.e., $CC(EQ) \geq n$. But we already know that one player can just send all his bits, so actually $CC(EQ) = \Theta(n)$. Now it's not always so easy to compute $\chi(f)$. The impressive thing to do is to use efficiently computable information about $M(f)$ to give bounds on $\chi(f)$ and hence on $CC(f)$. So can we come up with a better lower bound that depends on something we can compute? The answer is yes.
 
@@ -111,20 +98,11 @@ _Proof. _This just takes some basic linear algebra. One way to think of the ran
 
 If you give me a monochromatic tiling by rectangles, I can view each rectangle as a matrix whose rank is at most one. If the entries are all zeros then the rank is zero, and if the entries are all ones then (using zero elsewhere) this is by itself a rank 1 matrix. So adding up these rectangles as separate components gives me an upper bound on the rank of $A$. So the minimum way to do this is also an upper bound on the rank of $A$.
 
-
 $\square$
-
-
-
 
 Now computing something like $CC(EQ)$ is even easier, because the rank of $M(EQ) = M(I_{2^n})$ is just $2^n$.
 
-
-
-
-
 ## Upper Bounds
-
 
 There are other techniques to show lower bounds that are stronger than the rank and tiling method (because they imply the rank and tiling method). See [this survey](http://www.research.rutgers.edu/~troyjlee/survey_plain.pdf) for a ton of details. But I want to discuss upper bounds a bit, because the central open conjecture in communication complexity is an upper bound.
 
@@ -136,25 +114,13 @@ The interested reader can check out [this survey](http://cseweb.ucsd.edu/~slovet
 
 **Theorem [Nisan-Wigderson 94]:** Let $c(r)$ be a function. Suppose that for any function $f: X \times Y \to \{ 0,1 \}$, we can find a monochromatic rectangle of size $R \geq 2^{-c(r)} \cdot | X \times Y |$ where $r = \textup{rank }M(f)$. Then any such $f$ is computable by a deterministic protocol with communication complexity.
 
-
 $\displaystyle O \left ( \log^2(r) + \sum_{i=0}^{\log r} c(r/2^i) \right )$
-
-
-
 
 Just to be concrete, this says that if $c(r)$ is polylogarithmic, then finding these big rectangles implies a protocol also with polylogarithmic complexity. Since the complexity of the protocol is a function of $r$ alone, the log-rank conjecture follows as a consequence. The best known results use the theorem for larger $c(r) = r^b$ for some $b < 1$, which gives communication complexity also $O(r^b)$.
 
-
-
-
 The proof of the theorem is detailed, but mostly what you'd expect. You take your function, split it up into the big monochromatic rectangle and the other three parts. Then you argue that when you recurse to one of the other three parts, either the rank is cut in half, or the size of the matrix is much smaller. In either case, you can apply the theorem once again. Then you bound the number of leaves in the resulting protocol tree by looking at each level $i$ where the rank has dropped to $r/2^i$. For the full details, see page 4 of the [Shachar survey](http://cseweb.ucsd.edu/~slovett/files/log-rank-advances.pdf).
 
-
-
-
-
 ## Multiple Players and More
-
 
 In the future we'll cover some applications of communication complexity, many of which are related to computing in restricted models such as parallel computation and streaming computation. For example, in parallel computing you often have processors which get arbitrary chunks of data as input and need to jointly compute something. Lower bounds on the communication complexity can help you prove they require a certain amount of communication in order to do that.
 

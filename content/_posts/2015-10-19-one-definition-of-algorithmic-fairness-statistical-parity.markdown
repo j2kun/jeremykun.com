@@ -29,17 +29,9 @@ tags:
 
 If you haven't read the [first post on fairness](http://jeremykun.com/2015/07/13/what-does-it-mean-for-an-algorithm-to-be-fair/), I suggest you go back and read it because it motivates why we're talking about fairness for algorithms in the first place. In this post I'll describe one of the existing mathematical definitions of "fairness," its origin, and discuss its strengths and shortcomings.
 
-
-
-
 Before jumping in I should remark that nobody has found a definition which is widely agreed as a good definition of fairness in the same way we have for, say, the security of a [random number generator](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator). So this post is intended to be exploratory rather than dictating The Facts. Rather, it's an idea with some good intuitive roots which may or may not stand up to full mathematical scrutiny.
 
-
-
-
-
 ## Statistical parity
-
 
 Here is one way to define fairness.
 
@@ -49,9 +41,7 @@ Now we assume that there is some distribution $D$ over $X$ which represents the
 
 Now suppose we have a (possibly randomized) classifier $h:X \to \{-1,1\}$ giving labels to $X$. When given a person $x$ as input $h(x)=1$ if $x$ gets a loan and $-1$ otherwise. The _bias_, or _statistical imparity,_ of $h$ on $S$ with respect to $X,D$ is the following quantity. In words, it is the difference between the probability that a random individual drawn from $S$ is labeled 1 and the probability that a random individual from the complement $S^C$ is labeled 1.
 
-
 $\textup{bias}_h(X,S,D) = \Pr[h(x) = 1 | x \in S^{C}] - \Pr[h(x) = 1 | x \in S]$
-
 
 The probability is taken both over the distribution $D$ and the random choices made by the algorithm. This is the statistical equivalent of the legal doctrine of [adverse impact](https://en.wikipedia.org/wiki/Disparate_impact). It measures the difference that the majority and protected classes get a particular outcome. When that difference is small, the classifier is said to have "statistical parity," i.e. to conform to this notion of fairness.
 
@@ -139,13 +129,9 @@ Second, nothing says optimizing for statistical parity is the _correct_ thing 
 
 The third side of the coin is that if all we care about is statistical parity, then we'll have a narrow criterion for success that can be gamed by an _actively biased_ adversary.
 
-
 ## Statistical parity versus targeted bias
 
-
 Statistical parity has some known pitfalls. In their paper "[Fairness Through Awareness](http://arxiv.org/abs/1104.3913)" (Section 3.1 and Appendix A), Dwork, et al. argue convincingly that these are primarily issues of _individual fairness _and targeted discrimination. They give six examples of "evils" including a few that maintain statistical parity while not being fair from the perspective of an individual. Here are my two favorite ones to think about (using teal-haired people and loans again):
-
-
 
 	  1. **Self-fulfilling prophecy: **The bank intentionally gives a few loans to teal-haired people who are (for unrelated reasons) obviously uncreditworthy, so that in the future they can point to these examples to justify discriminating against teals. This can appear even if the teals are chosen uniformly at random, since the average creditworthiness of a random teal-haired person is lower than a carefully chosen normal-haired person.
 	  2. **Reverse tokenism:** The bank intentionally does _not_ give loans to some highly creditworthy normal-haired people, let's call one Martha, so that when a teal complains that they are denied a loan, the bank can point to Martha and say, "Look how qualified she is, and we didn't even give her a loan! You're much less qualified." Here Martha is the "token" example used to justify discrimination against teals.

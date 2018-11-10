@@ -32,33 +32,15 @@ If you know what a set is (just think of the "set" or "hash set" type from you
 
 It's called a "cover" because the sets you pick "cover" every element of $U$. Let's do a simple. Let $U = \{ 1,2,3,4,5 \}$ and
 
-
 $\displaystyle S_1 = \{ 1,3,4 \}, S_2 = \{ 2,3,5 \}, S_3 = \{ 1,4,5 \}, S_4 = \{ 2,4 \}$
-
-
-
 
 Then the smallest possible number of sets you can pick is 2, and you can achieve this by picking both $S_1, S_2$ or both $S_2, S_3$. The connection to regex golf is that you pick $U$ to be the set of strings you want to match, and you pick a set of regexes that match _some_ of the strings in $U$ but _none_ of the strings you want to avoid matching (I'll call them $V$). If $w$ is such a regex, then you can form the set $S_w$ of strings that $w$ matches. Then if you find a small set cover with the strings $w_1, \dots, w_t$, then you can "or" them together to get a single regex $w_1 \mid w_2 \mid \dots \mid w_t$ that matches all of $U$ but none of $V$.
 
-
-
-
 Set cover is what's called **NP-hard,** and one implication is that we shouldn't hope to find an efficient algorithm that will always give you the shortest regex for every regex golf problem. But despite this, there are _approximation algorithms_ for set cover. What I mean by this is that there is a regex-golf algorithm $A$ that outputs a subset of the regexes matching all of $U$, and the number of regexes it outputs is such-and-such close to the minimum possible number. We'll make "such-and-such" more formal later in the post.
-
-
-
 
 What made me sad was that Norvig didn't go any deeper than saying, "We can try to approximate set cover, and the greedy algorithm is pretty good." It's true, but the ideas are richer than that! Set cover is a simple example to **showcase interesting techniques** from theoretical computer science. And perhaps ironically, in Norvig's second post a header promised the article would discuss the theory of set cover, but I didn't see any of what I think of as theory. Instead he partially analyzes the structure of the regex golf instances he cares about. This is useful, but not really theoretical in any way unless he can say something universal about those instances.
 
-
-
-
 I don't mean to bash Norvig. His articles were great! And in-depth theory was way beyond scope. So this post is just my opportunity to fill in some theory gaps. We'll do three things:
-
-
-
-
-
 
 	  1. Show formally that set cover is NP-hard.
 	  2. Prove the approximation guarantee of the greedy algorithm.
@@ -66,25 +48,19 @@ I don't mean to bash Norvig. His articles were great! And in-depth theory was 
 
 Along the way I'll argue that by knowing (or at least seeing) the details of these proofs, one can get a better sense of what features to look for in the set cover instance you're trying to solve. We'll also see how set cover depicts the broader themes of theoretical computer science.
 
-
 ## NP-hardness
-
 
 The first thing we should do is show that set cover is NP-hard. Intuitively what this means is that we can take some hard problem $P$ and **encode instances of** $P$ **inside set cover problems. **This idea is called a reduction, because solving problem $P$ will "reduce" to solving set cover, and the method we use to encode instance of $P$ as set cover problems will have a small amount of overhead. This is one way to say that set cover is "at least as hard as" $P$.
 
 The hard problem we'll reduce to set cover is called **3-satisfiability (3-SAT). **In 3-SAT, the input is a formula whose variables are either true or false, and the formula is expressed as an OR of a bunch of clauses, each of which is an AND of three variables (or their negations). This is called 3-CNF form. A simple example:
 
-
 $\displaystyle (x \vee y \vee \neg z) \wedge (\neg x \vee w \vee y) \wedge (z \vee x \vee \neg w)$
-
 
 The goal of the algorithm is to decide whether there is an assignment to the variables which makes the formula true. 3-SAT is one of the most fundamental problems we believe to be hard and, roughly speaking, by reducing it to set cover we include set cover in a class called NP-complete, and if any _one_ of these problems can be solved efficiently, then they all can (this is the famous P versus NP problem, and an efficient algorithm would imply P equals NP).
 
 So a reduction would consist of the following: you give me a formula $\varphi$ in 3-CNF form, and I have to produce (in a way that depends on $\varphi$!) a universe $U$ and a choice of subsets $S_i \subset U$ in such a way that
 
-
 $\varphi$ has a true assignment of variables **if and only if **the corresponding set cover problem has a cover using $k$ sets.
-
 
 In other words, I'm going to design a function $f$ from 3-SAT instances to set cover instances, such that $x$ is satisfiable if and only if $f(x)$ has a set cover with $k$ sets.
 
@@ -94,9 +70,7 @@ Now let's do the reduction from 3-SAT to set cover.
 
 If you give me $\varphi = C_1 \wedge C_2 \wedge \dots \wedge C_m$ where each $C_i$ is a clause and the variables are denoted $x_1, \dots, x_n$, then I will choose as my universe $U$ to be the set of all the clauses and indices of the variables (these are all just formal symbols). i.e.
 
-
 $\displaystyle U = \{ C_1, C_2, \dots, C_m, 1, 2, \dots, n \}$
-
 
 The first part of $U$ will ensure I make all the clauses true, and the last part will ensure I don't pick a variable to be both true and false at the same time.
 
@@ -108,9 +82,7 @@ The reverse direction is similar: if I have a set cover of size $n$, I need to 
 
 Whew! So set cover is NP-hard because I encoded this logic problem 3-SAT within its rules. If we think 3-SAT is hard (and we do) then set cover must also be hard. So if we can't hope to solve it exactly we should try to approximate the best solution.
 
-
 ## The greedy approach
-
 
 The method that Norvig uses in attacking the meta-regex golf problem is the greedy algorithm. The greedy algorithm is exactly what you'd expect: you maintain a list $L$ of the subsets you've picked so far, and at each step you pick the set $S_i$ that maximizes the number of new elements of $U$ that aren't already covered by the sets in $L$. In python pseudocode:
 
@@ -140,79 +112,37 @@ This is what theory has to say about the greedy algorithm:
 
 One simple fact we need from calculus is that the following sum is asymptotically the same as $\log(n)$:
 
-
 $\displaystyle H(n) = 1 + \frac{1}{2} + \frac{1}{3} + \dots + \frac{1}{n} = \log(n) + O(1)$
-
-
-
 
 _Proof. _[adapted from [Wan](http://www.cs.dartmouth.edu/~ac/Teach/CS105-Winter05/Notes/wan-ba-notes.pdf)] Let's say the greedy algorithm picks sets $T_1, T_2, \dots, T_k$ in that order. We'll set up a little value system for the elements of $U$. Specifically, the value of each $T_i$ is 1, and in step $i$ we evenly distribute this unit value across all _newly covered_ elements of $T_i$. So for $T_1$ each covered element gets value $1/|T_1|$, and if $T_2$ covers four new elements, each gets a value of 1/4. One can think of this "value" as a price, or energy, or unit mass, or whatever. It's just an accounting system (albeit a clever one) we use to make some inequalities clear later.
 
-
-
-
 In general call the value $v_x$ of element $x \in U$ the value assigned to $x$ at the step where it's first covered. In particular, the number of sets chosen by the greedy algorithm $k$ is just $\sum_{x \in U} v_x$. We're just bunching back together the unit value we distributed for each step of the algorithm.
-
-
-
 
 Now we want to compare the sets chosen by greedy to the optimal choice. Call a smallest set cover $C_{\textup{OPT}}$. Let's stare at the following inequality.
 
-
-
-
 $\displaystyle \sum_{x \in U} v_x \leq \sum_{S \in C_{\textup{OPT}}} \sum_{x \in S} v_x$
-
-
-
 
 It's true because each $x$ counts for a $v_x$ at most once in the left hand side, and in the right hand side the sets in $C_{\textup{OPT}}$ must hit each $x$ at least once but may hit some $x$ more than once. Also remember the left hand side is equal to $k$.
 
-
-
-
 Now we want to show that the inner sum on the right hand side, $\sum_{x \in S} v_x$, is at most $H(|S|)$. This will in fact prove the entire theorem: because each set $S_i$ has size at most $n$, the inequality above will turn into
-
-
-
 
 $\displaystyle k \leq |C_{\textup{OPT}}| H(|S|) \leq |C_{\textup{OPT}}| H(n)$
 
-
-
-
 And so $k \leq \textup{OPT} \cdot O(\log(n))$, which is the statement of the theorem.
-
-
-
 
 So we want to show that $\sum_{x \in S} v_x \leq H(|S|)$. For each $j$ define $\delta_j(S)$ to be the number of elements in $S$ not covered in $T_1, \cup \dots \cup T_j$. Notice that $\delta_{j-1}(S) - \delta_{j}(S)$ is the number of elements of $S$ that are covered for the first time in step $j$. If we call $t_S$ the smallest integer $j$ for which $\delta_j(S) = 0$, we can count up the differences up to step $t_S$, we get
 
-
-
-
 $\sum_{x \in S} v_x = \sum_{i=1}^{t_S} (\delta_{i-1}(S) - \delta_i(S)) \cdot \frac{1}{T_i - (T_1 \cup \dots \cup T_{i-1})}$
-
-
-
 
 The rightmost term is just the cost assigned to the relevant elements at step $i$. Moreover, because $T_i$ covers more new elements than $S$ (by definition of the greedy algorithm), the fraction above is at most $1/\delta_{i-1}(S)$. The end is near. For brevity I'll drop the $(S)$ from $\delta_j(S)$.
 
-
-
-
 $\displaystyle \begin{aligned} \sum_{x \in S} v_x & \leq \sum_{i=1}^{t_S} (\delta_{i-1} - \delta_i) \frac{1}{\delta_{i-1}} \\ & \leq \sum_{i=1}^{t_S} (\frac{1}{1 + \delta_i} + \frac{1}{2+\delta_i} \dots + \frac{1}{\delta_{i-1}}) \\ & = \sum_{i=1}^{t_S} H(\delta_{i-1}) - H(\delta_i) \\ &= H(\delta_0) - H(\delta_{t_S}) = H(|S|) \end{aligned}$
-
 
 And that proves the claim.
 
-
 $\square$
 
-
 I have three postscripts to this proof:
-
-
 
 	  1. This is basically the _exact_ worst-case approximation that the greedy algorithm achieves. In fact, [Petr Slavik proved](http://dl.acm.org/citation.cfm?id=237991) in 1996 that the greedy gives you a set of size exactly $(\log n - \log \log n + O(1)) \textup{OPT}$ in the worst case.
 	  2. This is also the best approximation that _any set cover algorithm _can achieve, provided that P is not NP. This result was [basically known in 1994,](http://www.cs.mun.ca/~yzchen/papers/papers/hardness-approx-lund-yannakakis.pdf) but [it wasn't until 2013](http://arxiv.org/abs/1305.1979) and the use of some very sophisticated tools that the best possible bound was found with the smallest assumptions.
@@ -221,9 +151,7 @@ I have three postscripts to this proof:
 [caption id="attachment_5763" align="aligncenter" width="299"][![norvig-table](https://jeremykun.files.wordpress.com/2015/04/norvig-table.png)
 ](https://jeremykun.files.wordpress.com/2015/04/norvig-table.png) Norvig's frequency table for president meta-regex golf. The left side counts the size of each set (defined by a regex)[/caption]
 
-
 ## The linear programming approach
-
 
 So we just said that you can't possibly do better than the greedy algorithm for approximating set cover. There must be nothing left to say, job well done, right? Wrong! Our second analysis, based on linear programming, shows that instances with special features can have better approximation results.
 
@@ -237,16 +165,9 @@ If this sounds wishy washy and vague don't worry, we're about to make it super c
 
 We'll make a binary variable $x_i$ for each set $S_i$ in the input, and $x_i = 1$ if and only if we include it in our proposed cover. Then the objective function we want to minimize is $\sum_{i=1}^n x_i$. If we call our elements $X = \{ e_1, \dots, e_m \}$, then we need to write down a linear constraint that says each element $e_j$ is hit by at least one set in the proposed cover. These constraints have to depend on the sets $S_i$, but that's not a problem. One good constraint for element $e_j$ is
 
-
 $\displaystyle \sum_{i : e_j \in S_i} x_i \geq 1$
 
-
-
-
 In words, the only way that an $e_j$ will _not _be covered is if all the sets containing it have their $x_i = 0$. And we need one of these constraints for each $j$. Putting it together, the integer linear program is
-
-
-
 
 [caption id="attachment_5794" align="aligncenter" width="300"][![The integer program for set cover.](https://jeremykun.files.wordpress.com/2015/04/setcoverip.png?w=300)
 ](https://jeremykun.files.wordpress.com/2015/04/setcoverip.png) The integer program for set cover.[/caption]
@@ -264,8 +185,6 @@ _Proof. _Let $B$ be as described in the theorem, and call $y = x_{\textup{LP}}$
 
 To prove the theorem we need to show two things hold about this new candidate solution $x$:
 
-
-
 	  1. The choice of all $S_i$ for which $x_i = 1$ covers every element.
 	  2. The number of sets chosen (i.e. $Z(x)$) is at most $B$ times more than $\textup{OPT}_{\textup{LP}}$.
 
@@ -275,34 +194,20 @@ So let's prove 1. Fix any $j$ and we'll show that element $e_j$ is covered by s
 
 Now let's prove 2. For each $j$, we know that for each $x_i = 1$, the corresponding variable $y_i \geq 1/B$. In particular $1 \leq y_i B$. Now we can simply bound the sum.
 
-
 $\displaystyle \begin{aligned} Z(x) = \sum_i x_i &\leq \sum_i x_i (B y_i) \\ &\leq B \sum_{i} y_i \\ &= B \cdot \textup{OPT}_{\textup{LP}} \end{aligned}$
-
 
 The second inequality is true because some of the $x_i$ are zero, but we can ignore them when we upper bound and just include all the $y_i$. This proves part 2 and the theorem.
 
-
 $\square$
 
-
-
-
 I've got some more postscripts to this proof:
-
-
-
-
-
 
 	  1. The proof works equally well when the sets are _weighted_, i.e. your cost for picking a set is not 1 for every set but depends on some arbitrarily given constants $w_i \geq 0$.
 	  2. We gave a deterministic algorithm rounding $y$ to $x$, but one can get the same result (with high probability) using a randomized algorithm. The idea is to flip a coin with bias $y_i$ roughly $\log(n)$ times and set $x_i = 1$ if and only if the coin lands heads at least once. The guarantee is no better than what we proved, but for some other problems randomness can help you get approximations where we don't know of any deterministic algorithms to get the same guarantees. I can't think of any off the top of my head, but I'm pretty sure they're out there.
 	  3. For step 1 we showed that at least one term in the inequality for $e_j$ would be rounded up to 1, and this guaranteed we covered all the elements. A natural question is: why not also round up _at most one_ term of each of these inequalities? It might be that in the worst case you don't get a better guarantee, but it would be a quick extra heuristic you could use to post-process a rounded solution.
 	  4. Solving linear programs is slow. There are faster methods based on so-called "primal-dual" methods that use information about [the dual](http://jeremykun.com/2014/06/02/linear-programming-and-the-most-affordable-healthy-diet-part-1/) of the linear program to construct a solution to the problem. Goemans and Williamson have [a nice self-contained chapter](http://math.mit.edu/~goemans/PAPERS/book-ch4.pdf) on their website about this with a ton of applications.
 
-
-
 ## Additional Reading
-
 
 Williamson and Shmoys have a large textbook called [The Design of Approximation Algorithms](http://www.designofapproxalgs.com/). One problem is that this field is like a big heap of unrelated techniques, so it's not like the book will build up some neat theoretical foundation that works for every problem. Rather, it's messy and there are lots of details, but there are definitely diamonds in the rough, such as the problem of (and algorithms for) coloring 3-colorable graphs with "approximately 3" colors, and the infamous [unique games conjecture](http://en.wikipedia.org/wiki/Unique_games_conjecture).
 

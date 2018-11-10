@@ -30,12 +30,9 @@ For binary search on a list, it's the fact that the list is sorted, and we can c
 
 ![binarysearch1](https://jeremykun.files.wordpress.com/2017/11/binarysearch1.png)
 
-
 As long as the answers to your queries are sufficiently helpful, meaning they allow you to cut out large portions of your search space at each step, then you probably have a good algorithm on your hands. Indeed, there's a natural model for graphs, defined in a 2015 [paper](https://arxiv.org/abs/1503.00805) of Emamjomeh-Zadeh, Kempe, and Singhal that goes as follows.
 
 You're given as input an undirected, weighted graph $G = (V,E)$, with weights $w_e$ for $e \in E$. You can see the entire graph, and you may ask questions of the form, "Is vertex $v$ the target?" Responses will be one of two things:
-
-
 
 	  * Yes (you win!)
 	  * No, but $e = (v, w)$ is an edge out of $v$ on a shortest path from $v$ to the true target.
@@ -48,30 +45,21 @@ When the graph is a line, this "reduces" to binary search in the sense that the 
 
 ![binarysearch2.png](https://jeremykun.files.wordpress.com/2017/11/binarysearch2.png)
 
-
 And if we make this example only slightly more complicated, the generalization should become obvious:
 
 ![binarysearch3](https://jeremykun.files.wordpress.com/2017/11/binarysearch3.png)
-
 
 Here, we again start at the "center vertex," and the response to our query will eliminate one of the two halves. But then how should we pick the next vertex, now that we no longer have a linear order to rely on? It should be clear, choose the "center vertex" of whichever half we end up in. This choice can be formalized into a rule that works even when there's not such obvious symmetry, and it turns out to always be the right choice.
 
 **Definition: **A _median _of a weighted graph $G$ with respect to a subset of vertices $S \subset V$ is a vertex $v \in V$ (not necessarily in $S$) which minimizes the sum of distances to vertices in $S$. More formally, it minimizes
 
-
 $\Phi_S(v) = \sum_{u \in S} d(v, u)$,
 
-
-
-
 where $d(u,v)$ is the sum of the edge weights along a shortest path from $v$ to $u$.
-
 
 And so generalizing binary search to this query-model on a graph results in the following algorithm, which whittles down the search space by querying the median at every step.
 
 **Algorithm: **Binary search on graphs. Input is a graph $G = (V,E)$.
-
-
 
 	  * Start with a set of candidates $S = V$.
 	  * While we haven't found the target and $|S| > 1$:
@@ -79,7 +67,6 @@ And so generalizing binary search to this query-model on a graph results in the 
 	    * Query the median $v$ of $S$, and stop if you've found the target.
 	    * Otherwise, let $e = (v, w)$ be the response edge, and compute the set of all vertices $x \in V$ for which $e$ is on a shortest path from $v$ to $x$. Call this set $T$.
 	    * Replace $S$ with $S \cap T$.
-
 
 	  * Output the only remaining vertex in $S$
 
@@ -93,9 +80,7 @@ Here's where we use the "theory" trick of making up a fanciful problem and only 
 
 Alright, now let's implement it! The [complete code is on Github](https://github.com/j2kun/binary-search-graphs) as always.
 
-
 ## Always be implementing
-
 
 We start with a slight variation of Dijkstra's algorithm. Here we're given as input a single "starting" vertex, and we produce as output a list of all shortest paths from the start to all possible destination vertices.
 
@@ -327,9 +312,7 @@ Input neighboring vertex of 'd': e
 Found target: e
 {{< /highlight >}}
 
-
 ## A likely story
-
 
 The binary search we implemented in this post is pretty minimal. In fact, the more interesting part of the work of Emamjomeh-Zadeh et al. is the part where the response to the query can be wrong with some unknown probability.
 

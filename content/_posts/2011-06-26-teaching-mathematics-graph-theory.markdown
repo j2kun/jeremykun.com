@@ -21,7 +21,6 @@ tags:
 
 ## Community Service
 
-
 Mathematics is supposed to be a process of discovery. Definitions, propositions, and methods of proof don't come from nowhere, although after the fact (when presented in a textbook) they often seem to. As opposed to a textbook, real maths is highly non-linear. It took mathematicians quite a lot of fuss to come up with the quadratic formula, and even simple geometric conjectures were for the longest time the subject of hot debate.
 
 I feel like if I'm going to be a teacher worth anyone's time, I have to let students in on the secret that questions guide mathematics. This urge to teach is especially strong at the high school level, where it is generally agreed that “mathematics education” is a farce.
@@ -30,13 +29,9 @@ And so, as the only community service I do regularly (and too seldom, at that), 
 
 As a note to the reader, this will serve as a very detailed introduction to Graph Theory, as opposed to the terse primers I've been providing thus far.
 
-
 ## Two Puzzles
 
-
 Today we are going to do three things:
-
-
 
 	  1. Think about some puzzles,
 	  2. Do some mathematics, and
@@ -63,9 +58,7 @@ So the second puzzle is: at a party of $n$ people, must it be true that there ex
 
 Now take five minutes and try to solve these problems, by yourself, with a friend, or with a group, however you feel most comfortable tackling a problem. [They never get very far, but at least once I've encountered a student who knew of the Seven Bridges problem ahead of time, spoiling much of the fun and thoroughly confusing the rest of the class.]
 
-
 ## New Mathematics
-
 
 [After five to ten minutes pass and the group is quiet again] So, who thinks they've solved the first problem? [hands raise, most proclaiming impossibility; those who try to explain their reasoning mostly resign to awkward case-checking or saying they just couldn't find one that worked] And what about the second? [nobody raises a hand, most enjoy thinking about the bridges problem because it is very visual. In classrooms blessed with a [SmartBoard](http://smarttech.com/smartboard), I can have a number of them come up to the front and attempt to draw a route with their finger (and hitting undo when they invariably fail, so that I don't have to redraw the diagram every time).]
 
@@ -89,8 +82,6 @@ Constellation Theory
 What are we going to call the individual dots? "Stars!" And what about the lines connecting them? "How about...connections?" Okay. So here is our first definition:
 
 **Definition:** A constellation has three parts:
-
-
 
 	  1. A set of stars $S$ [we just accept the intuitive definition of a set without issue],
 	  2. A set of connections $C$,
@@ -124,9 +115,7 @@ Now that we have a working language, let's take another ten minutes to try to so
 
 Did everyone hear that? [I reiterate on the board in detail, explaining the idea behind proof by contradiction, and drawing a picture of the resulting constellation.] This is a very elegant proof. And if anyone can come up with a solid proof of the bridge problem, I have no doubt your teacher would give ample extra credit.
 
-
 ## Changing the World
-
 
 Now, for the mathematician this is enough. This new mathematical object, a constellation, is full of wonderful patterns that we could spend our entire lives thinking about (and many have done just this). However, it's probably true that most of you aren't going to become mathematicians. So let's try to think of things in the real world that we can model as constellations. Any ideas?
 
@@ -138,9 +127,7 @@ Now, for the mathematician this is enough. This new mathematical object, a const
 
 [I should emphasize that the proof of the party problem is the most exciting moment of the entire lecture. There is often a few students that have an audible "whoa!" and I've even received a standing ovation. This tells me that basic elegant proofs are easily within reach of a freshman high school student, and even the obviously "popular" girls have admitted to me it's cool.]
 
-
 ## Reflections
-
 
 This lecture has generally been successful among students for three obvious reasons.
 
@@ -160,9 +147,7 @@ At the same time, I do (to some bounded level) entertain their admittedly immatu
 
 Of course, I might not always spend so much time with such verbal fencing. But for a first exposure to real mathematics, and to establish my role in part as an equal but more so as an obstacle, I deem it necessary. I need to be the out-witter, so that when they exhaust their loopholes, they have no choice but to beat me by solving the problem. Given a lengthier period of time (taking into consideration the students' maturity level), I would gradually transition to a more pointed focus on the problems, and make it clear when silliness is appropriate. With luck and planning, interest in the problems would compensate for a perhaps dull state of order.
 
-
 ## If I Had a Class
-
 
 Sometimes I entertain the thought that I might end up teaching high school, and that with the providence of the school's administration I could have my own elective course called "Real Math," or something perhaps more enticing to the skeptical student ("Math Soup for the Teenage Soul"? "Math as Art"? "Mathematical Composition"?).
 

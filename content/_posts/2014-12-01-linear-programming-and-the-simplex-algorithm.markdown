@@ -27,93 +27,49 @@ In [the last post in this series](https://jeremykun.wordpress.com/2014/06/02/lin
 
 As usual, we'll post [all of the code](https://github.com/j2kun/simplex-algorithm) written in the making of this post on [this blog's Github page](https://github.com/j2kun/).
 
-
 ## Slack variables and equality constraints
-
 
 The simplex algorithm can solve any kind of linear program, but it only accepts a special form of the program as input. So first we have to do some manipulations. Recall that the primal form of a linear program was the following minimization problem.
 
-
 $\min \left \langle c, x \right \rangle \\ \textup{s.t. } Ax \geq b, x \geq 0$
-
 
 where the brackets mean "dot product." And its dual is
 
-
 $\max \left \langle y, b \right \rangle \\ \textup{s.t. } A^Ty \leq c, y \geq 0$
-
 
 The linear program can actually have more complicated constraints than just the ones above. In general, one might want to have "greater than" and "less than" constraints in the same problem. It turns out that this isn't any harder, and moreover the simplex algorithm only uses _equality_ constraints, and with some finicky algebra we can turn any set of inequality or equality constraints into a set of equality constraints.
 
 We'll call our goal the "standard form," which is as follows:
 
-
 $\max \left \langle c, x \right \rangle \\ \textup{s.t. } Ax = b, x \geq 0$
-
 
 It seems impossible to get the usual minimization/maximization problem into standard form until you realize there's nothing stopping you from adding more variables to the problem. That is, say we're given a constraint like:
 
-
 $\displaystyle x_7 + x_3 \leq 10,$
-
-
-
 
 we can add a new variable $\xi$, called a _slack variable_, so that we get an equality:
 
-
-
-
 $\displaystyle x_7 + x_3 + \xi = 10$
-
-
-
 
 And now we can just impose that $\xi \geq 0$. The idea is that $\xi$ represents how much "slack" there is in the inequality, and you can always choose it to make the condition an equality. So if the equality holds and the variables are nonnegative, then the $x_i$ will still satisfy their original inequality. For "greater than" constraints, we can do the same thing but subtract a nonnegative variable. Finally, if we have a minimization problem "$\min z$" we can convert it to $\max -z$.
 
-
-
-
 So, to combine all of this together, if we have the following linear program with each kind of constraint,
-
-
-
 
 [![Screen Shot 2014-10-05 at 12.06.19 AM](http://jeremykun.files.wordpress.com/2014/10/screen-shot-2014-10-05-at-12-06-19-am.png)
 ](https://jeremykun.files.wordpress.com/2014/10/screen-shot-2014-10-05-at-12-06-19-am.png)
 
-
-
-
 We can add new variables $\xi_1, \xi_2$, and write it as
-
-
-
 
 [![Screen Shot 2014-10-05 at 12.06.41 AM](http://jeremykun.files.wordpress.com/2014/10/screen-shot-2014-10-05-at-12-06-41-am.png)
 ](https://jeremykun.files.wordpress.com/2014/10/screen-shot-2014-10-05-at-12-06-41-am.png)
 
-
-
-
 By defining the vector variable $x = (x_1, x_2, x_3, \xi_1, \xi_2)$ and $c = (-1,-1,-1,0,0)$ and $A$ to have $-1, 0, 1$ as appropriately for the new variables, we see that the system is written in standard form.
-
-
-
 
 This is the kind of tedious transformation we can automate with a program. Assuming there are $n$ variables, the input consists of the vector $c$ of length $n$, and three matrix-vector pairs $(A, b)$ representing the three kinds of constraints. It's a bit annoying to describe, but the essential idea is that we compute a rectangular "identity" matrix whose diagonal entries are $\pm 1$, and then join this with the original constraint matrix row-wise. The reader can see the full implementation in [the Github repository for this post](https://github.com/j2kun/simplex-algorithm), though we won't use this particular functionality in the algorithm that follows.
 
-
-
-
 There are some other additional things we could do: for example there might be some variables that are completely unrestricted. What you do in this case is take an unrestricted variable $z$ and replace it by the difference of _two_ unrestricted variables $z' - z''$.  For simplicity we'll ignore this, but it would be a fruitful exercise for the reader to augment the function to account for these.
 
-
-
-
-
 ## What happened to the slackness conditions?
-
 
 The "standard form" of our linear program raises an obvious question: how can the complementary slackness conditions make sense if everything is an equality? It turns out that one can redo all the work one did for linear programs of the form we gave last time (minimize w.r.t. greater-than constraints) for programs in the new "standard form" above. We even get the same complementary slackness conditions! If you want to, you can do this entire routine quite a bit faster if you [invoke the power of Lagrangians](http://jeremykun.com/2013/11/30/lagrangians-for-the-amnesiac/). We won't do that here, but the tool shows up as a way to work with primal-dual conversions in many other parts of mathematics, so it's a good buzzword to keep in mind.
 
@@ -123,9 +79,7 @@ Again, the complementary slackness conditions give us inspiration here. Recall t
 
 Let's make this official and lay out our assumptions.
 
-
 ## Extreme points and basic solutions
-
 
 [Remember](http://jeremykun.com/2014/06/02/linear-programming-and-the-most-affordable-healthy-diet-part-1/) that the graphical way to solve a linear program is to look at the line (or hyperplane) given by $\langle c, x \rangle = q$ and keep increasing $q$ (or decreasing it, if you are minimizing) until the very last moment when this line touches the region of feasible solutions. Also recall that the "feasible region" is just the set of all solutions to $Ax = b$, that is the solutions that satisfy the constraints. We imagined this picture:
 
@@ -157,14 +111,9 @@ _Proof._ For one direction, suppose you have a basic feasible solution $x$, and 
 
 In the other direction, suppose  that you have some extreme point $x$ which is feasible but not basic. In other words, there are more than $m$ nonzero entries of $x$, and we'll call the indices $J = \{ j_1, \dots, j_t \}$ where $t > m$. The columns of $A_J$ are linearly dependent (since they're $t$ vectors in $\mathbb{R}^m$), and so let $\sum_{i=1}^t z_{j_i} A_{j_i}$ be a nontrivial linear combination of the columns of $A$. Add zeros to make the $z_{j_i}$ into a length $n$ vector $z$, so that $Az = 0$. Now
 
-
 $A(x + \varepsilon z) = A(x - \varepsilon z) = Ax = b$
 
-
-
-
 And if we pick $\varepsilon$ sufficiently small $x \pm \varepsilon z$ will still be nonnegative, because the only entries we're changing of $x$ are the strictly positive ones. Then $x = \delta (x + \varepsilon z) + (1 - \delta) \varepsilon z$ for $\delta = 1/2$, but this is very embarrassing for $x$ who was supposed to be an extreme point. $\square$
-
 
 Now that we know extreme points are the same as basic feasible solutions, we need to show that any linear program that has _some_ solution has a basic feasible solution. This is clear geometrically: any time you have an optimum it has to either lie on a line or at a vertex, and if it lies on a line then you can slide it to a vertex without changing its value. Nevertheless, it is a useful exercise to go through the algebra.
 
@@ -174,113 +123,57 @@ _Proof._ Let $x$ be an optimal solution to the LP. If $x$ has at most $m$ nonzer
 
 The only thing we know about $x$ is it's optimal. Let $c$ be the cost vector, and the optimality says that $\langle c,x \rangle \geq \langle c,y \rangle$, and $\langle c,x \rangle \geq \langle c,z \rangle$. We claim that in fact these are equal, that $y, z$ are both optimal as well. Indeed, say $y$ were not optimal, then
 
-
 $\displaystyle \langle c, y \rangle < \langle c,x \rangle = \delta \langle c,y \rangle + (1-\delta) \langle c,z \rangle$
-
-
-
 
 Which can be rearranged to show that $\langle c,y \rangle < \langle c, z \rangle$. Unfortunately for $x$, this implies that it was not optimal all along:
 
-
-
-
 $\displaystyle \langle c,x \rangle < \delta \langle c, z \rangle + (1-\delta) \langle c,z \rangle = \langle c,z \rangle$
 
-
-
-
 An identical argument works to show $z$ is optimal, too. Now we claim we can use $y,z$ to get a new solution that has fewer than $r$ nonzero entries. Once we show this we're done: inductively repeat the argument with the smaller solution until we get down to exactly $m$ nonzero variables. As before we know that $y,z$ must have at least as many zeros as $x$. If they have more zeros we're done. And if they have exactly as many zeros we can do the following trick. Write $w = \gamma y + (1- \gamma)z$ for a $\gamma \in \mathbb{R}$ we'll choose later. Note that no matter the $\gamma$, $w$ is optimal. Rewriting $w = z + \gamma (y-z)$, we just have to pick a $\gamma$ that ensures one of the nonzero coefficients of $z$ is zeroed out while maintaining nonnegativity. Indeed, we can just look at the index $i$ which minimizes $z_i / (y-z)_i$ and use $\delta = - z_i / (y-z)_i$. $\square$.
-
 
 So we have an immediate (and inefficient) combinatorial algorithm: enumerate all subsets of size $m$, compute the corresponding basic feasible solution $x_B = A_B^{-1}b$, and see which gives the biggest objective value. The problem is that, even if we knew the value of $m$, this would take time $n^m$, and it's not uncommon for $m$ to be in the tens or hundreds (and if we don't know $m$ the trivial search is exponential).
 
 So we have to be smarter, and this is where the simplex tableau comes in.
 
-
 ## The simplex tableau
-
 
 Now say you have any basis $B$ and any feasible solution $x$. For now $x$ might not be a basic solution, and even if it is, its basis of nonzero entries might not be the same as $B$. We can decompose the equation $Ax = b$ into the basis part and the non basis part:
 
-
 $A_Bx_B + A_{B'} x_{B'} = b$
-
-
-
 
 and solving the equation for $x_B$ gives
 
-
-
-
 $x_B = A^{-1}_B(b - A_{B'} x_{B'})$
 
-
 It may look like we're making a wicked abuse of notation here, but both $A_Bx_B$ and $A_{B'}x_{B'}$ are vectors of length $m$ so the dimensions actually do work out. Now our feasible solution $x$ has to satisfy $Ax = b$, and the entries of $x$ are all nonnegative, so it must be that $x_B \geq 0$ and $x_{B'} \geq 0$, and by the equality above $A^{-1}_B (b - A_{B'}x_{B'}) \geq 0$ as well. Now let's write the maximization objective $\langle c, x \rangle$ by expanding it first in terms of the $x_B, x_{B'}$, and then expanding $x_B$.
-
 
 $\displaystyle \begin{aligned} \langle c, x \rangle & = \langle c_B, x_B \rangle + \langle c_{B'}, x_{B'} \rangle \\
 & = \langle c_B, A^{-1}_B(b - A_{B'}x_{B'}) \rangle + \langle c_{B'}, x_{B'} \rangle \\
 & = \langle c_B, A^{-1}_Bb \rangle + \langle c_{B'} - (A^{-1}_B A_{B'})^T c_B, x_{B'} \rangle \end{aligned}$
 
-
-
-
 If we want to maximize the objective, we can just maximize this last line. There are two cases. In the first, the vector $c_{B'} - (A^{-1}_B A_{B'})^T c_B \leq 0$ and $A_B^{-1}b \geq 0$. In the above equation, this tells us that making any component of $x_{B'}$ bigger will _decrease_ the overall objective. In other words, $\langle c, x \rangle \leq \langle c_B, A_B^{-1}b \rangle$. Picking $x = A_B^{-1}b$ (with zeros in the non basis part) meets this bound and hence must be optimal. In other words, no matter what basis $B$ we've chosen (i.e., no matter the candidate basic feasible solution), if the two conditions hold then we're done.
-
-
-
 
 Now the crux of the algorithm is the second case: if the conditions _aren't_ met, we can pick a positive index of $c_{B'} - (A_B^{-1}A_{B'})^Tc_B$ and increase the corresponding value of $x_{B'}$ to increase the objective value. As we do this, other variables in the solution will change as well (by decreasing), and we have to stop when one of them hits zero. In doing so, this changes the basis by removing one index and adding another. In reality, we'll figure out how much to increase ahead of time, and the change will correspond to a single elementary row-operation in a matrix.
 
-
-
-
 Indeed, the matrix we'll use to represent all of this data is called a _tableau_ in the literature. The columns of the tableau will correspond to variables, and the rows to constraints. The last row of the tableau will maintain a candidate solution $y$ to the dual problem. Here's a rough picture to keep the different parts clear while we go through the details.
-
-
-
 
 [![tableau](http://jeremykun.files.wordpress.com/2014/06/tableau.png)
 ](https://jeremykun.files.wordpress.com/2014/06/tableau.png)
 
-
-
-
 But to make it work we do a slick trick, which is to "left-multiply everything" by $A_B^{-1}$. In particular, if we have an LP given by $c, A, b$, then for any basis it's equivalent to the LP given by $c, A_B^{-1}A, A_{B}^{-1} b$ (just multiply your solution to the new program by $A_B$ to get a solution to the old one). And so the actual tableau will be of this form.
-
-
-
 
 [![tableau-symbols](https://jeremykun.files.wordpress.com/2014/11/tableau-symbols1.gif)
 ](https://jeremykun.files.wordpress.com/2014/11/tableau-symbols1.gif)
 
-
-
-
 When we say it's in this form, it's really only true up to rearranging columns. This is because the chosen basis will always be represented by an identity matrix (as it is to start with), so to find the basis you can find the embedded identity sub-matrix. In fact, the beginning of the simplex algorithm will have the initial basis sitting in the _last_ few columns of the tableau.
-
-
-
 
 Let's look a little bit closer at the last row. The first portion is zero because $A_B^{-1}A_B$ is the identity. But furthermore with this $A_B^{-1}$ trick the dual LP involves $A_B^{-1}$ everywhere there's a variable. In particular, joining all but the last column of the last row of the tableau, we have the vector $c - A_B^T(A_B^{-1})^T c$, and setting $y = A_B^{-1}c_B$ we get a candidate solution for the dual. What makes the trick even slicker is that $A_B^{-1}b$ is already the candidate solution $x_B$, since $(A_B^{-1}A)_B^{-1}$ is the identity. So we're implicitly keeping track of two solutions here, one for the primal LP, given by the last column of the tableau, and one for the dual, contained in the last row of the tableau.
 
-
-
-
 I told you the last row was the dual solution, so why all the other crap there? This is the final slick in the trick: the last row further encodes the complementary slackness conditions. Now that we recognize the dual candidate sitting there, the complementary slackness conditions simply ask for the last row to be non-positive (this is just another way of saying what we said at the beginning of this section!). You should check this, but it gives us a stopping criterion: if the last row is non-positive then stop and output the last column.
-
-
-
-
 
 ## The simplex algorithm
 
-
 Now (finally!) we can describe and implement the simplex algorithm in its full glory. Recall that our informal setup has been:
-
-
 
 	  1. Find an initial basic feasible solution, and set up the corresponding tableau.
 	  2. Find a positive index of the last row, and increase the corresponding variable (adding it to the basis) just enough to make another variable from the basis zero (removing it from the basis).
@@ -420,9 +313,7 @@ And because all of the entries in the bottom row are negative, we're done. We re
 
 To see all of the source code, including the edge-case-checking we left out of this post, see the [Github repository for this post](https://github.com/j2kun/simplex-algorithm).
 
-
 ## Obvious questions and sad answers
-
 
 An obvious question is: what is the runtime of the simplex algorithm? Is it polynomial in the size of the tableau? Is it even guaranteed to stop at some point? The surprising truth is that nobody knows the answer to all of these questions! Originally (in the 1940's) the simplex algorithm actually had an exponential runtime in the worst case, though [this was not known until 1972](http://www.ams.org/mathscinet-getitem?mr=332165). And indeed, to this day while some variations [are known to terminate](http://en.wikipedia.org/wiki/Bland%27s_rule), no variation is known to have polynomial runtime in the worst case. Some of the choices we made in our implementation (for example, picking the _first_ column with a positive entry in the bottom row) have the potential to cycle, i.e., variables leave and enter the basis without changing the objective at all. Doing something like picking a _random_ positive column, or picking the column which will increase the objective value by the largest amount are alternatives. Unfortunately, every single pivot-picking rule is known to give rise to exponential-time simplex algorithms in the worst case (in fact, this was discovered [as recently as 2011!](http://cs.au.dk/~tdh/slides/simplex2.pdf)). So it remains open whether there is a variant of the simplex method that runs in guaranteed polynomial time.
 

@@ -67,8 +67,6 @@ The core idea behind this random number generator is that, for a specially chose
 
 More specifically, the conjectured guarantee about this random number generator is the following: if you present a polynomial time adversary with two sequences:
 
-
-
  	  1. A truly random sequence of bits of length $k$,
  	  2. $k$ bits from the output of the pseudorandom generator when seeded with a starting state shorter than $k$ bits.
 

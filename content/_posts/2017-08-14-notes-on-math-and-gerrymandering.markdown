@@ -15,16 +15,11 @@ There was a ton of information in the talks and subsequent discussions. I'll try
 
 The speakers were almost unanimous in a few central tenets, each of which I'll expand on:
 
-
-
 	  * In order for mathematics to helpful in fighting partisan gerrymandering, it needs to be in touch with the intricacies of the legal, political, and local aspects of the problem.
 	  * The "obvious" ideas have all essentially been tried and rejected for various reasons, both mathematical and legal.
 	  * There is a huge gray area in between what's easy and what's known to be hard where mathematics can help, and lots of tentative ideas are on the table.
 
-
-
 ## Grounded in People and Law
-
 
 Partisan gerrymandering is the process of drawing voting district lines to help one party win more representatives. As you probably know, every 10 years the US Census Bureau tries to count everyone in the country along with basic demographic information. Then, because the US Constitution requires proportional representation in Congress based on state populations, states may gain or lose seats in Congress, and are given the power to reevaluate how they translate individual citizen votes into representatives. Part of this process is redrawing voting district lines, and when politicians take advantage of this to further a political cause, it's called gerrymandering.
 
@@ -45,8 +40,6 @@ And, at the very least, this shows that any support or opposition for a redistri
 
 And, for the most part, courts tend to agree. In 1962 there was a landmark court case, Baker v. Carr, that crystalized this opinion (for a wonderful narrative, see the [More Perfect](http://www.radiolab.org/story/the_political_thicket/) podcast). In fact, Baker v. Carr was a case about the state's _inaction_; the district lines in Tennessee hadn't been redrawn since 1900, and in the mean time the population changed so that rural votes counted for about 10 urban votes. The Supreme Court ruled 6-2 against Tennessee, and laid out an opinion that said two things:
 
-
-
 	  1. Federal courts have the authority to hear redistricting cases on the basis of partisanship.
 	  2. However, it's _really_ hard to tell what counts as illegal partisan gerrymandering. The court admitted that they required a "[judicially discoverable and manageable standard](https://en.wikipedia.org/wiki/Political_question)" for resolving them.
 
@@ -63,9 +56,7 @@ Fast forward to today, you have [Gill v. Whitford](http://www.scotusblog.com/cas
 
 Roughly speaking, the efficiency gap is said to measure how many votes were "wasted" on each side, via an arithmetic formula that counts both votes in excess of 50% for a winning district, and all votes cast for losing candidates. An [article by Mira Bernstein and Moon Duchin](https://arxiv.org/pdf/1705.10812.pdf) (two of the four organizers of the conference) adeptly outline the deficiencies of this measure, and how it might play out in the courtroom.
 
-
 ## Enter math, take 1
-
 
 While the judicial value of the efficiency gap remains to be seen, the mathematical parts of the workshop highlighted ways the mathematical community could be of service.
 
@@ -78,8 +69,6 @@ The problem is far more complicated, and one could write a long article about al
 Still, almost every optimization "constraint" is soft, but it's not clear how soft and what exceptions are permissible. For example, standard practice tries to keep towns in the same district, has to split big cities somehow, and all the while there is an unofficial mandate to keep "communities of interest" together. This last one could be people living in areas affected by local wildfires, people united by a shared language, or any one of a number of minority groups. The optimization formulation is out of touch with the guiding principles. Nobody has figured out how to represent all of the information relevant to redistricting in a way amenable to algorithmic analysis.
 
 In this domain, rather than trying to solve a problem that is more complicated than it seems, well-modeled math must faithfully represent some set of values the court agrees with. Dr. Duchin pointed some of these out in her talk:
-
-
 
 	  1. Equal representation is good, as voiced by the "one person one vote" doctrine.
 	  2. Geographical division is important, i.e. bare majorities shouldn't override the voice of communities of interest.
@@ -94,9 +83,7 @@ Other techniques, like evaluating the geometric shape of a district for "compact
 [caption id="attachment_media-8" align="alignnone" width="1558"]![Screen Shot 2017-08-12 at 12.35.06 PM.png](https://jeremykun.files.wordpress.com/2017/08/screen-shot-2017-08-12-at-12-35-06-pm.png)
 Maryland's district 1, with compactness measured at different resolutions. Taken from Dr. Solomon's slides.[/caption]
 
-
 ## Math, take 2
-
 
 In addition to spending a lot of time outlining the potential pitfalls of existing techniques, the workshop presented ideas aiming to be informative.
 
@@ -123,9 +110,7 @@ Ricci curvature lends itself nicely to talking about things like "compactness" (
 
 Finally, the workshop had much discussion about open source GIS (geographical information systems) projects oriented around bringing redistricting planning to the public. They mentioned some really cool projects like [Azavea's](https://github.com/azavea) [DistrictBuilder](http://www.districtbuilder.org/), which has influenced district planning [all across the country](http://www.fixphillydistricts.com/), to my surprise including my childhood home of Contra Costa County, CA. They organized a GIS hackathon for the last few days of the workshop, and they promised to mention the results of that hackathon soon.
 
-
 ## Next steps
-
 
 For those who didn't participate in the special sessions (which were invite only), one of which included training to be an expert witness in gerrymandering cases, there was little in the way of obvious next steps. The workshop was super informative, but at this point things are very tentative and there are a lot of open directions for research and software projects.
 

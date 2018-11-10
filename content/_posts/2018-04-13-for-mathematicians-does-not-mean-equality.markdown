@@ -11,9 +11,7 @@ categories:
 
 Every now and then I hear some ridiculous things about the equals symbol. Some large subset of programmers—perhaps related to functional programmers, perhaps not—seem to think that = should only and ever mean "equality in the mathematical sense." The argument usually goes,
 
-
 _Functional programming gives us back that inalienable right to analyze things by using mathematics. Never again need we bear the burden of that foul mutant x = x+1! No novice programmer—nay, not even a mathematician!—could comprehend such flabbergastery. Tis a pinnacle of confusion!_
-
 
 It's ironic that so much of the merits or detriment of the use of = is based on a veiled appeal to the purity of mathematics. Just as often software engineers turn the tables, and any similarity to mathematics is decried as elitist jibber jabber (_Such an archaic and abstruse use of symbols! Oh no, big-O!_).
 
@@ -23,17 +21,13 @@ Not so in mathematics—oh yes, hide your children from the terrors that lurk. I
 
 Let's start with some low-hanging fruit, the superficial concerns.
 
-
 $\displaystyle \sum_{i=1}^n i^2 + 3$
-
 
 If = were interpreted literally, $i$ would be "equal" to 1, and "equal" to 2, and I'd facetiously demand $1 = 2$. Aha! Where is your Gauss now?! But seriously, this bit of notation shows that mathematics has both expressions with scope and variables that change their value over time. And the $\sum$ use for notation was established by _Euler_, long before algorithms jumped from logic to computers to billionaire Senate testimonies.
 
 Likewise, set-builder notation often uses the same kind of equals-as-iterate.
 
-
 $\displaystyle A = \{ n^2 : n = 1, 2, \dots, 100 \}$
-
 
 In Python, or interpreting the expression literally, the value of $n$ would be a tuple, producing a type error. ([In Javascript, it produces 2](https://jsconsole.com/?console.log%28%5B1%2C2%2C3%2C4%2C5%2C6%2C7%5D%20%5E%202%29%3B). How could it be Javascript if it didn't?)
 

@@ -40,8 +40,6 @@ So now let's just see the prevailing definition of a "kernelization" of a proble
 
 **Definition: **A _kernelization_ of a parameterized problem $L$ (formally, a language where each string $x$ is paired with a positive integer $k$) is a $\textup{poly}(|x|, k)$-time algorithm that converts instances $(x,k)$ into instances $(x', k')$ with the following three properties.
 
-
-
 	  * $(x,k)$ is a yes instance of $L$ if and only if $(x', k')$ is.
 	  * $|x'| \leq f(k)$ for some computable function $f: \mathbb{N} \to \mathbb{N}$.
 	  * $k' \leq g(k)$ for some computable function $g: \mathbb{N} \to \mathbb{N}$.

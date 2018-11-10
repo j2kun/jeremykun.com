@@ -28,21 +28,12 @@ The lovely fact is that once you allow adaptiveness, the number of queries you
 
 Okay let's get to the solution. It was crucial that our polynomial had nonnegative integer coefficients, because we're going to do a tiny bit of number theory. Let $p(x) = a_0 + a_1 x + \dots + a_d x^d$. First, note that $p(1)$ is exactly the sum of the coefficients $\sum_i a_i$, and in particular $p(1) + 1$ is larger than any single coefficient. So call this $N$, and query $p(N)$. This gives us a number $y_0$ of the form
 
-
 $\displaystyle y_0 = a_0 + a_1N + a_2N^2 + \dots + a_dN^d$
-
-
-
 
 And because $N$ is so big, we can compute $a_0$ easily by computing $y_0 \mod N$. Now set $y_1 = (y_0 - a_0) / N$, and this has the form $a_1 + a_2N + \dots + a_dN^{d-1}$. We can compute modulus again to get $a_1$, and repeat until we have all the coefficients. We'll stop once we get a $y_i$ that is zero.
 
-
 [Addendum 2018-02-14: [implementation on github](https://github.com/j2kun/guess-the-polynomial/)]
 
-
 As a small technical note, this is a polynomial-time algorithm in the number of bits needed to write down $p(x)$. So this demonstrates the power of adaptive queries: we get from something which is uncomputable with any number of queries to something which is efficiently computable with a constant number of queries.
-
-
-
 
 The obvious follow-up question is: can you come up with an efficient algorithm if we allow the coefficients to be negative integers?

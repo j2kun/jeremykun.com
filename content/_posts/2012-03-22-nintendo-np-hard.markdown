@@ -33,45 +33,27 @@ tags:
 [caption id="attachment_1818" align="aligncenter" width="584" caption="The framework for reducing 3-Sat to platform games."][![](http://jeremykun.files.wordpress.com/2012/03/platform-np-hard-framework.jpg)
 ](http://jeremykun.files.wordpress.com/2012/03/platform-np-hard-framework.jpg)[/caption]
 
-
 The player starts in the "start" gadget, which allows one to set up initial state requirements. For instance, in Super Mario Brothers, the start provides you with a mushroom, and you cannot get to the finish without being able to break blocks by jumping under them, which requires the mushroom power-up. Each "variable" gadget requires the player to make a variable assignment in such a way that the player can never return to that gadget to make a different decision. Then each "clause" gadget can be "unlocked" in some way, and each clause gadget can only be visited by the player once the player has chosen a satisfying variable assignment for that clause. Once the player has visited all variable gadgets, he goes to the "check in" area, and can travel back through all of the clauses to the finish if and only if he unlocked every clause. The crossover of the paths in the picture above requires another gadget to ensure that the player cannot switch paths (the details of this are in the paper).
 
-
-
-
 For example, here is the variable gadget described in the paper for The Legend of Zelda, a Link to the Past:
-
-
-
 
 [caption id="attachment_1820" align="aligncenter" width="216" caption="The variable gadget for A Link to the Past."][![](http://jeremykun.files.wordpress.com/2012/03/lttp-variable-gadget.jpg)
 ](http://jeremykun.files.wordpress.com/2012/03/lttp-variable-gadget.jpg)[/caption]
 
-
 Note that here we require Link has the [hookshot](http://www.youtube.com/watch?v=ZznLKBYcvc0#t=09m50s), which can grapple onto chests, but has limited reach. The configuration of the chests requires him to choose a path down one of the two columns at the bottom, and from there he may never return.
 
-
-
-
 Here's another example. In the classic Super Mario Brothers game, a possible clause gadget is as follows.
-
-
-
 
 [caption id="attachment_1819" align="aligncenter" width="372" caption="The clause gadget for the original Super Mario Brothers."][![](http://jeremykun.files.wordpress.com/2012/03/mario-clause-gadget.jpg)
 ](http://jeremykun.files.wordpress.com/2012/03/mario-clause-gadget.jpg)[/caption]
 
 Note that if the player can only enter through one of the three columns at the top, then the only thing he can do is kick a red koopa shell down so that it breaks the blocks, unlocking the way for Mario to pass underneath at the end. Note that Mario cannot win if he falls from the top ledge (since must always remain large, he can't fit through a one-tile-high entryway). Further details include the hole at the bottom, in which any stray koopa shell will necessarily fall, but which Mario can easily jump over. We recommend reading the entire paper, because it goes into all of the necessary details of the construction of the gadgets for all of the games.
 
-
 ## Future Work
-
 
 We note that there are some parts of the paper that only got partial results, mostly due to the variation in the game play between the different titles. For instance, the original Super Mario Brothers is known to be NP-complete, but the added ability to _pick up_ koopa shells in later Super Mario Brothers games potentially makes the decision problem more complex, and so it is unknown whether, say, Super Mario World is in NP. We will summarize exactly what is known in the table below. If readers have additions for newer games (for instance, it's plausible that Super Mario Galaxy could be adapted to fit the same construction as the original Super Mario Bros.), please leave a comment with justification and we can update the table appropriately. I admit my own unfamiliarity with some of the more recent games.
 
 **Super Mario Brothers:**
-
-
 
 <table >
 <tbody >
@@ -308,19 +290,7 @@ PSPACE-complete
 </tbody>
 </table>
 
-
-
-
-
-
-
 **Legend of Zelda:**
-
-
-
-
-
-
 
 <table >
 <tbody >
@@ -542,12 +512,6 @@ PSPACE-complete
 </tr>
 </tbody>
 </table>
-
-
-
-
-
-
 
 **Donkey Kong:**
 <table >
@@ -824,19 +788,7 @@ PSPACE-complete
 </tbody>
 </table>
 
-
-
-
-
-
-
 **Pokemon:**
-
-
-
-
-
-
 
 <table >
 <tbody >

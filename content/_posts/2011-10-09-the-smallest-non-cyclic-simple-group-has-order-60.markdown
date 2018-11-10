@@ -28,7 +28,6 @@ Finally, note that in the details we assume a high level of familiarity with gro
     26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
     48 49 50 51 52 53 54 55 56 57 58 59
 
-
 Our first swing (not quite a Sylow theorem) will be to realize that every group of prime order is necessarily cyclic (as is the only group of order 1), and all prime order cyclic groups are simple, since they have no non-trivial subgroups _at all_, not to mention normality. We recognize that cyclic groups are uninteresting simple groups, and rule them out for the rest of this proof. This leaves us with all of the composite numbers up to 58
 
     
@@ -36,34 +35,22 @@ Our first swing (not quite a Sylow theorem) will be to realize that every group 
     26 27 28    30    32 33 34 35 36    38 39 40    42    44 45 46
     48 49 50 51 52    54 55 56 57 58
 
-
 Note that if a group has a nontrivial center (here denoted $Z(G)$), it cannot be simple. In particular, the center is a normal subgroup itself. On the other hand, if the center is all of $G$ (i.e. $G$ is abelian) then any subgroup of $G$ is automatically a normal subgroup, and since all groups of non-prime order have nontrivial subgroups, they also cannot be simple. To exploit this, we will prove the following theorem, that every group of prime power order is not simple:
 
 **Theorem**: Every group $G$ of order $p^n$ has a non-trivial center.
 
 _Proof: _$G$ acts on itself by conjugation. In particular, the set of fixed points of this action are the elements in the center of $G$, and the orbits of elements not in the center partition $G$ into conjugacy classes. So we have the so-called [class formula](http://en.wikipedia.org/wiki/Conjugacy_class#Conjugacy_class_equation):
 
-
 $|G| = |Z(G)| + \sum \limits_{a \in A}|[G : G_a]|$
-
-
-
 
 Where $A$ is a set of representatives of non-trivial conjugacy classes and $G_a$ is the stabilizer subgroup of $G$ for the conjugacy class of $a$. Since each of these indices $[G:G_a]$ divides the order of $G$, each index must be a power of $p$, and so we have $0 \equiv |G| \equiv |Z(G)| \mod p$. In particular, conjugation fixes the identity element, so $|Z(G)| \geq 1$, but since it must be 0 mod $p$, we have $|Z(G)| \geq p$, implying the group has nontrivial center. $\square$
 
-
-
-
 In particular, this rules out groups of order 4, 8, 9, 16, ..., leaving us with the following list:
-
-
-
 
     
               6       10    12    14 15       18    20 21 22    24
     26    28    30       33 34 35 36    38 39 40    42    44 45 46
     48    50 51 52    54 55 56 57 58
-
 
 Now we actually have to do a little work. Specifically, we want to take each $n$ above and determine whether every group of order $n$ has a normal subgroup. Enter the Sylow theorems:
 
@@ -82,7 +69,6 @@ This rules out the numbers 6, 10, 14, 15, 18, ..., to leave us with the now spar
                 30                36          40             45
     48                      56
 
-
 There are just a few details left.
 
 For $|G| = 40$, there is a unique Sylow 5-subgroup (the only divisor of 8 which is 1 mod 5 is 1), and the same argument holds for $|G| = 45$, with 9 in the place of 8.
@@ -97,7 +83,6 @@ This leaves us with the following multiples of twelve (which have aggravatingly 
                             12                                  24
                                   36
     48
-
 
 If $|G| = 36$ then we have either 1, 3, or 9 Sylow 2-subgroups, and 1 or 4 Sylow 3- subgroups, but it is again clear by counting elements that there cannot be both 9 of the former and 4 of the latter, so either $G$ is already simple, or there are at most 3 Sylow 2-subgroups, and we may use the following result to prove all groups with these orders are simple.
 

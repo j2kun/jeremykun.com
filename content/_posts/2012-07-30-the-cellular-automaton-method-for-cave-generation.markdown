@@ -26,9 +26,7 @@ In this post we'll look at one particular application of cellular automata to pr
 [caption id="attachment_2322" align="aligncenter" width="584"][![](http://jeremykun.files.wordpress.com/2012/07/596px-map_dzonotcave_entrancelevel01.jpeg)
 ](http://jeremykun.files.wordpress.com/2012/07/596px-map_dzonotcave_entrancelevel01.jpeg) An example of a non-randomly generated cave level from Bethesda's The Elder Scrolls series.[/caption]
 
-
 ## The Need for More Caves
-
 
 Level design in video games is a time-consuming and difficult task. It's extremely difficult for humans to hand-craft areas that both look natural and are simultaneously fun to play in. This is particularly true of the [multitude](http://en.wikipedia.org/wiki/Chronology_of_roguelike_video_games) of contemporary role-playing games modeled after [Dungeons and Dragons](http://www.wizards.com/dnd/Feature.aspx?x=new/whatisdnd), in which players move through a series of areas defeating enemies, collecting items, and developing their character. With a high demand for such games and so many levels in each game, it would save an unfathomable amount of money to have _computers_ generate the levels on the fly. Perhaps more importantly, a game with randomly generated levels inherently has a much higher replay value.
 
@@ -36,9 +34,7 @@ The idea of randomized content generation (often called _procedural generation_)
 
 We'll explore more of these techniques in the future, but for now we'll see how a cellular automaton can be used to procedurally generate two-dimensional cave-like maps.
 
-
 ## A Quick Review of Cellular Automata
-
 
 While the interested reader can read [more about cellular automata](http://jeremykun.wordpress.com/2011/06/29/conways-game-of-life/) on this blog, we will give a quick refresher here.
 
@@ -49,9 +45,7 @@ For our purposes here, a 2-dimensional cellular automaton is a grid of cells $G$
 
 A cellular automaton should really be defined for an arbitrary [graph](http://jeremykun.wordpress.com/2011/06/26/teaching-mathematics-graph-theory/) (or more generally, an arbitrary state space). There is really nothing special about a grid other than that it's easy to visualize. Indeed, some cellular automata are designed for hexagonal grids, others are embedded on a torus, and still others are one- or three-dimensional. Of course, nothing stops automata from existing in arbitrary dimension, or from operating with arbitrary (albeit deterministic) rules, but to avoid pedantry we won't delve into a general definition here. It would take us into a discussion of discrete dynamical systems (of which [there are many](http://en.wikipedia.org/wiki/List_of_chaotic_maps), often with [interesting pictures](http://en.wikipedia.org/wiki/Duffing_map)).
 
-
 ## It All Boils Down to a Simple Rule
-
 
 Now the particular cellular automaton we will use for cave generation is simply B678/S345678, applied to a random initial grid with a fixed live border. We interpret the live cells as walls, and the dead cells as open space. This rule should intuitively work: walls will stay walls even if more cells are born nearby, but isolated or near-isolated cells will often be removed. In other words, this cellular automaton should 'smooth out' a grid arrangement to some extent. Here is an example animation quickly sketched up in Mathematica to witness the automaton in action:
 
@@ -71,15 +65,9 @@ We should also note that the initial proportion of cells which are alive has a s
 [caption id="attachment_2318" align="aligncenter" width="360"][![](http://jeremykun.files.wordpress.com/2012/07/caveexample1.gif)
 ](http://jeremykun.files.wordpress.com/2012/07/caveexample1.gif) A cave generated with the initial proportion of live cells equal to 0.5[/caption]
 
-
 As expected, there are many more disconnected caverns. Some game designers prefer a denser grid combined with heuristic methods to connect the caverns. Since our goal is just to explore the mathematical ideas, we will leave this as a parameter in our final program.
 
-
-
-
-
 ## Javascript Implementation, and Greater Resolution
-
 
 One important thing to note is that B678/S345678 doesn't scale well to fine grid sizes. For instance, if we increase the grid size to 200x200, we get something resembling an awkward camouflage pattern.
 
@@ -95,8 +83,6 @@ To design a "smoothing automaton," we should investigate more closely what we ne
 And so our final "smoothing automaton" is simply B5678/S5678.
 
 We present this application as an [interactive javascript program](http://j2kun.github.io/cave-automata/index.html). Some basic instructions:
-
-
 
 	  * The "Apply B678/S345678" button does what you'd expect: it applies B678/S345678 to the currently displayed grid. It iterates the automaton 20 times in an animation.
 	  * The "Apply B5678/S5678" button applies the smoothing automaton, but it does so only once, allowing the user to control the degree of smoothing at the specific resolution level.
@@ -119,9 +105,7 @@ Another example of a cool picture we created with this application might be cons
 
 We encourage the reader to play around with the program to see what other sorts of creations one can make. As of the time of this writing, changing the initial proportion of live cells (50%) or changing the automaton rules cannot be done in the browser; it requires one to modify the source code. We may implement the ability to control these in the browser given popular demand, but (of course) it would be a wonderful exercise for the intermediate Javascript programmer.
 
-
 ## Caves in Three Dimensions
-
 
 It's clear that this same method can be extended to a three-dimensional model for generating caverns in a game like [Minecraft](http://www.minecraft.net/). While we haven't personally experimented with three-dimensional cellular automata here on this blog, [it's far from a new idea](http://www.complex-systems.com/pdf/02-3-1.pdf). Once we reach graphics programming on this blog (think: distant future) we plan to revisit the topic and see what we can do.
 

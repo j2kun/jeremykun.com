@@ -22,23 +22,17 @@ tags:
 
 So far in [this series](http://jeremykun.com/2014/02/08/introducing-elliptic-curves/) we've seen elliptic curves from many perspectives, including the [elementary](http://jeremykun.com/2014/02/10/elliptic-curves-as-elementary-equations/), [algebraic](http://jeremykun.com/2014/02/16/elliptic-curves-as-algebraic-structures/), and [programmatic](http://jeremykun.com/2014/02/24/elliptic-curves-as-python-objects/) ones. We implemented [finite field arithmetic](http://jeremykun.com/2014/03/13/programming-with-finite-fields/) and [connected it to our elliptic curve code](http://jeremykun.com/2014/03/19/connecting-elliptic-curves-with-finite-fields-a-reprise/). So we're in a perfect position to feast on the main course: how do we use elliptic curves to actually do cryptography?
 
-
 ## History
-
 
 As the reader has heard countless times in this series, an elliptic curve is a geometric object whose points have a surprising and well-defined notion of addition. That you can add some points on some elliptic curves was a well-known technique since antiquity, discovered by Diophantus. It was not until the mid 19th century that the general question of whether addition always makes sense was answered by [Karl Weierstrass](http://en.wikipedia.org/wiki/Karl_Weierstrass). In 1908 [Henri Poincaré](http://en.wikipedia.org/wiki/Henri_Poincar%C3%A9) asked about how one might go about classifying the structure of elliptic curves, and it was not until 1922 that [Louis Mordell](http://en.wikipedia.org/wiki/Louis_J._Mordell) proved the [fundamental theorem of elliptic curves](http://en.wikipedia.org/wiki/Mordell%E2%80%93Weil_theorem), classifying their algebraic structure for most important fields.
 
 While mathematicians have always been interested in elliptic curves (there is currently a million dollar prize out for a solution to [one problem](http://en.wikipedia.org/wiki/Birch_and_Swinnerton-Dyer_conjecture) about them), its use in cryptography was not suggested until 1985. Two prominent researchers independently proposed it: [Neal Koblitz](http://en.wikipedia.org/wiki/Neal_Koblitz) at the University of Washington, and [Victor Miller](http://en.wikipedia.org/wiki/Victor_S._Miller) who was at IBM Research at the time. Their proposal was solid from the start, but elliptic curves didn't gain traction in practice until around 2005. More recently, the NSA was revealed to have [planted vulnerable national standards](http://en.wikipedia.org/wiki/Dual_EC_DRBG) for elliptic curve cryptography so they could have backdoor access. You can see a proof and implementation of the backdoor at [Aris Adamantiadis's blog](http://blog.0xbadc0de.be/archives/155). For now we'll focus on the cryptographic protocols themselves.
 
-
 ## The Discrete Logarithm Problem
-
 
 Koblitz and Miller had insights aplenty, but the central observation in all of this is the following.
 
-
 <blockquote>Adding is easy on elliptic curves, but **undoing** addition seems hard.</blockquote>
-
 
 What I mean by this is usually called the _discrete logarithm problem._ Here's a formal definition. Recall that an additive group is just a set of things that have a well-defined addition operation, and the that notation $ny$ means $y + y + \dots + y$ ($n$ times).
 
@@ -58,9 +52,7 @@ Here's the formal statement of the discrete logarithm problem for elliptic cur
 
 So this problem seems hard. And when mathematicians and computer scientists try to solve a problem for many years and they can't, the cryptographers get excited. They start to wonder: under the assumption that the problem has no efficient solution, can we use that as the foundation for a secure communication protocol?
 
-
 ## The Diffie-Hellman Protocol and Problem
-
 
 Let's spend the rest of this post on the simplest example of a cryptographic protocol based on elliptic curves: the Diffie-Hellman key exchange.
 
@@ -84,9 +76,7 @@ On one hand, if we had an efficient solution to the discrete logarithm problem,
 
 So this is our hardness assumption: assuming this problem has no efficient solution then no attacker, even with really lucky guesses, can feasibly determine Alice and Bob's shared secret.
 
-
 ## Python Implementation
-
 
 The Diffie-Hellman protocol is just as easy to implement as you would expect. Here's some Python code that does the trick. Note that all the code produced in the making of this post is available on [this blog's Github page](github.com/j2kun).
 
@@ -130,9 +120,7 @@ The base point we picked in the example above happens to have order 1964, so an 
 
 So there we have it: a simple cryptographic protocol based on elliptic curves. While we didn't experiment with a truly secure elliptic curve in this example, we'll eventually extend our work to include Curve25519. But before we do that we want to explore some of the other algorithms based on elliptic curves, including random number generation and factoring.
 
-
 ## Comments on Insecurity
-
 
 Why do we use elliptic curves for this? Why not do something like [RSA](http://jeremykun.com/2011/07/29/encryption-rsa/) and do multiplication (and exponentiation) modulo some large prime?
 
@@ -143,8 +131,6 @@ I mentioned that the particular elliptic curve we chose was insecure, and this
 The problem is that different operations, doubling a point and adding two different points, have very different algorithms. As a result, they take different amounts of time to complete and they require differing amounts of power. Both of these can be used to reveal information about the secret keys. Despite the different algorithms for arithmetic on Weierstrass normal form curves, one can still implement them to be secure. Naively, one might pad the two subroutines with additional (useless) operations so that they have more similar time/power signatures, but I imagine there are better methods available.
 
 But much of what makes a curve's domain parameters mathematically secure or insecure is still unknown. There are a handful of known attacks against very specific families of parameters, and so cryptography experts simply avoid these as they are discovered. Here is a short list of pitfalls, and links to overviews:
-
-
 
 	  1. Make sure the order of your basepoint has a short facorization (e.g., is $2p, 3p,$ or $4p$ for some prime $p$). Otherwise you risk attacks based on the Chinese Remainder Theorem, the most prominent of which is called [Pohlig-Hellman](http://en.wikipedia.org/wiki/Pohlig%E2%80%93Hellman_algorithm).
 	  2. Make sure your curve is not _[supersingular](http://en.wikipedia.org/wiki/Supersingular_elliptic_curve)_. If it is you can reduce the discrete logarithm problem to one in a different and much simpler group.

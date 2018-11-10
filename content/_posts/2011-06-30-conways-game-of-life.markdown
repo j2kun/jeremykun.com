@@ -25,9 +25,7 @@ tags:
 
 _So far on this blog we've been using mathematics to help us write interesting and useful programs. For this post (and for more in the future, I hope) we use an interesting program to drive its study as a mathematical object. For the uninformed reader, I plan to provide [an additional primer on the theory of computation](http://jeremykun.wordpress.com/2011/07/02/determinism-and-finite-automata-a-primer/), but for the obvious reason it interests me more to write on their applications first. So while this post will not require too much rigorous mathematical knowledge, the next one we plan to write will._
 
-
 ## Cellular Automata
-
 
 There is a long history of mathematical models for computation. One very important one is the Turing Machine, which is the foundation of our implementations of actual computers today. On the other end of the spectrum, one of the simpler models of computation (often simply called a _system_) is a _cellular automaton_. Surprisingly enough, there are deep connections between the two. But before we get ahead of ourselves, let's see what these automata can do.
 
@@ -51,13 +49,9 @@ As we increase the complexity of the rules, the complexity of the resulting patt
 
 So let's increase the dimension of our grid to 2, and explore John Conway's aptly named Game of Life.
 
-
 ## What Life From Yonder Automaton Breaks!
 
-
 For Life, our automaton has the following parameters: an infinite two-dimensional grid of cells, states that are either on or off, and some initial configuration of the cells called a _seed._ There are three transition rules:
-
-
 
 	  1. Any live cell with fewer than two or more than three living neighbors dies.
 	  2. Any dead cell with exactly three living neighbors becomes alive.
@@ -92,7 +86,6 @@ The rules of Life are not particularly hard to implement. We did so in Mathemati
     evaluateAll[A_] := Table[evaluateCell[A, i, j],
        {i, 1, Length[A]}, {j, 1, Length[A[[1]]]}];
 
-
 This implementations creates a few significant limitations to our study of this system. First, we have a fixed array size instead of an infinite grid. This means we need some case to handle live cells reaching the edge of the system. Fortunately, at this introductory stage in our investigation we can ignore patterns which arise too close to the border of our array, recognizing that the edge strategy tampers with the evolution of the system. Hence, we adopt the _no man's land_ edge strategy, which simply allows no cell to be born on the border of our array. One interesting alternative is to have the edges wrap around, thus treating the square grid as the surface of a torus. For small grids, this strategy can actually tamper with our central patterns, but for a large fixed grid, it is a viable strategy.
 
 Second, we do not optimize our array operations to take advantage of sparse matrices. Since most cells will usually be dead, we really only need to check the neighborhoods of live cells and dead cells which have at least one live neighbor. We could keep track of the positions of live cells in a hash set, checking only those and their immediate neighbors at each step. It would not take much to modify the above code to do this, but for brevity and pedantry we exclude it, leaving the optimization as an exercise to the reader.
@@ -107,7 +100,6 @@ Finally, to actually display this code we combine Mathematica's ArrayPlot and Ne
     
     randomLife = makeFrames[RandomInteger[1, {20, 20}], 200];
     animate[randomLife]
-
 
 Throwing any mathematical thoughts we might have to the wind, we just run it! Here's the results for our first try:
 
@@ -124,7 +116,6 @@ Now hold on, because we recognize that this oscillator (which we henceforth dub,
     square = {{1, 1}, {1, 2}, {1, 3}, {2, 1}, {2, 3},
       {3, 1}, {3, 2}, {3, 3}};
 
-
 Combining the resulting two lines with the earlier code for animation, we produce the following pattern:
 
 [![](http://jeremykun.files.wordpress.com/2011/06/failedoscillator1.gif)
@@ -137,49 +128,25 @@ For now, we notice that the original square preceding the flame grew until its s
 [![](http://jeremykun.files.wordpress.com/2011/06/jellyfish.gif)
 ](http://jeremykun.files.wordpress.com/2011/06/jellyfish.gif)
 
-
 We admit, with four symmetrically oscillating flames, it looks more like a jellyfish than a fire. But while we meant to produce two flames, we ended up with four! Quite marvelous. Here is another beautiful reject, which we got by placing the two squares only one cell apart. Unfortunately, it evaporates rather quickly. We call it, _the fleeting butterfly_.
-
-
-
 
 [![](http://jeremykun.files.wordpress.com/2011/06/jellyfish-reject1.gif)
 ](http://jeremykun.files.wordpress.com/2011/06/jellyfish-reject1.gif)We refrain from experimenting with other perturbations of the two-square initial configuration for the sake of completing this post by the end of the year. If the reader happens to find an interesting pattern, he shouldn't hesitate to post a comment!
 
-
-
-
 Now, before returning to the stabilization question, we consider one more phenomenon: moving patterns. Consider the following initial configuration:
-
-
-
 
 [![](http://jeremykun.files.wordpress.com/2011/06/glider-initial.png)
 ](http://jeremykun.files.wordpress.com/2011/06/glider-initial.png)A few mundane calculations show that in four generations this pattern repeats itself, but a few cells to the south-east. This _glider_ pattern will fly indefinitely to its demise in no man's land, as we see below.
 
-
-
-
 [![](http://jeremykun.files.wordpress.com/2011/06/glider.gif)
 ](http://jeremykun.files.wordpress.com/2011/06/glider.gif)Awesome. And clearly, we can exploit the symmetry of this object to shoot the glider in all four directions. Let's see what happens when they collide!
-
-
-
 
 [![](http://jeremykun.files.wordpress.com/2011/06/fourgliders.gif)
 ](http://jeremykun.files.wordpress.com/2011/06/fourgliders.gif)Well that was dumb. It's probably too symmetric. We leave it as an exercise to the reader to slightly modify the initial position (given in the Mathematica notebook on [this blog's Github page](https://github.com/j2kun?tab=repositories)) and witness the hopefully ensuing chaos.
 
-
-
-
 Now you may have noticed that these designs are very pretty. Indeed, before the post intermission (there's still loads more to explore), we will quickly investigate this idea.
 
-
-
-
-
 ## Automata in Design
-
 
 Using automata in design might seem rather far-fetched, and certainly would be difficult to implement (if not impossible) in an environment such as Photoshop or with CSS. But, recalling our post on [Randomness in Design](http://jeremykun.wordpress.com/2011/06/13/prime-design/), it is only appropriate to show a real-world example of a design based on a cellular automaton (specifically, it seems to use something similar to [rule 30 of the elementary automata](http://mathworld.wolfram.com/Rule30.html)). The prominent example at hand is the _Conus_ seashell.
 
@@ -188,9 +155,7 @@ A Conus shell.[/caption]
 
 The Conus has cells which secrete pigment according to some unknown set of rules. That the process is a cellular automaton is stated but unsupported on Wikipedia. As unfortunate as that is, we may still appreciate that the final result looks like it was generated from a cellular automaton, and we can reproduce such designs with one. If I had more immediate access to a graphics library and had a bit more experience dealing with textures, I would gladly produce something. If at some point in the future I do get such experience, I would like to return to this topic and see what I can do. For the moment, however, we just admire the apparent connection.
 
-
 ## A Tantalizing Peek
-
 
 We have yet to breach the question of stabilization. In fact, though we started talking about models for computation, we haven't actually computed anything besides pretty pictures yet! We implore the reader to have patience, and assert presciently that the question of stabilization comes first.
 

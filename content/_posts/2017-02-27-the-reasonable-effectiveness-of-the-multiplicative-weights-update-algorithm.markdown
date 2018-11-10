@@ -25,9 +25,7 @@ tags:
 [caption id="attachment_6020" align="aligncenter" width="618"][![papad](https://jeremykun.files.wordpress.com/2015/09/papad.jpg?w=618)
 ](https://jeremykun.files.wordpress.com/2015/09/papad.jpg) Christos Papadimitriou, who studies multiplicative weights in the context of biology.[/caption]
 
-
 ## Hard to believe
-
 
 [Sanjeev Arora and his coauthors](https://www.cs.princeton.edu/~arora/pubs/MWsurvey.pdf) consider it "a basic tool [that should be] taught to all algorithms students together with divide-and-conquer, dynamic programming, and random sampling." [Christos Papadimitriou](https://www.youtube.com/watch?v=KP0WFbdHhJM) calls it "so hard to believe that it has been discovered five times and forgotten." It has formed the basis of algorithms in machine learning, optimization, game theory, economics, biology, and more.
 
@@ -41,12 +39,9 @@ What mystical algorithm has such broad applications? Now that computer scientis
        Increase the weight of the chosen object if it does well in the event
        Otherwise decrease the weight
 
-
 The name "multiplicative weights" comes from how we implement the last step: if the weight of the chosen object at step $t$ is $w_t$ before the event, and $G$ represents how well the object did in the event, then we'll update the weight according to the rule:
 
-
 $\displaystyle w_{t+1} = w_t (1 + G)$
-
 
 Think of this as increasing the weight by a small multiple of the object's performance on a given round.
 
@@ -61,8 +56,6 @@ In fact, let's play a game where you, dear reader, get to decide the rewards f
 
 This core mechanism of updating weights can be interpreted in many ways, and that's part of the reason it has sprouted up all over mathematics and computer science. Just a few examples of where this has led:
 
-
-
 	  1. In game theory, weights are the "belief" of a player about the strategy of an opponent. The most famous algorithm to use this is called [Fictitious Play](https://en.wikipedia.org/wiki/Fictitious_play), and others include [EXP3](https://jeremykun.com/2013/11/08/adversarial-bandits-and-the-exp3-algorithm/) for minimizing regret in the so-called "adversarial bandit learning" problem.
 	  2. In machine learning, weights are the difficulty of a specific training example, so that higher weights mean the learning algorithm has to "try harder" to accommodate that example. The first result I'm aware of for this is the [Perceptron](https://jeremykun.com/2011/08/11/the-perceptron-and-all-the-things-it-cant-perceive/) (and similar Winnow) algorithm for learning hyperplane separators. The most famous is the [AdaBoost algorithm](https://jeremykun.com/2015/05/18/boosting-census/).
 	  3. Analogously, in optimization, the weights are the difficulty of a specific _constraint_, and this technique can be used to approximately solve linear and semidefinite programs. The approximation is because MWUA only provides a solution with some error.
@@ -74,9 +67,7 @@ Additional, more technical examples can be found in this [survey of Arora et al.
 
 In the rest of this post, we'll implement a generic Multiplicative Weights Update Algorithm, we'll prove it's main theoretical guarantees, and we'll implement a linear program solver as an example of its applicability. As usual, all of the code used in the making of this post is available in a [Github repository](https://github.com/j2kun/mwua).
 
-
 ## The generic MWUA algorithm
-
 
 Let's start by writing down pseudocode and an implementation for the MWUA algorithm in full generality.
 
@@ -126,9 +117,7 @@ Sampling objects in this way is the same as associating a distribution $D_t$ to 
 
 Next comes the weight update step. Let's call our learning rate variable parameter $\varepsilon$. In round $t$ say we have object $x_t$ and outcome $y_t$, then the reward is $M(x_t, y_t)$. We update the weight of the chosen object $x_t$ according to the formula:
 
-
 $\displaystyle w_{x_t, t} = w_{x_t} (1 + \varepsilon M(x_t, y_t) / B)$
-
 
 In the more general event that you have rewards for all objects (if not, the reward-producing function can output zero), you would perform this weight update on all objects $x \in X$. This turns into the following Python snippet, where we hide the division by $B$ into the choice of learning rate:
 
@@ -155,8 +144,6 @@ But even in such an oppressive, exploitative environment, MWUA persists and ach
 
 The core of the proof, which we'll state as a lemma, uses one of the most elegant proof techniques in all of mathematics. It's the idea of constructing a _potential function_, and tracking the change in that potential function over time. Such a proof usually has the mysterious script:
 
-
-
 	  1. Define potential function, in our case $S_t$.
 	  2. State what seems like trivial facts about the potential function to write $S_{t+1}$ in terms of $S_t$, and hence get general information about $S_T$ for some large $T$.
 	  3. Theorem is proved.
@@ -168,120 +155,59 @@ In this proof our potential function is the sum of the weights of the objects in
 
 **Lemma: **Let $B$ be the bound on the size of the rewards, and $0 < \varepsilon < 1/2$ a learning parameter. Recall that $D_t(x)$ is the probability that MWUA draws object $x$ in round $t$. Write the _expected_ reward for MWUA for round $t$ as the following (using only the definition of expected value):
 
-
 $\displaystyle R_t = \sum_{x \in X} D_t(x) M(x, y_t)$
-
 
  Then the claim of the lemma is:
 
-
 $\displaystyle S_{t+1} \leq S_t e^{\varepsilon R_t / B}$
-
-
-
 
 _Proof. _Expand $S_{t+1} = \sum_{x \in X} w_{x, t+1}$ using the definition of the MWUA update:
 
-
-
-
 $\displaystyle \sum_{x \in X} w_{x, t+1} = \sum_{x \in X} w_{x, t}(1 + \varepsilon M(x, y_t) / B)$
-
-
-
 
 Now distribute $w_{x, t}$ and split into two sums:
 
-
-
-
 $\displaystyle \dots = \sum_{x \in X} w_{x, t} + \frac{\varepsilon}{B} \sum_{x \in X} w_{x,t} M(x, y_t)$
-
-
-
 
 Using the fact that $D_t(x) = \frac{w_{x,t}}{S_t}$, we can replace $w_{x,t}$ with $D_t(x) S_t$, which allows us to get $R_t$
 
-
-
-
 $\displaystyle \begin{aligned} \dots &= S_t + \frac{\varepsilon S_t}{B} \sum_{x \in X} D_t(x) M(x, y_t) \\ &= S_t \left ( 1 + \frac{\varepsilon R_t}{B} \right ) \end{aligned}$
-
-
-
 
 And then using the fact that $(1 + x) \leq e^x$ (Taylor series), we can bound the last expression by $S_te^{\varepsilon R_t / B}$, as desired.
 
-
-
-
 $\square$
-
 
 Now using the lemma, we can get a hold on $S_T$ for a large $T$, namely that
 
-
 $\displaystyle S_T \leq S_1 e^{\varepsilon \sum_{t=1}^T R_t / B}$
-
-
-
 
 If $|X| = n$ then $S_1=n$, simplifying the above. Moreover, the sum of the weights in round $T$ is certainly greater than any single weight, so that for every fixed object $x \in X$,
 
-
-
-
 $\displaystyle S_T \geq w_{x,T} \leq  (1 + \varepsilon)^{\sum_t M(x, y_t) / B}$
-
-
-
 
 Squeezing $S_t$ between these two inequalities and taking logarithms (to simplify the exponents) gives
 
-
-
-
 $\displaystyle \left ( \sum_t M(x, y_t) / B \right ) \log(1+\varepsilon) \leq \log n + \frac{\varepsilon}{B} \sum_t R_t$
-
 
 Multiply through by $B$, divide by $\varepsilon$, rearrange, and use the fact that when $0 < \varepsilon < 1/2$ we have $\log(1 + \varepsilon) \geq \varepsilon - \varepsilon^2$ (Taylor series) to get
 
-
 $\displaystyle \sum_t R_t \geq \left [ \sum_t M(x, y_t) \right ] (1-\varepsilon) - \frac{B \log n}{\varepsilon}$
-
-
-
 
 The bracketed term is the payoff of object $x$, and MWUA's payoff is at least a fraction of that minus the logarithmic term. The bound applies to any object $x \in X$, and hence to the best one. This proves the theorem.
 
-
-
-
 $\square$
-
-
-
 
 Briefly discussing the bound itself, we see that the smaller the learning rate is, the closer you eventually get to the best object, but by contrast the more the subtracted quantity $B \log(n) / \varepsilon$ hurts you. If your target is an absolute error bound against the best performing object on average, you can do more algebra to determine how many rounds you need in terms of a fixed $\delta$. The answer is roughly: let $\varepsilon = O(\delta / B)$ and pick $T = O(B^2 \log(n) / \delta^2)$. See [this survey](https://www.cs.princeton.edu/~arora/pubs/MWsurvey.pdf) for more.
 
-
-
-
-
 ## MWUA for linear programs
-
 
 Now we'll approximately solve a linear program using MWUA. Recall that a linear program is an optimization problem whose goal is to minimize (or maximize) a linear function of many variables. The objective to minimize is usually given as a dot product $c \cdot x$, where $c$ is a fixed vector and $x = (x_1, x_2, \dots, x_n)$ is a vector of non-negative variables the algorithm gets to choose. The choices for $x$ are also constrained by a set of $m$ linear inequalities, $A_i \cdot x \geq b_i$, where $A_i$ is a fixed vector and $b_i$ is a scalar for $i = 1, \dots, m$. This is usually summarized by putting all the $A_i$ in a matrix, $b_i$ in a vector, as
 
-
 $x_{\textup{OPT}} = \textup{argmin}_x \{ c \cdot x \mid Ax \geq b, x \geq 0 \}$
-
 
 We can further simplify the constraints by assuming we know the optimal value $Z = c \cdot x_{\textup{OPT}}$ in advance, by doing a binary search (more on this later). So, if we ignore the hard constraint $Ax \geq b$, the "easy feasible region" of possible $x$'s includes $\{ x \mid x \geq 0, c \cdot x = Z \}$.
 
 In order to fit linear programming into the MWUA framework we have to define two things.
-
-
 
 	  1. The objects: the set of linear inequalities $A_i \cdot x \geq b_i$.
 	  2. The rewards: the error of a constraint for a special input vector $x_t$.
@@ -290,9 +216,7 @@ Number 2 is curious (why would we give a reward for error?) but it's crucial and
 
 The special input $x_t$ depends on the weights in round $t$ (which is allowed, recall). Specifically, if the weights are $w = (w_1, \dots, w_m)$, we ask for a vector $x_t$ in our "easy feasible region" which satisfies
 
-
 $\displaystyle (A^T w) \cdot x_t \geq w \cdot b$
-
 
 For this post we call the implementation of procuring such a vector the "oracle," since it can be seen as the black-box problem of, given a vector $\alpha$ and a scalar $\beta$ and a convex region $R$, finding a vector $x \in R$ satisfying $\alpha \cdot x \geq \beta$. This allows one to solve more complex optimization problems with the same technique, swapping in a new oracle as needed. Our choice of inputs, $\alpha = A^T w, \beta = w \cdot b$, are particular to the linear programming formulation.
 
@@ -302,9 +226,7 @@ Second, and more important to the conceptual understanding of this algorithm, th
 
 At the end, our final output is an average of the $x_t$ produced in each round, i.e. $x^* = \frac{1}{T}\sum_t x_t$. This vector satisfies all the constraints to a roughly equal degree. We will skip the proof that this vector does what we want, but see [these notes for a simple proof](https://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15859-f11/www/notes/lecture17.pdf). We'll spend the rest of this post implementing the scheme outlined above.
 
-
 ## Implementing the oracle
-
 
 Fix the convex region $R = \{ c \cdot x = Z, x \geq 0 \}$ for a known optimal value $Z$. Define $\textup{oracle}(\alpha, \beta)$ as the problem of finding an $x \in R$ such that $\alpha \cdot x \geq \beta$.
 
@@ -331,9 +253,7 @@ def makeOracle(c, optimalValue):
     return oracle
 {{< /highlight >}}
 
-
 ## Implementing the core solver
-
 
 The core solver implements the discussion from previously, given the optimal value of the linear program as input. To avoid too many single-letter variable names, we use `linearObjective` instead of $c$.
 
@@ -372,9 +292,7 @@ First we make the oracle, then the reward and outcome-producing functions, then 
         return oracle(weightedVector, weightedThreshold)
 {{< /highlight >}}
 
-
 ## Implementing the binary search, and an example
-
 
 Finally, the top-level routine. Note that the binary search for the optimal value is sophisticated (though it could be more sophisticated). It takes a max range for the search, and invokes the optimization subroutine, moving the upper bound down if the linear program is feasible and moving the lower bound up otherwise.
 
@@ -462,9 +380,7 @@ Attempting to solve with proposedOpt=3
 
 So there we have it. A fiendishly clever use of multiplicative weights for solving linear programs.
 
-
 ## Discussion
-
 
 One of the nice aspects of MWUA is it's completely transparent. If you want to know why a decision was made, you can simply look at the weights and look at the history of rewards of the objects. There's also a clear interpretation of what is being optimized, as the potential function used in the proof is a measure of both quality and _adaptability to change. _The latter is why MWUA succeeds even in adversarial settings, and why it makes sense to think about MWUA in the context of evolutionary biology.
 

@@ -23,9 +23,7 @@ This situation isn't hard to formalize, and we'll make it as abstract as possibl
 
 In this generality the problem is clearly impossible. You'd have to check all subsets to be sure you didn't miss the best one. So what conditions do we need on either $X$ or $f$ or both that makes this problem tractable? There are plenty you could try, but one very rich property is submodularity.
 
-
 ## The Submodularity Condition
-
 
 I think the simplest way to explain submodularity is in terms of coverage. Say you're starting a new radio show and you have to choose which radio stations to broadcast from to reach the largest number of listeners. For simplicity say each radio station has one tower it broadcasts from, and you have a good estimate of the number of listeners you would reach if you broadcast from a given tower. For more simplicity, say it costs the same to broadcast from each tower, and your budget restricts you to a maximum of ten stations to broadcast from. So the question is: how do you pick towers to maximize your overall reach?
 
@@ -38,49 +36,27 @@ This "diminishing returns" condition is a general idea you can impose on any f
 
 **Definition:** Let $X$ be a finite set. A function $f: 2^X \to \mathbb{R}$ is called _submodular _if for all subsets $S \subset T \subset X$ and all $x \in X \setminus T$,
 
-
 $\displaystyle f(S \cup \{ x \}) - f(S) \geq f(T \cup \{ x \}) - f(T)$
 
-
-
-
 In other words, if $f$ measures "benefit," then the marginal benefit of adding $x$ to $S$ is at least as high as the marginal benefit of adding it to $T$. Since $S \subset T$ and $x$ are all arbitrary, this is as general as one could possibly make it: adding $x$ to a bigger set can't be better than adding it to a smaller set.
-
 
 Before we start doing things with submodular functions, let's explore some basic properties. The first is an equivalent definition of submodularity
 
 **Proposition: **$f$ is submodular if and only if for all $A, B \subset X$, it holds that
 
-
 $\displaystyle f(A \cap B) + f(A \cup B) \leq f(A) + f(B)$.
-
 
 _Proof._ If we assume $f$ has the condition from this proposition, then we can set $A=T, B=S \cup \{ x \}$, and the formula just works out. Conversely, if we have the condition from the definition, then using the fact that $A \cap B \subset B$ we can inductively apply the inequality to each element of $A \setminus B$ to get
 
-
 $\displaystyle f(A \cup B) - f(B) \leq f(A) - f(A \cap B)$
-
-
-
 
 $\square$
 
-
-
-
 Next, we can tweak and combine submodular functions to get more submodular functions. In particular, non-negative linear combinations of sub-modular functions are submodular. In other words, if $f_1, \dots, f_k$ are submodular on the same set $X$, and $\alpha_1, \dots, \alpha_k$ are all non-negative reals, then $\alpha_1 f_1 + \dots + \alpha_k f_k$ is also a submodular function on $X$. It's an easy exercise in applying the definition to see why this is true. This is important because when we're designing objectives to maximize, we can design them by making some simple submodular pieces, and then picking an appropriate combination of those pieces.
-
-
-
 
 The second property we need to impose on a submodular function is _monotonicity_. That is, as your sets get more elements added to them, their value under $f$ only goes up. In other words, $f$ is monotone when $S \subset T$ then $f(S) \leq f(T)$. An interesting property of functions that are both submodular and monotone is that the truncation of such a function is also submodular and monotone. In other words, $\textup{min}(f(S), c)$ is still submodular when $f$ is monotone submodular and $c$ is a constant.
 
-
-
-
-
 ## Submodularity and Monotonicity Give 1 - 1/e
-
 
 The wonderful thing about submodular functions is that we have a lot of great algorithmic guarantees for working with them. We'll prove right now that the coverage problem (while it might be hard to solve in general) can be approximated pretty well by the greedy algorithm.
 
@@ -92,86 +68,39 @@ In general this problem is NP-hard, meaning you're not going to find a solution 
 
 We'll prove this in just a little bit more generality, and the generality is quite useful. If we call $S_1, S_2, \dots, S_l$ the sets chosen by the greedy algorithm (where now we might run the greedy algorithm for $l > k$ steps), then for all $l, k$, we have
 
-
 $\displaystyle f(S_l) \geq \left ( 1 - e^{-l/k} \right ) \max_{T: |T| \leq k} f(T)$
-
-
-
 
 This allows us to run the algorithm for more than $k$ steps to get a better approximation by sets of larger size, and quantify how much better the guarantee on that approximation would be. It's like an algorithmic way of hedging your risk. So let's prove it.
 
-
 _Proof. _Let's set up some notation first. Fix your $l$ and $k$, call $S_i$ the set chosen by the greedy algorithm at step $i$, and call $S^*$ the optimal subset of size $k$. Further call $\textup{OPT}$ the value of the best set $f(S^*)$. Call $x_1^*, \dots, x_k^*$ the elements of $S^*$ (the order is irrelevant). Now for every $i < l$ monotonicity gives us $f(S^*) \leq f(S^* \cup S_i)$. We can unravel this into a sum of marginal gains of adding single elements. The first step is
-
 
 $\displaystyle f(S^* \cup S_i) = f(S^* \cup S_i) - f(\{ x_1^*, \dots, x_{k-1}^* \} \cup S_i) + f(\{ x_1^*, \dots, x_{k-1}^* \} \cup S_i)$
 
-
-
-
 The second step removes $x_{k-1}^*$, from the last term, the third removes $x_{k-2}^*$, and so on until we have removed all of $S^*$ and get this sum
-
-
-
 
 $\displaystyle f(S^* \cup S_i) = f(S_i) + \sum_{j=1}^k \left ( f(S_i \cup \{ x_1^*, \dots, x_j^* \}) - f(S_i \cup \{ x_1^*, \dots, x_{j-1}^* \} ) \right )$
 
-
-
-
 Now, applying submodularity, we can change all of these marginal benefits of "adding one more $S^*$ element to $S_i$ already with some $S^*$ stuff" to "adding one more $S^*$ element to just $S_i$." In symbols, the equation above is at most
-
-
-
 
 $\displaystyle f(S_i) + \sum_{x \in S^*} f(S_i \cup \{ x \}) - f(S_i)$
 
-
-
-
 and because $S_{i+1}$ is greedily chosen to maximize the benefit of adding a single element, so the above is at most
-
-
-
 
 $\displaystyle f(S_i) + \sum_{x \in S^*} f(S_{i+1}) - f(S_i) = f(S_i) + k(f(S_{i+1}) - f(S_i))$
 
-
-
-
 Chaining all of these together, we have $f(S^*) - f(S_i) \leq k(f(S_{i+1}) - f(S_i))$. If we call $a_{i} = f(S^*) - f(S_i)$, then this inequality can be rewritten as $a_{i+1} \leq (1 - 1/k) a_{i}$. Now by induction we can relate $a_l \leq (1 - 1/k)^l a_0$. Now use the fact that $a_0 \leq f(S^*)$ and the common inequality $1-x \leq e^{-x}$ to get
-
-
-
 
 $\displaystyle a_l = f(S^*) - f(S_l) \leq e^{-l/k} f(S^*)$
 
-
-
-
 And rearranging gives $f(S_l) \geq (1 - e^{-l/k}) f(S^*)$.
-
-
-
 
 $\square$
 
-
-
-
 Setting $l=k$ gives the approximation bound we promised. But note that allowing the greedy algorithm to run longer can give much stronger guarantees, though it requires you to sacrifice the cardinality constraint. $1 - 1/e$ is about 63%, but doubling the size of $S$ gives about an 86% approximation guarantee. This is great for people in the real world, because you can quantify the gains you'd get by relaxing the constraints imposed on you (which are rarely set in stone).
-
-
-
 
 So this is really great! We have quantifiable guarantees on a stupidly simple algorithm, and the setting is super general. And so if you have your problem and you manage to prove your function is submodular (this is often the hardest part), then you are likely to get this nice guarantee.
 
-
-
-
-
 ## Extensions and Variations
-
 
 This result on monotone submodular functions is just one part of a vast literature on finding approximation algorithms for submodular functions in various settings. In closing this post we'll survey some of the highlights and provide references.
 

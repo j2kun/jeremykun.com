@@ -60,13 +60,8 @@ we should see a value that is approximately 5000. Indeed, when I tried it, I go
 
 One might wonder how many calls to biasedCoin we expect to make before the function returns. One can recognize the experiment as a geometric distribution and use the known expected value, but it is short so here is a proof. Let $s$ be the probability of seeing two different outcomes in the biased coin flip, and $t$ the expected number of trials until that happens. If after two flips we see the same outcome (HH or TT), then by independence the expected number of flips we need is unchanged. Hence
 
-
 $t = 2s + (1-s)(2 + t)$
 
-
-
-
 Simplifying gives $t = 2/s$, and since we know $s = 2p(1-p)$ we expect to flip the coin $\frac{1}{p(1-p)}$ times.
-
 
 For a deeper dive into this topic, see [these notes](http://www.eecs.harvard.edu/~michaelm/coinflipext.pdf) by Michael Mitzenmacher from Harvard University. They discuss strategies for simulating a fair coin from a biased coin that are optimal in the expected number of flips required to run the experiment once. He has also written a book on the subject of [randomness in computing](http://www.amazon.com/Probability-Computing-Randomized-Algorithms-Probabilistic/dp/0521835402).

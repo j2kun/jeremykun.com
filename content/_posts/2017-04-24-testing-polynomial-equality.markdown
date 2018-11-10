@@ -13,8 +13,6 @@ categories:
 
 **Solution:** Let $d$ be the maximum degree of all terms in $p, q$. Choose a finite set $S \subset F$ with $|S| > 2d$. Repeat the following process 100 times:
 
-
-
 	  1. Choose inputs $z_1, z_2, \dots, z_n \in S$ uniformly at random.
 	  2. Check if $p(z_1, \dots, z_n) = q(z_1, \dots, z_n)$.
 
@@ -34,69 +32,31 @@ Indeed, for single variable polynomials it's well known that a nonzero degree $d
 
 _Proof. _By induction on the number of variables $n$. For the case of $n=1$, it's the usual fact that a single-variable polynomial can have at most $d$ roots. Now for the inductive step, assume this is true for all polynomials with $n-1$ variables, and we will prove it for $n$ variables. Write $p$ as a polynomial in the variable $x_1$, whose coefficients are other polynomials:
 
-
 $\displaystyle p(x_1, \dots, x_n) = \sum_{k=1}^d Q_k(x_2, \dots, x_n) x_1^k$
-
-
-
 
 Here we've grouped $p$ by the powers of $x_1$, so that $Q_i$ are the coefficients of each $x_1^k$. This is useful because we'll be able to apply the inductive hypothesis to one of the $Q_i$'s, which have fewer variables.
 
-
-
-
 Indeed, we claim there must be some $Q_k$ which is nonzero for $k > 0$. Clearly, since $p$ is not the zero polynomial, some $Q_k$ must be nonzero. If the only nonzero $Q_k$ is $Q_0$, then we're done because $p$ doesn't depend on $x_1$ at all. Otherwise, take the largest nonzero $Q_k$. It's true that the degree of $Q_k$ is at most $d-k$. This is true because the term $x_1^k Q_k$ has degree at most $d$.
-
-
-
 
 By the inductive hypothesis, if we choose $z_2, \dots, z_n$ and plug them into $Q_k$, we get zero with probability at most $\frac{d-k}{|S|}$. The crucial part is that if this _polynomial_ coefficient is nonzero, then the entire polynomial $p$ is nonzero. This is true even if an unlucky choice of $x_1 = z_1$ causes the resulting evaluation $p(z_1, \dots, z_n) \neq 0$.
 
-
-
-
 To think about it a different way, imagine we're evaluating the polynomial in phases. In the first phase, we pick the $z_2, \dots, z_n$. We could also pick $z_1$ independently but not reveal what it is, for the sake of this story. Then we plug in the $z_2, \dots, z_n$, and the result is a one-variable polynomial whose largest coefficient is $Q_k(z_1, \dots, z_n)$. The inductive hypothesis tells us that this one-variable polynomial is the zero polynomial with probability at most $\frac{d-k}{|S|}$. (It's probably a smaller probability, since _all_ the coefficients have to be zero, but we're just considering the largest one for the sake of generality and simplicity)
-
-
-
 
 Indeed, the resulting polynomial after we plug in $z_2, \dots, z_n$ has degree $k$, so we can apply the inductive hypothesis to it as well, and the probability that it's zero for a random choice of $z_1$ is at most $k / |S|$.
 
-
-
-
 Finally, the probability that both occur can be computed using basic probability algebra. Let $A$ be the event that, for these $z_i$ inputs, $Q_k$ is zero, and $B$ the event that $p$ is zero for the $z_i$ and the additional $z_1$.
-
-
-
 
 Then $\textup{Pr}[B] = \textup{Pr}[B \textup{ and } A] + \textup{Pr}[B \textup{ and } !A] = \textup{Pr}[B \mid A] \textup{Pr}[A] + \textup{Pr}[B \mid !A] \textup{Pr}[!A]$.
 
-
-
-
 Note the two quantities above that we don't know are $\textup{Pr}[B \mid A]$ and $\textup{Pr}[!A]$, so we'll bound them from above by 1. The rest of the quantities add up to exactly what we want, and so
-
-
-
 
 $\displaystyle  \textup{Pr}[B] \leq \frac{d-k}{|S|} + \frac{k}{|S|} = \frac{d}{|S|},$
 
-
-
-
 which proves the theorem.
-
-
-
 
 $\square$
 
-
-
-
 While this theorem is almost trivial to prove (it's elementary induction, and the obvious kind), it can be used to solve polynomial identity testing, as well as finding perfect matchings in graphs and test numbers for primality.
-
 
 But while the practical questions are largely solved–it's hard to imagine a setting where you'd need faster primality testing than the existing randomized algorithms–the theory and philosophy of the result is much more interesting.
 

@@ -18,9 +18,7 @@ tags:
 
 _This is a precursor to a post which will actually use graph coloring to do interesting computational things. Even so, there are many fascinating ideas and theorems that result from graph coloring, so we devote an entire post just to it. For those who need an additional primer on the basic ideas of graph theory, see [our gentle primer on the subject](http://jeremykun.wordpress.com/2011/06/26/teaching-mathematics-graph-theory/)._
 
-
 ## Why, Paris Hath Colour Enough.
-
 
 [caption id="attachment_5627" align="alignright" width="250"][![How many colors are required to color the provinces of Costa Rica?](https://jeremykun.files.wordpress.com/2011/07/provinces.gif?w=300)
 ](https://jeremykun.files.wordpress.com/2011/07/provinces.gif) How many colors are required to color the provinces of Costa Rica?[/caption]
@@ -58,7 +56,6 @@ We now turn our attention to coloring Paris. To do so, we use the following "gre
             assigned to neighbors of w
           Color w with the smallest number that is not in S_w
 
-
 Obviously, the quality of the coloring depends on the order in which we investigate the vertices. Further, there always exists an ordering of the vertices for which this greedy algorithm produces a coloring which achieves the minimum required number of colors, $\chi(G)$. Applying this to Pairs, we get the following 4-coloring:
 
 [![](http://jeremykun.files.wordpress.com/2011/07/paris-graph-colored.png)
@@ -73,16 +70,11 @@ But this is not enough. Can we do it with just three colors? The call of the wil
 
 We note (without proof) that to determine $\chi(G)$ algorithmically is [NP-complete](http://en.wikipedia.org/wiki/NP-complete) in general. Colloquially this means a fast solution is believed not to exist, and to find one (or prove this belief is true) would immediately make one the most famous mathematician in the world. In other words, it's very, very hard. The only general solutions take at worst an exponential or factorial amount of time with regards to the number of vertices in the graph. In other words, trying to run a general solution on a graph of 50 vertices is likely to take 50! (a 65-digit number) steps to finish, far beyond the computational capacity of any computer in the foreseeable future.
 
-
 ## We Are But Planar Fellows, Sir.
-
 
 Now we turn to a different aspect of graph theory, which somewhat simplifies the coloring process. The maps we have been investigating thus far are special. Specifically, their representations as graphs admit drawings in which no two edges cross. This is obvious by our construction, but on the other hand we recognize that not all graphs have such representations. For instance, try to draw the following graph so that no two edges cross:
 
-
 ![](http://upload.wikimedia.org/wikipedia/commons/1/11/Complete_bipartite_graph_K3%2C3.svg)
-
-
 
 If it seems hard, that's because it's impossible. The proof of this fact requires a bit more work, and we point the reader in the direction of [Wagner's Theorem](http://en.wikipedia.org/wiki/Planar_graph#Kuratowski.27s_and_Wagner.27s_theorems). For now, we simply recognize that not all graphs have such drawings. This calls for a definition!
 
@@ -122,9 +114,7 @@ Otherwise, there is a path from $v_1$ to $v_3$. This path is special, because wi
 
 So that was entirely done with elementary arguments, and is a pretty neat proof. Of course, we really want the head of the four-color theorem on a mantle, but he is a much more elusive beast.
 
-
 ## Computers Doing Proofs? Blasphemy.
-
 
 But that is what it took to finish off the four-color theorem. Despite a hundred years of research and diversions, it took a brute-force computer search of 1,936 configurations, and over 1200 computer hours, to prove that no counterexample to the four-color theorem exists.
 

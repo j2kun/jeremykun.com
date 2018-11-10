@@ -20,7 +20,6 @@ tags:
 
 ## The Recipe for Classification
 
-
 One important task in machine learning is to classify data into one of a fixed number of classes. For instance, one might want to discriminate between useful email and unsolicited spam. Or one might wish to determine the species of a beetle based on its physical attributes, such as weight, color, and mandible length. These "attributes" are often called "features" in the world of machine learning, and they often correspond to dimensions when interpreted in the framework of linear algebra. As an interesting warm-up question for the reader, what would be the features for an email message? There are certainly many correct answers.
 
 The typical way of having a program classify things goes by the name of _supervised learning_. Specifically, we provide a set of already-classified data as input to a _training algorithm_, the training algorithm produces an internal representation of the problem (a _model_, as statisticians like to say), and a separate _classification algorithm_ uses that internal representation to classify new data. The training phase is usually complex and the classification algorithm simple, although that won't be true for the method we explore in this post.
@@ -37,9 +36,7 @@ This axiom is actually a very strong assumption which is certainly not true of e
 
 Once we understand the axiom, the machine learning "algorithm" is essentially obvious. For training, store a number of data points whose classes are known and fix a metric. To determine the class of an unknown data point, simply use the most common class of its nearest neighbors. As one may vary (as a global parameter) the number of neighbors one considers, this method is intuitively called _k-nearest-neighbors._
 
-
 ## The Most Basic Way to Learn: Copy Your Neighbors
-
 
 Let's iron out the details with a program and test it on some dummy data. Let's construct a set of points in $\mathbb{R}^2$ which manifestly satisfies the axiom of neighborliness. To do this, we'll use Python's random library to make a dataset sampled from two independent normal distributions.
 
@@ -98,9 +95,7 @@ print f((-3,0))
 
 The reader may fiddle around with this example as desired, but we will not pursue it further. As usual, [all code used in this post](https://github.com/j2kun/knn) is available on [this blog's Github page](https://github.com/j2kun/). Let's move on to something more difficult.
 
-
 ## Handwritten Digits
-
 
 One of the most classic examples in the classification literature is in recognizing handwritten digits. This originally showed up (as the legend goes) in the context of the United States Postal Service for the purpose of automatically sorting mail by the zip code of the destination. Although this author has no quantitative proof, the successful implementation of a scheme would likely save an enormous amount of labor and money. According to the [Postal Facts site](http://about.usps.com/who-we-are/postal-facts/welcome.htm#H1), there are 31,509 postal offices in the U.S. and, assuming each one processes mail, there is at least one employee at each office who would spend some time sorting by zip code. Given that the USPS processes 23 million pieces of mail per hour, a conservative estimate puts each office spending two hours of labor per day on sorting mail by zip code (resulting in a very rapid pace of 146.52 pieces of mail sorted per minute per worker). At a lower bound of [$18/hr](http://www.glassdoor.com/Salary/US-Postal-Service-Salaries-E3032.htm) this amounts to a cost of $1,134,324 per day, or over 400 million dollars per year. Put in perspective, in one year the amount of money saved equals the entire [two-year tuition](http://morainevalley.edu/admiss/tuition.htm#calculations) of [Moraine Valley Community College](http://en.wikipedia.org/wiki/Moraine_Valley_Community_College) for 68,000 students (twice the current enrollment).
 
@@ -127,7 +122,6 @@ In other words, our metric space is $\left \{ 0,1 \right \}^{256}$, and we choos
     1 1 0 0 0 0 0 1 1 0 0 0 0 0 0 0 
     1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 
     0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0, 6
-
 
 After reading in the data appropriately, we randomly split the data set into two pieces, train on one piece, and test on the other. The following function does this,  returning the success rate of the classification algorithm on the testing piece.
 
@@ -164,20 +158,11 @@ A run with $k=1$ gives a surprisingly good 89% success rate. Varying $k$, we see
 [caption id="attachment_2402" align="aligncenter" width="584"][![](http://jeremykun.files.wordpress.com/2012/08/k-vs-percentage-correct.png)
 ](http://jeremykun.files.wordpress.com/2012/08/k-vs-percentage-correct.png) A graph of classification accuracy against k for values of k between 1 and 50. The graph clearly shows a downward trend as k increases, but all values k < 10 are comparably good.[/caption]
 
-
 Of course, there are many improvements we could make to this naive algorithm. But considering that it utilizes no domain knowledge and doesn't manipulate the input data in any way, it's not too shabby.
-
-
-
 
 As a side note, it would be fun to get some tablet software and have it use this method to recognize numbers as one writes it. Alas, we have little time for these sorts of applications.
 
-
-
-
-
 ## Advantages, Enhancements, and Problems
-
 
 One reason k-nearest-neighbors is such a common and widely-known algorithm is its ease of implementation. Indeed, we implemented the core algorithm in a mere three lines of Python. On top of that, k-nearest-neighbors is [pleasingly parallel](http://en.wikipedia.org/wiki/Embarrassingly_parallel), and inherently flexible. Unlike the [Perceptron algorithm](http://jeremykun.wordpress.com/2011/08/11/the-perceptron-and-all-the-things-it-cant-perceive/), which relies on linear separability, k-nearest-neighbors and the axiom of neighborliness allow for datasets with many different geometric structures. [These lecture notes](http://courses.cs.tamu.edu/rgutier/cs790_w02/l8.pdf) give a good example, as shown below, and the reader can surely conjure many more.
 

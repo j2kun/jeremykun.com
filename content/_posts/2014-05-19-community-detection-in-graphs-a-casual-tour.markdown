@@ -32,9 +32,7 @@ Recall, if you aren't already familiar with [this blog's gentle introduction to 
 
 One of the most common topics to talk about for graphs is the notion of a _community_. But what does one actually mean by that word? It's easy to give an informal definition: a subset of vertices $C$ such that there are many more edges between vertices in $C$ than from vertices in $C$ to vertices in $V - C$ (the complement of $C$). Try to make this notion precise, however, and you open a door to a world of difficult problems and open research questions. Indeed, nobody has yet come to a conclusive and useful definition of what it means to be a community. In this post we'll see why this is such a hard problem, and we'll see that it mostly has to do with the word "useful." In future posts we plan to cover some techniques that have found widespread success in practice, but this post is intended to impress upon the reader how difficult the problem is.
 
-
 ## The simplest idea
-
 
 The simplest thing to do is to say a community is a subset of vertices which are _completely_ connected to each other. In the technical parlance, a community is a subgraph which forms a _clique._ Sometimes an $n$-clique is also called a _complete graph on $n$ vertices_, denoted $K_n$. Here's an example of a 5-clique in a larger graph:
 
@@ -47,9 +45,7 @@ But we have to take these impossibility results with a grain of salt: they only
 
 So what about an "average case" graph? To formulate this typically means we need to consider graphs randomly drawn from a distribution.
 
-
 ## Random graphs
-
 
 The simplest kind of "randomized" graph you could have is the following. You fix some set of vertices, and then run an experiment: for each pair of vertices you flip a coin, and if the coin is heads you place an edge and otherwise you don't. This defines a distribution on graphs called $G(n, 1/2)$, which we can generalize to $G(n, p)$ for a coin with bias $p$. With a slight abuse of notation, we call $G(n, p)$ the _Erdős–Rényi _random graph (it's not a graph but a distribution on graphs). [We explored this topic](http://jeremykun.com/2013/08/22/the-erdos-renyi-random-graph/) form a more mathematical perspective earlier on this blog.
 
@@ -61,9 +57,7 @@ Another avenue shows that things are still not as easy as they seem in Erdős�
 
 So Erdős–Rényi graphs seem to have no hope. What's next? There are a couple of routes we can take from here. We can try to change our random graph model to be more realistic. We can relax our notion of communities from cliques to something else. We can do both, or we can do something completely different.
 
-
 ## Other kinds of random graphs
-
 
 There is an interesting model of [Barabási and Albert](http://arxiv.org/abs/condmat/9910332), often called the "preferential attachment" model, that has been described as a good model of large, quickly growing networks like the internet. Here's the idea: you start off with a two-clique $G = K_2$, and at each time step $t$ you add a new vertex $v$ to $G$, and new edges so that the probability that the edge $(v,w)$ is added to $G$ is proportional to the degree of $w$ (as a fraction of the total number of edges in $G$). Here's an animation of this process:
 
@@ -81,9 +75,7 @@ Now you pick two edge stubs at random and connect them. One usually allows self-
 
 The reason such a model is useful is that when you're working with graphs in the real world, you usually have statistical information available. It's simple to compute the degree of each vertex, and so you can use this random graph as a sort of "prior" distribution and look for anomalies. In particular, this is precisely how one of the leading measures of community structure works: the measure of modularity. We'll talk about this in the next section.
 
-
 ## Other kinds of communities
-
 
 Here's one easy way to relax our notion of communities. Rather than finding complete subgraphs, we could ask about finding very dense subgraphs (ignoring what happens outside the subgraph). We compute density as the average degree of vertices in the subgraph.
 
@@ -106,40 +98,19 @@ Still worse, while there are some readily accepted heuristics that often "do we
 
 Another empirical issue is that modularity seems to fail to find small communities. That is, if your graph has some large communities and some small communities, strictly maximizing the modularity is not the right thing to do. So we've seen that even the leading method in the field has some issues.
 
-
 ## Something completely different
-
-
-
 
 The last method I want to sketch is in the realm of "something completely different." The notion is that if we're given a graph, we can run some experiment on the graph, and the results of that experiment can give us insight into where the communities are.
 
-
-
-
 The experiment I'm going to talk about is the _random walk_. That is, say you have a vertex $v$ in a graph $G$ and you want to find some vertices that are "closest" to $v$. That is, those that are most likely to be in the same community as $v$. What you can do is run a random walk starting at $v$. By a "random walk" I mean you start at $v$, you pick a neighbor at random and move to it, then repeat. You can compute statistics about the vertices you visit in a sample of such walks, and the vertices that you visit most often are those you say are "in the same community as $v$. One important parameter is how long the walk is, but it's generally believed to be best if you keep it between 3-6 steps.
-
-
-
 
 Of course, this is not a partition of the vertices, so it's not a community detection algorithm, but you can turn it into one. Run this process for each vertex, and use it to compute a "distance" between all the pairs of vertices. Then you compute a tree of partitions by lumping the closest pairs of vertices into the same community, one at a time, until you've got every vertex. At each step of the way, you compute the modularity of the partition, and when you're done you choose the partition that maximizes modularity. This algorithm as a whole is called the _walktrap clustering_ algorithm, and was introduced by [Pons and Latapy](http://www-rp.lip6.fr/~latapy/Publis/communities.pdf) in 2005.
 
-
-
-
 This sounds like a really great idea, because it's intuitive: there's a relatively high chance that the friends of your friends are also your friends. It's also really great because there is an easily measurable tradeoff between runtime and quality: you can tune down the length of the random walk, and the number of samples you take for each vertex, to speed up the runtime but lower the quality of your statistical estimates. So if you're working on _huge_ graphs, you get a lot of control and a clear idea of exactly what's going on inside the algorithm (something which is not immediately clear in a lot of these papers).
-
-
-
 
 Unfortunately, I'm not aware of any concrete theoretical guarantees for walktrap clustering. The one bit of theoretical justification I've read over the last year is that you can relate the expected distances you get to certain spectral properties of the graph that are known to be related to community structure, but the lower bounds on maximizing modularity already suggest (though they do not imply) that walktrap won't do that well in the worst case.
 
-
-
-
-
 ## So many algorithms, so little time!
-
 
 I have only brushed the surface of the literature on community detection, and the things I have discussed are heavily biased toward what I've read about and used in my own research. There are methods based on information theory, label propagation, and obscure physics processes like "[spin glass](http://en.wikipedia.org/wiki/Spin_glass)" (whatever that is, it sounds frustrating).
 

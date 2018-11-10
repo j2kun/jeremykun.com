@@ -73,9 +73,7 @@ Jürgen Schmidhuber, a long time proponent of low-complexity art, spent a very l
 ![](http://www.idsia.ch/~juergen/locoart/butterfly.gif)
     ![](http://www.idsia.ch/~juergen/locoart/profile.gif)
 
-
 ![](http://www.idsia.ch/~juergen/locoart/gym.gif)
-
 
 Marvelous. Our creations will be much uglier. But we admit, one must start somewhere, and it might as well be where we feel most comfortable: mathematics and programming.
 

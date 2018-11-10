@@ -22,15 +22,11 @@ tags:
 
 _We assume the reader is familiar with the concepts of determinism and finite automata, or has read [the corresponding primer](http://jeremykun.wordpress.com/2011/07/02/determinism-and-finite-automata-a-primer/) on this blog._
 
-
 ## The Mother of All Computers
-
 
 Last time we saw some models for computation, and saw in turn how limited they were. Now, we open Pandrora's hard drive:
 
 **Definition**: A _Turing machine_ is a tuple $(S, \Gamma, \Sigma, s_0, F, \tau)$, where
-
-
 
 	  * $S$ is a set of states,
 	  * $\Gamma$ is a set of _tape symbols_, including a special _blank symbol_ $b$,
@@ -48,9 +44,7 @@ Finally, we only allow entry into an accept or reject state. Once the machine en
 
 Now, we could provide a detailed example of a Turing machine, with every aspect of the above definition accounted for. However, that is an unnecessarily bloated endeavor, and we leave such obsequiousness to [Wikipedia](http://en.wikipedia.org/wiki/Turing_machine#Examples_of_Turing_machines), instead focusing on the bigger picture at hand. We gratefully take the liberty to stand on the lemma-encrusted shoulders of giants, and simply describe algorithms that are provably encodable on a Turing machine. The nature of permissible algorithms will become clearer as we give more examples.
 
-
 ## The Halting Problem
-
 
 We now find ourselves capable of performing a very important new operation: infinitely looping. Specifically, it is not hard to design a Turing machine which never enters an accepting or rejecting state. Simply have one non-accept/reject state, $s$, and if we are in state $s$, shift left and write a 1. Despite having a finite input, this operation will never cease, nor will it ever be in the same configuration twice. This was never possible with a DFA, NFA, or PDA, because computation always ended with the last input symbol!
 
@@ -66,7 +60,6 @@ In particular, we may describe our algorithms as vaguely as we wish, as long as 
        write 'x' to the tape
     
     accept
-
 
 Notice that the above algorithm halts if and only if the tape begins with an odd number of '1's written to it, and it never rejects.
 
@@ -84,16 +77,9 @@ But now that we've established the existence of undecidable problems, we are giv
 
 We denote an encoding of a Turing machine $T$ and an input $w$ to $T$ together as a pair $[T,w]$. Then, we construct the set of halting machine-input pairs:
 
-
 $H = \left \{ [T,w] | T \textup{ is a Turing machine, } w \textup{ is an input to } T, \textup{ and } T \textup{ halts on } w \right \}$
 
-
-
-
 We conjecture that this problem is undecidable, and prove it so by contradiction. _Proof_. Suppose $U$ is a Turing machine which decides acceptance in $H$. Construct another Turing machine $V$ as follows.
-
-
-
 
     
     On input [T] (T is a Turing machine):
@@ -101,27 +87,13 @@ We conjecture that this problem is undecidable, and prove it so by contradiction
        if U rejects, accept
        if U accepts, loop infinitely
 
-
-
-
 Before the crux of the proof, let us recall that $U$ simply determines whether $T$ halts on an input. Then, when we run $V$ on $[T]$, we have the sub-computation of deciding whether $T$ halts when run on its own description. In this case, $V$ accepts when $T$ loops infinitely when run on itself, and $V$ loops infinitely otherwise.
-
-
-
 
 Now (the magic!) run $V$ on $[V]$. If $V$ accepts, that means $V$, when run on itself, does not halt (i.e. $U$ rejects $[V,V]$), a contradiction. On the other hand, if $V$ loops infinitely, then $U$ rejects $[V,V]$, implying $V$ accepts, a contradiction.
 
-
-
-
 Thus, we have proven that $V$ both halts and does not halt when run on itself! This glaring contradiction implies that $V$ cannot exist. But we built $V$ up from $U$ without logical error, so we conclude that $U$ cannot exist, and the theorem is proved.
 
-
-
-
-
 ## Wrapping Up
-
 
 The theory of computing goes much further than the halting problem. Indeed, most undecidable problems are proven so by reducing them to the halting problem (if one can decide problem $X$ then one can decide the halting problem, a contradiction). But beyond decidability, there is a large field of study in computational efficiency, in which all studied algorithms are run on a Turing machine. Further, studies of complexity and alternative computational models abound, including a persistent problem of classifying "how hard" problems are to compute. The interested reader should Google "P vs. NP" for more information. Unfortunately, an adequate description of the various time classes and problems therein is beyond the scope of this blog. All we require is a working knowledge of the terminology used in speaking of Turing machines, and an idea of what kinds of algorithms can be implemented on one.
 

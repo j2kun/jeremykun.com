@@ -20,7 +20,6 @@ tags:
 ## [![](http://jeremykun.files.wordpress.com/2012/02/beaver-pair.jpg)
 ](http://jeremykun.files.wordpress.com/2012/02/beaver-pair.jpg)Finding Bigger Numbers, a Measure of Human Intellectual Progress
 
-
 Before we get into the nitty gritty mathematics, I'd like to mirror the philosophical and historical insights that one can draw from the study of large numbers.
 
 That may seem odd at first. What does one even mean by "studying" a large number? Of course, I don't mean we stare at the number 1,000,000,000,000, which is quite large, and wonder how mankind can benefit from its elusive properties. What I really mean is that scientific and mathematical discoveries are very closely tied in our collective ability to _describe_ large numbers.
@@ -30,9 +29,7 @@ That may seem even odder, but let's enjoy a short historical digression to illus
 [![](http://jeremykun.files.wordpress.com/2012/02/sahara-desert-morocco.jpg?w=300)
 ](http://jeremykun.files.wordpress.com/2012/02/sahara-desert-morocco.jpg)In the age of the Greeks, it was generally believed that some quantities were beyond counting. Things like the number of grains of sand in the desert were forfeit to the realm of "infinity." But in the third century B.C.E., Archimedes recognized that they weren't beyond counting. And in his treatise _The Sand Reckoner_, he developed a rudimentary notion of exponentials, and was able to provide an upper bound on such mysterious numbers:
 
-
 <blockquote>There are some [...] who think that the number of the sand is infinite in multitude [...] again there are some who, without regarding it as infinite, yet think that no number has been named which is great enough to exceed its multitude [...] But I will try to show you [numbers that] exceed not only the number of the mass of sand equal in magnitude to the earth [...] but also that of a mass equal in magnitude to the universe.</blockquote>
-
 
 He proceeded to give an upper bound on the number of grains of sand needed to fill the universe: $10^{63}$. Now this was a quite large number, and certainly beyond most people's ability to visualize in quantity. But by the time Arabic numerals and algebra became common worldly knowledge in the Middle Ages, exponentiation became a paradigm trivially expressed, allowing people to write such large numbers as $10^{10^{10}}$ with the same ease we do today. These sorts of counting exercises became the topic of mathematical folklore (think of the tale of [rice filling a chessboard](http://en.wikipedia.org/wiki/Wheat_and_chessboard_problem)), and they run amok in contemporary discussions of finance, statistics, physics, economics, and computer science.
 
@@ -42,33 +39,18 @@ Let's take a large digit, say, 9, and repeat it a thousand times to make a numbe
 
 Now, come the 20th century we see two big jumps in the expression of large numbers. The first is the [Ackermann Function](http://en.wikipedia.org/wiki/Ackermann_function). For the purposes of this post, we can think of it as simply a sequence of numbers, which is constructed as follows. The first number in the sequence, $A(1)$, is simply $1+1$. The next is $A(2) = 2*2$, then $A(3) = 3^3$, and so on. Of course, defining "and so on" is tough, because we don't have commonly known names for such operations. The fourth number in this sequence $A(4)$, is 4 _raised to the power of itself four times_. I.e., $A(4) = 4^{4^{4^4}}$. We call this operation a _tetration_ of the number 4 to the height of 4, and don it with the notation $4 \uparrow \uparrow 4$. This isn't so hard to visualize, but while it's a huge number in itself (it has $10^{154}$ decimal digits), the best is yet to come. The _fifth_ element of this sequence, $A(5)$, is the _nested tetration of 5 with itself 5 times_. In other words, it is
 
-
 $A(5) = 5 \uparrow \uparrow (5 \uparrow \uparrow (5 \uparrow \uparrow (5 \uparrow \uparrow 5)))$
-
-
-
 
 For convenience, we give this the notation $5 \uparrow \uparrow \uparrow 5$, and call it _pentation_. Of course, $A(6)$ would then be 6 _hexated_ to the height of 6, and so on forever. The brave reader will take this to its extreme, and imagine how huge $A(A(5))$ is... Mind blowing.
 
-
-
-
 Of course, one might ask: where the hell did this beast come from? What are Ackermann numbers good for anyway? The Ackermann Function and it's associated sequence, it turns out, serve as important counterexamples in the theory of computable functions. The familiar reader will recognize the claim that the Ackermann Function is computable, but not primitive recursive. For the rest of the world, here's a historical explanation of its origin.
-
-
-
 
 [caption id="attachment_1691" align="alignright" width="223"][![](http://jeremykun.files.wordpress.com/2012/02/alan_turing_photo.jpg)
 ](http://jeremykun.files.wordpress.com/2012/02/alan_turing_photo.jpg) Alan Turing, the inventor of the Turing machine.[/caption]
 
-
 Back in the days before computers (the early 20th century), mathematicians were fiercely interested in the theory of computing things. The common visitor to this blog will recall our primers on [Finite Automata](http://jeremykun.wordpress.com/2011/07/02/determinism-and-finite-automata-a-primer/), [Turing Machines](http://jeremykun.wordpress.com/2011/07/04/turing-machines-a-primer/), and such things as the [Game of Life](http://jeremykun.wordpress.com/2011/06/29/conways-game-of-life/). It might not be a surprise to hear that there are many many different models of computation, and before real computers actually came along it was the job of mathematicians to compare them, sorting out which were "more useful" or "more expressive" than others. In the end, the Turing machine model was actually used to create rudimentary computers, which have since evolved into the supercomputers and iPads we have today. The mathematicians exploring computation during this era were at the forefront of a technological and intellectual revolution. On their shoulders, humanity entered the so-called Age of Information.
 
-
-
-
 Perhaps the original such study of computation was the idea of a _computable function _of the natural numbers. Given a set of elementary functions which are axiomatically defined to be computable, and a way of combining these elementary functions to make more complicated functions, mathematicians constructed a huge class of functions that were computable. For instance, the function which adds two numbers together is computable; we all learned a nice algorithm to perform addition in grade school. The definitions and axioms were chosen in order to affirm such easy tasks, and then mathematicians explored the axioms to see how far they could push them. This line of reasoning would bring one to the ultimate quest: for a given model of computation, figure out what sorts of things are _not computable_.
-
 
 Of course, even without a firm foundation in the theory of computable functions, we would guess that the sequence of Ackermann numbers is computable. In fact, using the model of Turing machines (which happens to be equivalent to the theory of computable functions, insofar as the tasks it deems computable) we can prove it so. We have unbounded space and unbounded time, and we know for a fact that all of these mathematical operations boil down to repeated multiplication. We can even present pseudocode, and such sites as RosettaCode have [hundreds of implementations](http://rosettacode.org/wiki/Ackermann_function), ranging from a single line of [K](http://en.wikipedia.org/wiki/K_(programming_language)) to a tail-recursive implementation in [OCaml](http://en.wikipedia.org/wiki/OCaml). There is no doubt about it, the Ackermann function is computable. In a somewhat naive sense, the Ackermann sequence is no deeper or more insightful than Archimedes's first attempt at exponentiation. It just carries the idea of exponentiation as far as it can go.
 
@@ -78,9 +60,7 @@ As we have seen before, one way to prove that something is not computable is to 
 
 Of course, the idea that such a sequence should even exist is dubious. But amazingly enough, we will construct one, and find the next level of big numbers.
 
-
 ## Busy Beaver Numbers
-
 
 The idea behind Busy Beavers is quite simple. It was discovered by [Tibor Radó](http://en.wikipedia.org/wiki/Tibor_Rad%C3%B3), a Hungarian mathematician, in May of 1962, and does not rely at all on the arithmetic expressions of the past. The idea requires a bit of knowledge about Turing machines, so after promoting our [primer](http://jeremykun.wordpress.com/2011/07/04/turing-machines-a-primer/) once more, we will reiterate the ideas.
 
@@ -105,9 +85,7 @@ When $M$ is given the input $\left \langle T \right \rangle$, a description of a
 
 This is a contradiction, so the sequence $BB(n)$ cannot be computable.
 
-
 $\square$
-
 
 This gives some insight into how ridiculously fast $BB(n)$ grows. In fact, it not only grows faster than the Ackermann function, but it grows faster than _any sequence of numbers that could ever be computed by a machine!_ Even with infinite time to do so! Indeed, if $BB(n)$ were bounded by some computable function, then we could compute the upper bounds for $BB(n)$, use that to eliminate Turing machines that run too long until we narrow down the exact answer, and this would all happen in a finite amount of time.
 

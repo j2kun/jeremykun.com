@@ -19,67 +19,33 @@ tags:
 
 ## The First Isomorphism Theorem
 
-
 The meat of [our last primer](http://jeremykun.wordpress.com/2012/12/08/groups-a-primer/) was a proof that quotient groups are well-defined. One important result that helps us compute groups is a very easy consequence of this well-definition.
 
 Recall that if $G,H$ are groups and $\varphi: G \to H$ is a group homomorphism, then the image of $\varphi$ is a subgroup of $H$. Also the _kernel_ of $\varphi$ is the normal subgroup of $G$ consisting of the elements which are mapped to the identity under $\varphi$. Moreover, we proved that the quotient $G / \ker \varphi$ is a well-defined group, and that _every_ normal subgroup $N$ is the kernel of the quotient map $G \to G/N$. These ideas work together to compute groups with the following theorem. Intuitively, it tells us that the existence of a homomorphism between two groups gives us a way to relate the two groups.
 
 **Theorem:** Let $\varphi: G \to H$ be a group homomorphism. Then the quotient $G/ \ker \varphi$ is isomorphic to the image of $\varphi$. That is,
 
-
 $G/ \ker \varphi \cong \varphi(G)$
-
-
-
 
 As a quick corollary before the proof, if $\varphi$ is surjective then $H \cong G / \ker \varphi$.
 
-
-
-
 _Proof. _We define an explicit map $f : G/ \ker \varphi \to \varphi(G)$ and prove it is an isomorphism. Let $g \ker \varphi$ be an arbitrary coset and set $f(g \ker \varphi) = \varphi(g)$. First of all, we need to prove that this definition does not depend on the choice of a coset representative. That is, if $g \ker \varphi = g' \ker \varphi$, then $f(g) = f(g')$. But indeed, $f(g)^{-1}f(g') = f(g^{-1}g') = 1$, since for any coset $N$ we have by definition $gN = g'N$ if and only if $g^{-1}g' \in N$.
-
-
-
 
 It is similarly easy to verify that $f$ is a homomorphism:
 
-
-
-
 $f((g \ker \varphi )(g' \ker \varphi)) = \varphi(gg') = \varphi(g)\varphi(g') = f(g \ker \varphi) f(g' \ker \varphi)$
-
-
-
 
 It suffices now to show that $f$ is a bijection. It is trivially surjective (since anything in the image of $\varphi$ is in a coset). It is injective since if $f(g \ker \varphi) = 1$, then $\varphi(g) = 1$ and hence $g \in \ker \varphi$, so the coset $g \ker \varphi = 1 \ker \varphi$ is the identity element. So $f$ is an isomorphism. $\square$
 
-
-
-
 Let's use this theorem to compute some interesting things.
-
-
-
 
 Denote by $D_{2n}$ the group of symmetries of the regular $n$-gon. That is, $D_{16}$ is the symmetry group of the regular octagon and $D_{8}$ is the symmetry group of the square (the $2n$ notation is because this group always has order $2n$). We want to relate $D_{16}$ to $D_8$. To do this, let's define a homomorphism $f:D_{16} \to D_8$ by sending a one-eighth rotation $\rho$ of the octagon to a one-fourth rotation of the square $f(\rho) = \rho^2$, and using the same reflection for both ($f(\sigma) = \sigma$). It is easy to check that this is a surjective homomorphism, and moreover the kernel is $\left \{ 1, \rho^4 \right \}$. That is, $D_8 \cong D_{16}/ \left \{ 1, \rho^4 \right \}$.
 
-
-
-
 Here is a more general example. If $G, H$ are groups of relatively prime order, then there are no nontrivial homomorphisms $G \to H$. In order to see this, note that $|G/ \ker \varphi| = |G| / |\ker \varphi|$ as a simple consequence of Lagrange's theorem. Indeed, by the first isomorphism theorem this quantity is equal to $|\varphi(G)|$. So $|G| = | \ker \varphi| |\varphi(G)|$. That is, the order of $\varphi(G)$ divides the order of $G$. But it also divides the order of $H$ because $\varphi(G)$ is a subgroup of $H$. In other words, the order of $\varphi(G)$ is a common factor of the orders of $G$ and $H$. By hypothesis, the only such number is 1, and so $|\varphi(G)| = 1$ and $\varphi(G)$ is the trivial group.
-
-
-
 
 We will use the first isomorphism theorem quite a bit on this blog. Because it is such a common tool, it is often used without explicitly stating the theorem.
 
-
-
-
-
 ## Generators
-
 
 One extremely useful way to describe a subgroup is via a set of generators. The simplest example is for a single element.
 
@@ -87,9 +53,7 @@ One extremely useful way to describe a subgroup is via a set of generators. The 
 
 This definition is not quite useful, but the useful version is easy to derive. On one hand, the identity element must always be in $\left \langle x \right \rangle$. Since $x \in \left \langle x \right \rangle$ and it's a subgroup, we must have that $x^{-1} \in \left \langle x \right \rangle$. Moreover, all powers of $x$ must be in the subgroup, as must all powers of the inverse (equivalently, inverses of the powers). In fact that is all that is necessary. That is,
 
-
 $\left \langle x \right \rangle = \left \{ \dots, x^{-2}, x^{-1}, 1, x, x^2, \dots \right \}$
-
 
 For finite groups, this list of elements will terminate. And in fact, the inverse of $x$ will be a power of $x$ as well. To see this, note that if we keep taking powers of $x$, eventually one of those will be the identity element. Specifically, some power of $x$ must repeat, and if $x^n = x^m$ then $x^{n-m} = 1$. Hence $x^{-1} = x^{n-m-1}$.
 
@@ -97,23 +61,11 @@ For subgroups generated by more than one element, these subgroups are more diffi
 
 A familiar example is the symmetry group of the square. As it turns out this group is generated by $\rho, \sigma$, where $\rho$ is a quarter turn and $\sigma$ is a reflection across some axis of symmetry. The relationship between the two elements is succinctly given by the equality $\rho \sigma \rho \sigma = 1$. To see this, try holding our your hand with your palm facing away; rotate your hand clockwise, flip it so your fingers are pointing left, rotate again so your fingers are pointing up, and then flip to get back to where you started; note that the two flips had the same axis of symmetry (the up-down axis). The other (obvious) relationships are that $\rho^4 = 1$ and $\sigma^2 = 1$. If we want to describe the group in a compact form, we write
 
-
 $G = \left \langle \rho, \sigma | \rho^4, \sigma^2, \rho \sigma \rho \sigma \right \rangle$
-
-
-
 
 This is an example of a _group presentation. _The left hand side is the list of generators, and the right hand side gives a list of _relators_, where each one is declared to be the identity element. In particular, the existence of a presentation with generators and relators implies that all possible relationships between the generators can be decuded from the list of relators (kind of like how all relationships between sine and cosine can be deduced from the fact that $\sin^2(x) + \cos^2(x) = 1$). Indeed, this is the case for the symmetry group (and all dihedral groups); there are only three distinct equations describing the behavior of rotations and reflections.
 
-
-
-
 Here's a quick definition we will often refer to in the future: a group is called _cyclic_ if it is generated by a single element. Here are some interesting exercises for the beginning reader to puzzle over, which are considered basic facts for experienced group theorists:
-
-
-
-
-
 
 	  * Every subgroup of a cyclic group is cyclic.
 	  * There is only one infinite cyclic group: $\mathbb{Z}$.
@@ -121,63 +73,31 @@ Here's a quick definition we will often refer to in the future: a group is calle
 
 Finally, we will call a group _finitely generated_ if it is generated by a finite set of elements and _finitely presented_ if it has a presentation with finitely many generators and relators. Just to give the reader a good idea about how vast this class of groups is: many basic conjectured facts about finitely generated groups which have "only" one relator are still open problems. So trying to classify groups with two relators (or finitely many relators) is still a huge leap away from what we currently understand. [As far as this author knows](http://onerelatorgroups.wordpress.com/), this subject has been largely abandoned after a scant few results were proved.
 
-
 ## Products and Direct Sums
-
 
 Just as one does in every field of math, in order to understand groups better we want to decompose them into smaller pieces which are easier to understand. Two of the main ways to do this are via direct products and direct sums.
 
 **Definition:** Let $(G, \cdot_G),(H, \cdot_H)$ be groups. The _product group_ $G \times H$ is defined to have the underlying set $G \times H$ (pairs of elements), and the operation is defined by entrywise multiplication in the appropriate group.
 
-
 $(g,h) \cdot (g', h') = (g \cdot_G g', h \cdot_H h')$
-
-
-
 
 Of course, one must verify that this operation actually defines a group according to the usual definition, but this is a simple exercise. One should note that there are two canonical subgroups of the direct product. Define by $p_1 : G \times H \to G$ the projection onto the first coordinate (that is, $(a,b) \mapsto a$). This map is obviously a homomorphism, and its kernel is the subgroup of elements $(1,h), h \in H$. That is, we can identify $H$ as a subgroup of $G \times H$. Identically, we see with $p_2(a,b) = b$ that $G$ is a subgroup of $G \times H$.
 
-
-
-
 Note that this allows us to make some very weird groups. For instance, by induction a single direct product allows us to define products of arbitrarily many groups. Note that reordering the terms of such a product does not change the isomorphism class of the group (e.g. $\mathbb{Z} \times D_8 \cong D_8 \times \mathbb{Z}$). Additionally, there is nothing that stops us from defining _infinite product_ groups. The elements of such a group are sequences of elements from the corresponding multiplicands. For example, the group $\mathbb{Z} \times \mathbb{Z} \times \dots$ is the group of sequences of integers, where addition is defined termwise and the identity is the sequence of all zeroes.
-
-
-
 
 Now infinite products can be particularly unwieldy, but we may still want to talk about groups constructed from infinitely many pieces. Although we have no motivation for this, one such example is the group of an [elliptic curve](http://en.wikipedia.org/wiki/Elliptic_curve). In order to tame the unwieldiness, we define the following construction which takes an infinite product, and allows only those elements which have finitely many non-identity terms.
 
-
-
-
 **Definition: **Let $G_{\alpha}$ be a family of groups. Define the _direct sum_ of the $G_{\alpha}$, denoted by $\bigoplus_{\alpha} G_{\alpha}$, to be the subgroup of $\prod_{\alpha} G_{\alpha}$ of elements $(g_0, g_1, \dots)$ where all but finitely many $g_i$ are the identity in the corresponding $G_i$.
-
-
-
 
 [As a quick side note, this is mathematically incorrect: since the family of groups need not be countable, the $g_i$ may not be enumerable. One can fix this by defining the elements as _functions_ on the index set instead of sequences, but we are too lazy to do this.]
 
-
-
-
 Note that we can define a direct sum of only finitely many groups, and for example this would be denoted $G \oplus H$, but finite sums are trivially the same as finite products. In fact, in this primer and all foreseeable work on this blog, we will stick to finite direct sums of groups, and implicitly identify them with direct products.
-
-
-
 
 Finally, in terms of notation we will write $G^n$ for a direct product of $G$ with itself $n$ times, and $G^{\oplus n}$ for the direct sum of $G$ with itself $n$ times. As we just mentioned, these two are identical, so we will just default to the former for simplicity of reading.
 
-
-
-
 One might wonder: why do we even distinguish these two constructions? The answer is somewhat deep, and we will revisit the question when in our future series on category theory. For now, we can simply say that the distinction is in the case of infinite products and infinite sums, which we won't discuss anyway except for in passing curiosity.
 
-
-
-
-
 ## The Classification of Finitely Generated Abelian Groups
-
 
 Now we have finally laid enough groundwork to state the first big classification theorem of group theory. In words, it says that any finitely generated abelian group can be written as a direct sum of things isomorphic to $\mathbb{Z}$ and $\mathbb{Z}/n\mathbb{Z}$ for various choices of $n$. Moreover, the choices of $n$ are related to each other.
 
@@ -185,19 +105,11 @@ In particular, the theorem is stated as follows:
 
 **Theorem:** Let $G$ be a finitely generated abelian group. Then $G$ is isomorphic to a group of the form:
 
-
 $\displaystyle \mathbb{Z}^m \oplus \mathbb{Z}/p_1^{n_1}\mathbb{Z} \oplus \dots \oplus \mathbb{Z}/p_k^{n_k}\mathbb{Z}$
-
-
-
 
 Where $p_i$ are (not necessarily distinct) primes. Moreover, $G$ is completely determined by the choices of primes and exponents above.
 
-
-
-
 In particular, we name these numbers as follows. The $\mathbb{Z}^m$ part of the equation is called the _free_ part, the exponent $m$ is called the _rank_ of $G$, and the numbers $p_i^{n_i}$ are called the _primary factors._
-
 
 The proof of this theorem is beyond the scope of this blog, but any standard algebra text will have it. All we are saying here that every finitely generated abelian group can be broken up into the part that has infinite order (the free part) and the part that has finite order (often called the _torsion_ part), and that these parts are largely disjoint from each other. For finite groups this is a huge step forward: to classify all finite groups one now only needs to worry about nonabelian groups (although this is still a huge feat in its own).
 
@@ -209,9 +121,7 @@ _Proof. _Indeed, $G \cong \mathbb{Z}^m$ for some $m$, and it has a presentation
 
 Borrowing the free terminology, such groups without relators are called _free abelian groups_. Indeed, there are also nonabelian "free" groups, and this is the last topic we will cover in this primer.
 
-
 ## Free Groups, and a Universal Property
-
 
 Equivalently to "a group with no relators," we can define a _free group _as a group which has presentation $\left \langle x_{\alpha} \right \rangle$ for some potentially infinite family of elements $x_{\alpha}$. If the number of generators is finite, say there are $n$ of them, then we call it _the free group on _$n$ _generators_.
 
@@ -221,14 +131,9 @@ There is another way to get free groups, and that is by taking _free products_. 
 
 Rigorously, this is very easy to do with group presentations. Give presentations for $G = \left \langle x_i | r_j \right \rangle$ and $H = \left \langle y_k | s_m \right \rangle$, and define the free product by giving a presentation
 
-
 $G * H = \left \langle x_i, y_k | r_j, s_m \right \rangle$
 
-
-
-
 For instance, the free product $\mathbb{Z}/3\mathbb{Z} * \mathbb{Z}/4\mathbb{Z}$ has presentation $\left \langle a,b | a^3, b^4 \right \rangle$. One interesting fact is that even if $G,H$ are finite, as long as one is nontrivial then the free product will be an infinite group. Another interesting fact, which we'll explore in future posts on category theory, is that the free product of groups is "the same thing" as the disjoint union of sets. That is, these two operations play the same role in their respective categories.
-
 
 This "role" is called the _universal property_ of the free product. We will use this directly in our post on the fundamental group, and in general it just says that homomorphisms provided on the two pieces of the free product extend uniquely to a homomorphism of the product. The simpler form is the universal property of the free group, which says that the free group is the "most general possible" group which is generated by these generators.
 

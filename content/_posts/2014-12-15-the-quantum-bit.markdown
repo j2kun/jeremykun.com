@@ -30,9 +30,7 @@ If we want to come up with a different model of computing, we could start regu
 
 Rather than go through that whole train of thought again let's just jump into the definitions for the quantum setting. In case you missed last time, our goal is to avoid as much physics as possible and frame everything purely in terms of linear algebra.
 
-
 ## Qubits are Unit Vectors
-
 
 The generalization of a bit is simple: it's a unit vector in $\mathbb{C}^2$. That is, our most atomic unit of data is a vector $(a,b)$ with the constraints that $a,b$ are complex numbers and $|a|^2 + |b|^2 = 1$. We call such a vector a _qubit._
 
@@ -44,8 +42,6 @@ So as we'll see when we get to some algorithms, the main difficulty in getting u
 
 **Definition: **Let $v = (a,b) \in \mathbb{C}^2$ be a qubit. Call the standard basis vectors $e_0 = (1,0), e_1 = (0,1)$ the _computational basis_ of $\mathbb{C}^2$. The process of _measuring $v$ in the computational basis _consists of two parts.
 
-
-
 	  1. You observe (get as output) a random choice of $e_0$ or $e_1$. The probability of getting $e_0$ is $|a|^2$, and the probability of getting $e_1$ is $|b|^2$.
 	  2. As a side effect, the qubit $v$ instantaneously becomes whatever state was observed in 1. This is often called a _collapse of the waveform_ by physicists.
 
@@ -55,17 +51,13 @@ Why is this so painful? Because if you wanted to try to estimate the probabiliti
 
 Before we can talk about those algorithms we need to see how we're allowed to manipulate qubits. As we said before, we use unitary matrices to preserve unit vectors, so let's recall those and make everything more precise.
 
-
 ## Qubit Mappings are Unitary Matrices
-
 
 Suppose $v = (a,b) \in \mathbb{C}^2$ is a qubit. If we are to have any mapping between vector spaces, it had better be a linear map, and the linear maps that send unit vectors to unit vectors are called _unitary matrices_. An equivalent definition that seems a bit stronger is:
 
 **Definition:** A linear map $\mathbb{C}^2 \to \mathbb{C}^2$ is called _unitary_ if it preserves the inner product on $\mathbb{C}^2$.
 
 Let's remember the inner product on $\mathbb{C}^n$ is defined by $\left \langle v,w \right \rangle = \sum_{i=1}^n v_i \overline{w_i}$ and has some useful properties.
-
-
 
 	  * The square norm of a vector is $\left \| v \right \|^2 = \left \langle v,v \right \rangle$.
 	  * Swapping the coordinates of the complex inner product conjugates the result: $\left \langle v,w \right \rangle = \overline{\left \langle w,v \right \rangle}$
@@ -81,41 +73,22 @@ Recall that $\overline{U}^\text{T}$ is the [_conjugate transpose_](http://en.wik
 
 So enough with the properties and definitions, let's see some examples. For all of these examples we'll fix the basis to the computational basis $e_0, e_1$. One very important, but still very simple example of a single qubit gate is the _Hadamard gate_. This is the unitary map given by the matrix
 
-
 $\displaystyle \frac{1}{\sqrt{2}}\begin{pmatrix}
 1 & 1 \\
 1 & -1
 \end{pmatrix}$
 
-
-
-
 It's so important because if you apply it to a basis vector, say, $e_0 = (1,0)$, you get a uniform linear combination $\frac{1}{\sqrt{2}}(e_1 + e_2)$. One simple use of this is to allow for unbiased coin flips, and as readers of this blog know [unbiased coins can efficiently simulate biased coins](http://jeremykun.com/2014/02/12/simulating-a-biased-coin-with-a-fair-coin/). But it has many other uses we'll touch on as they come.
 
-
-
-
 Just to give another example, the _quantum NOT gate_, often called a _Pauli X_ gate, is the following matrix
-
-
-
 
 $\displaystyle \begin{pmatrix}
 0 & 1 \\
 1 & 0
 \end{pmatrix}$
 
-
-
-
 It's called this because, if we consider $e_0$ to be the "zero" bit and $e_1$ to be "one," then this mapping swaps the two. In general, it takes $(a,b)$ to $(b,a)$.
 
-
-
-
 As the reader can probably imagine by the suggestive comparison with classical operations, quantum circuits can do everything that classical circuits can do. We'll save the proof for a future post, but if we want to do some kind of "quantum AND" operation, we get an obvious question. How do you perform an operation that involves multiple qubits? The short answer is: you represent a collection of bits by their tensor product, and apply a unitary matrix to that tensor.
-
-
-
 
 We'll go into more detail on this next time, and in the mean time we suggest checking out this blog's primer on the [tensor product](http://jeremykun.com/2014/01/17/how-to-conquer-tensorphobia/). Until then!

@@ -23,71 +23,34 @@ _Update: the mistakes made in the code posted here are fixed and explained in a 
 
 In [our last post](http://jeremykun.com/2013/04/03/homology-theory-a-primer/) in this series on topology, we defined the homology group. Specifically, we built up a topological space as a _simplicial complex_ (a mess of triangles glued together), we defined an algebraic way to represent collections of simplices called _chains_ as vectors in a vector space, we defined the _boundary homomorphism_ $\partial_k$ as a linear map on chains, and finally defined the homology groups as the quotient vector spaces
 
-
 $\displaystyle H_k(X) = \frac{\textup{ker} \partial_k}{\textup{im} \partial_{k+1}}$.
-
-
-
 
 The number of holes in $X$ was just the dimension of this quotient space.
 
-
-
-
 In this post we will be quite a bit more explicit. Because the chain groups are vector spaces and the boundary mappings are linear maps, they can be represented as matrices whose dimensions depend on our simplicial complex structure. Better yet, if we have explicit representations of our chains by way of a basis, then we can use [row-reduction techniques](http://jeremykun.com/2011/12/30/row-reduction-over-a-field/) to write the matrix in a standard form.
-
-
-
 
 Of course the problem arises when we want to work with two matrices simultaneously (to compute the kernel-mod-image quotient above). This is not computationally any more difficult, but it requires some theoretical fiddling. We will need to dip a bit deeper into our linear algebra toolboxes to see how it works, so the rusty reader should brush up on their linear algebra before continuing (or at least take some time to sort things out if or when confusion strikes).
 
-
-
-
 Without further ado, let's do an extended example and work our ways toward a general algorithm. As usual, [all of the code](https://github.com/j2kun/computing-homology) used for this post is available on [this blog's Github page](https://github.com/j2kun/).
 
-
-
-
-
 ## Two Big Matrices
-
 
 Recall our example simplicial complex from last time.
 
 [![circle-wedge-sphere](http://jeremykun.files.wordpress.com/2013/04/circle-wedge-sphere2.png)
 ](http://jeremykun.files.wordpress.com/2013/04/circle-wedge-sphere2.png)
 
-
 We will compute $H_1$ of this simplex (which we saw last time was $\mathbb{Q}$) in a more algorithmic way than we did last time.
-
-
-
 
 Once again, we label the vertices 0-4 so that the extra "arm" has vertex 4 in the middle, and its two endpoints are 0 and 2. This gave us orientations on all of the simplices, and the following chain groups. Since the vertex labels (and ordering) are part of the data of a simplicial complex, we have made no choices in writing these down.
 
-
-
-
 $\displaystyle C_0(X) = \textup{span} \left \{ 0,1,2,3,4 \right \}$
-
-
-
 
 $\displaystyle C_1(X) = \textup{span} \left \{ [0,1], [0,2], [0,3], [0,4], [1,2], [1,3],[2,3],[2,4] \right \}$
 
-
-
-
 $\displaystyle C_2(X) = \textup{span} \left \{ [0,1,2], [0,1,3], [0,2,3], [1,2,3] \right \}$
 
-
-
-
 Now given our known definitions of $\partial_k$ as an alternating sum from last time, we can give a complete specification of the boundary map as a matrix. For $\partial_1$, this would be
-
-
-
 
 $\displaystyle \partial_1 = \bordermatrix{
 & [0,1] & [0,2] & [0,3] & [0,4] & [1,2] & [1,3] & [2,3] & [2,4] \cr
@@ -97,13 +60,7 @@ $\displaystyle \partial_1 = \bordermatrix{
 3 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 0 \cr
 4 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 }$,
 
-
-
-
 where the row labels are the basis for $C_0(X)$ and the column labels are the basis for $C_1(X)$. Similarly, $\partial_2$ is
-
-
-
 
 $\displaystyle \partial_2 = \bordermatrix{
 & [0,1,2] & [0,1,3] & [0,2,3] & [1,2,3] \cr
@@ -116,32 +73,15 @@ $\displaystyle \partial_2 = \bordermatrix{
 [2,3] & 0 & 0 & 1 & 1\cr
 [2,4] & 0 & 0 & 0 & 0}$
 
-
-
-
 The reader is encouraged to check that these matrices are written correctly by referring to the formula for $\partial$ as given last time.
-
-
-
 
 Remember the crucial property of $\partial$, that $\partial^2 = \partial_k \partial_{k+1} = 0$. Indeed, the composition of the two boundary maps just corresponds to the matrix product of the two matrices, and one can verify by hand that the above two matrices multiply to the zero matrix.
 
-
-
-
 We know from basic linear algebra how to compute the kernel of a linear map expressed as a matrix: column reduce and inspect the columns of zeros. Since the process of row reducing is really a change of basis, we can encapsulate the reduction inside a single invertible matrix $A$, which, when left-multiplied by $\partial$, gives us the reduced form of the latter. So write the reduced form of $\partial_1$ as $\partial_1 A$.
-
-
-
 
 However, now we're using two _different _sets of bases for the shared vector space involved in $\partial_1$ and $\partial_2$. In general, it will no longer be the case that $\partial_kA\partial_{k+1} = 0$. The way to alleviate this is to perform the "corresponding" change of basis in $\partial_{k+1}$. To make this idea more transparent, we return to the basics.
 
-
-
-
-
 ## Changing Two Matrices Simultaneously
-
 
 Recall that a matrix $M$ represents a linear map between two vector spaces $f : V \to W$. The actual entries of $M$ depend crucially on the choice of a basis for the domain and codomain. Indeed, if $v_i$ form a basis for $V$ and $w_j$ for $W$, then the $k$-th column of the matrix representation $M$ is _defined_ to be the coefficients of the representation of $f(v_k)$ in terms of the $w_j$. We hope to have nailed this concept down firmly in our [first linear algebra primer](http://jeremykun.com/2011/06/19/linear-algebra-a-primer/).
 
@@ -149,31 +89,15 @@ Recall further that row operations correspond to changing a basis for the codoma
 
 And so if we're working with two maps $A: U \to V$ and $B: V \to W$, and we change a basis for $V$ in $B$ via column reductions, then in order to be consistent, we need to change the basis for $V$ in $A$ via "complementary" row reductions. That is, if we call the change of basis matrix $Q$, then we're implicitly sticking $Q$ in between the composition $BA$ to get $(BQ)A$. This is not the same map as $BA$, but we can make it the same map by adding a $Q^{-1}$ in the right place:
 
-
 $\displaystyle BA = B(QQ^{-1})A = (BQ)(Q^{-1}A)$
-
-
-
 
 Indeed, whenever $Q$ is a change of basis matrix so is $Q^{-1}$ (trivially), and moreover the operations that $Q$ performs on the columns of $B$ are precisely the operations that $Q^{-1}$ performs on the rows of $A$ (this is because elementary row operations take different forms when multiplied on the left or right).
 
-
-
-
 Coming back to our boundary operators, we want a canonical way to view the image of $\partial_{k+1}$ as sitting inside the kernel of $\partial_k$. If we go ahead and use column reductions to transform $\partial_k$ into a form where the kernel is easy to read off (as the columns consisting entirely of zeroes), then the corresponding row operations, when performed on $\partial_{k+1}$ will tell us exactly the image of $\partial_{k+1}$ inside the kernel of $\partial_k$.
-
-
-
 
 This last point is true precisely because $\textup{im} \partial_{k+1} \subset \textup{ker} \partial_k$. This fact guarantees that the irrelevant rows of the reduced version of $\partial_{k+1}$ are all zero.
 
-
-
-
 Let's go ahead and see this in action on our two big matrices above. For $\partial_1$, the column reduction matrix is
-
-
-
 
 $\displaystyle A =
 \begin{pmatrix}
@@ -187,13 +111,7 @@ $\displaystyle A =
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
 \end{pmatrix}$
 
-
-
-
 And the product $\partial_1 A$ is
-
-
-
 
 $\displaystyle \partial_1 A =
 \begin{pmatrix}
@@ -204,13 +122,7 @@ $\displaystyle \partial_1 A =
 -1 & -1 & -1 & -1 & 0 & 0 & 0 & 0
 \end{pmatrix}$
 
-
-
-
 Now the inverse of $A$, which is the corresponding basis change for $\partial_2$, is
-
-
-
 
 $\displaystyle A^{-1} =
 \begin{pmatrix}
@@ -224,13 +136,7 @@ $\displaystyle A^{-1} =
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
 \end{pmatrix} $
 
-
-
-
 and the corresponding reduced form of $\partial_2$ is
-
-
-
 
 $\displaystyle A^{-1} \partial_2 =
 \begin{pmatrix}
@@ -244,11 +150,7 @@ $\displaystyle A^{-1} \partial_2 =
 0 & 0 & 0 & 0
 \end{pmatrix}$
 
-
-
-
 As a side note, we got these matrices by slightly modifying the code from our [original post on row reduction](http://jeremykun.com/2011/12/30/row-reduction-over-a-field/) to output the change of basis matrix in addition to performing row reduction. It turns out one can implement column reduction as row reduction of the transpose, and the change of basis matrix you get from this process will be the transpose of the change of basis matrix you want (by $(AB)^\textup{T} = (B^\textup{T}A^\textup{T})$). Though the code is particularly ad-hoc, we include it with [the rest of the code](https://github.com/j2kun/computing-homology) used in this post on [this blog's Github page](https://github.com/j2kun/).
-
 
 Now let's inspect the two matrices $\partial_1 A$ and $A^{-1} \partial_2$ more closely. The former has four "pivots" left over, and this corresponds to the rank of the matrix being 4. Moreover, the four basis vectors representing the columns with nonzero pivots, which we'll call $v_1, v_2, v_3, v_4$ (we don't care what their values are), span a complementary subspace to the kernel of $\partial_1$. Hence, the remaining four vectors (which we'll call $v_5, v_6, v_7, v_8$) span the kernel. In particular, this says that the kernel has dimension 4.
 
@@ -256,26 +158,15 @@ On the other hand, we performed the _same_ transformation of the basis of $C_1(
 
 And now, the coup de grâce, the quotient to get homology is simply
 
-
 $\displaystyle \frac{ \textup{span} \left \{ v_5, v_6, v_7, v_8 \right \}}{ \textup{span} \left \{ v_5, v_6, v_7 \right \}} = \textup{span} \left \{ v_8 \right \}$
-
-
-
 
 And the dimension of the homology group is 1, as desired.
 
-
-
-
-
 ## The General Algorithm
-
 
 It is no coincidence that things worked out at nicely as they did. The process we took of simultaneously rewriting two matrices with respect to a common basis is the bulk of the algorithm to compute homology. Since we're really only interested in the dimensions of the homology groups, we just need to count pivots. If the number of pivots arising in $\partial_k$ is $y$ and the number of pivots arising in $\partial_{k+1}$ is $z$, and the dimension of $C_k(X)$ is $n$, then the dimension is exactly
 
-
 $(n-y) - z = \textup{dim}(\textup{ker} \partial_k) - \textup{dim}(\textup{im}\partial_{k+1})$
-
 
 And it is no coincidence that the pivots lined up so nicely to allow us to count dimensions this way. It is a minor exercise to prove it formally, but the fact that the composition $\partial_k \partial_{k+1} = 0$ implies that the reduced version of $\partial_{k+1}$ will have an almost reduced row-echelon form (the only difference being the rows of zeros interspersed above, below, and possibly between pivot rows).
 

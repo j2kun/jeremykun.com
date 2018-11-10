@@ -11,15 +11,10 @@ categories:
 
 Previously in this series:
 
-
-
 	  * [Linear programming and healthy diets — Part 1](https://jeremykun.com/2014/06/02/linear-programming-and-the-most-affordable-healthy-diet-part-1/)
 	  * [Linear programing and the simplex algorithm](https://jeremykun.com/2014/12/01/linear-programming-and-the-simplex-algorithm/)
 
-
-
 ## Foods of the Father
-
 
 My dad's an interesting guy.
 
@@ -37,8 +32,6 @@ So this post is half tutorial showing how to use the or-tools python wrapper (it
 
 However, don't let this post dissuade you from the belief that linear programming is useful beyond dieting. People use linear programming to solve _all kinds_ of interesting problems. Here are a few I came across in just the last few weeks:
 
-
-
 	  * [Factoring big matrices](http://arxiv.org/abs/1206.1270)
 	  * [Solving zero sum games](http://www.slideshare.net/leingang/lesson-35-game-theory-and-linear-programming)
 	  * [Optimally seating guests at a wedding](http://punkrockor.wordpress.com/2013/04/04/how-to-use-or-to-plan-your-wedding/) (Technically they use integer programming, which or-tools can do)
@@ -49,64 +42,34 @@ As usual, all of the code and data we use in the making of this post is availab
 
 **Update 2018-01-01: **With this code my dad had tried a few inadvisable cooking techniques: take all the ingredients and throw them in an omelet, or blend them all together in a smoothie. Something about cooking the food alters the nutritional content, so he claims he needed to eat them more or less raw. The resulting "meals" were so unpalatable that he appears to have given up on the optimization techniques in this post. It seems the extreme end of the taste/health tradeoff is not where he wants to be. This suggests an open problem: find a good way to model (or lean from data) what foods taste good together, and in what quantities. One might be able to learn from a corpus of recipes, though I imagine that can only go so far for lightly-cooked ingredients. But with hypothetical constraints like, "penalize/prefer these foods being in the same meal", one might be able to quantify the taste/health tradeoff in a way that makes my dad happy. Having an easy way to slide along the scale (rather than just naively optimize) would also potentially be useful.
 
-
 ## Refresher
-
 
 If you remember how linear programs work, you can safely skip this section.
 
 As a refresher, let's outline how to model the nutrition problem as a linear program and recall the basic notation. The variables are food in 100 gram increments. So $x_1$ might be the amount of canned peas consumed, $x_2$ lobster meat, etc. All variables would have to be nonnegative, of course. The objective is to minimize the total number of calories consumed. If $c_1 \geq 0$ is the amount of calories in 100g of canned peas, then one would pay $c_1x_1$ in calories contributed by peas. If we have $n$ different variables, then the objective function is the linear combination
 
-
 $\textup{cost}(\mathbf{x}) = \sum_{j=1}^n c_j x_j$
-
-
-
 
 We're using boldface $\mathbf{x}$ to represent the vector $(x_1, \dots, x_n)$. Likewise, $\mathbf{c}$ will represent the cost vector of foods $(c_1, \dots, c_n)$. As we've seen many times, we can compactly write the sum above as an inner product $\langle \mathbf{c}, \mathbf{x} \rangle$.
 
-
-
-
 Finally, we require that the amount of each nutrient combined in the stuff we buy meets some threshold. So for each nutrient we have a constraint. The easiest one is calories; we require the total number of calories consumed is at least (say) 2,000. So if $a_j$ represents the number of calories in food $j$, we require $\sum_{j=1}^n a_j x_j \geq 2000$. We might also want to restrict a maximum number of calories, but in general having a diet with more calories implies higher cost, and so when the linear program minimizes cost we should expect it not to produce a diet with significantly more than 2,000 calories.
-
-
-
 
 Since we have one set of nutrient information for each pair of (nutrient, food), we need to get fancier with the indexing. I'll call $a_{i,j}$ the amount of nutrient $i$ in food $j$. Note that $A = (a_{i,j})$ will be a big matrix, so I'm saying that nutrients $i$ represent the rows of the matrix and foods $j$ represent the columns. That is, each row of the matrix represents the amount of one specific nutrient in all the foods, and each column represents the nutritional content of a single food. We'll always use $n$ to denote the number of foods, and $m$ to denote the number of nutrients.
 
-
-
-
 Finally, we have a lower and upper bound for each nutrient, which behind the scenes are converted into lower bounds (possibly negating the variables). This isn't required to write the program, as we'll see. In notation, we require that for every $1 \leq i \leq m$, the nutrient constraint $\sum_{j=1}^n a_{i,j} x_j \geq b_i$ is satisfied. If we again use vector notation for the constraints $\mathbf{b}$, we can write the entire set of constraints as a "matrix equation"
-
-
-
 
 $A \mathbf{x} \geq \mathbf{b}$
 
-
 And this means each entry of the vector you get from multiplying the left-hand-side is greater than the corresponding entry on the right-hand-side. So the entire linear program is summarized as follows
-
 
 $\displaystyle \begin{aligned} \textup{min } & \langle \mathbf{c} , \mathbf{x} \rangle  \\
 \textup{such that } & A \mathbf{x}  \geq \mathbf{b} \\ & \mathbf{x}  \geq \mathbf{0} \end{aligned}$
 
-
-
-
 That's the syntactical form of our linear program. Now all (!) we need to do is pick a set of foods and nutrients, and fill in the constants for $A, \mathbf{c}, \mathbf{b}$.
-
-
-
-
 
 ## Nutrients and Foods
 
-
 The easier of the two pieces of data is the nutrient constraints. The system used in the United States is called the [Dietary Reference Intake](http://en.wikipedia.org/wiki/Dietary_Reference_Intake) system. It consists of five parts, which I've paraphrased from Wikipedia.
-
-
 
 	  * **Estimated Average Requirements** (EAR), expected to satisfy the needs of 50% of the people in an age group.
 	  * **Recommended Dietary Allowances** (RDA), the daily intake level considered sufficient to meet the requirements of 97.5% of healthy individuals (two standard deviations).
@@ -119,9 +82,7 @@ Nutrient values for food are a little bit harder, because nutrient data isn't ea
 
 Instead, in this post we'll use the USDA's free-to-use database of 8,000+ foods. It comes in a single, abbreviated, [oddly-formatted text file](https://www.ars.usda.gov/northeast-area/beltsville-md/beltsville-human-nutrition-research-center/nutrient-data-laboratory/docs/sr28-download-files/) which I've parsed into a [csv](https://github.com/j2kun/lp-diet/blob/master/sr28.csv) and chosen an arbitrary subset of 800-ish [foods to play around with](https://github.com/j2kun/lp-diet/blob/master/nutrients.csv).
 
-
 ## Python OR Tools
-
 
 Google's ortools [docs](https://developers.google.com/optimization/introduction/installing) ask you to download a tarball to install their package, but I found that was unnecessary (perhaps it's required to attach a third-party solver to their interface?). Instead, one can just pip install it.
 
@@ -157,9 +118,7 @@ print(y.solution_value())
 
 This provides the basic idea of the library. You can use python's operator overloading (to an extent) to make the constraints look nice in the source code.
 
-
 ## Setting up the food LP
-
 
 The main file `diet_optimizer.py` contains a definition for a class, which, in addition to loading the data, encapsulates all the variables and constraints.
 
@@ -285,9 +244,7 @@ Finally, though we omitted it here for simplicity, throughout the code in the [G
 
 Finally, we have methods just for pretty-printing the optimization problem and the solution, called `[summarize_optimization_problem](https://github.com/j2kun/lp-diet/blob/master/diet_optimizer.py#L184)` and `[summarize_solution](https://github.com/j2kun/lp-diet/blob/master/diet_optimizer.py#L192)`, respectively.
 
-
 ## Running the solver
-
 
 Invoking the solver is trivial.
 
@@ -385,9 +342,7 @@ Unfortunately, this asks for a kilo of raw alfalfa sprouts, which I definitely w
 
 But ignoring that, we have some reasonable sounding foods: fish, sweet potato, rosemary (okay that's a ton of rosemary), egg and wine. I bet someone could make a tasty meal from those rough ingredients.
 
-
 ## Extensions and Exercises
-
 
 No tutorial would be complete without exercises. All of these are related to the actual linear program modeling problem.
 

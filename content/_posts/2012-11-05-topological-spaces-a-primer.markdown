@@ -24,59 +24,30 @@ The reader might wonder how we can say anything about space if we can't compute 
 
 Just before we continue, we should give a short list of how topological spaces are applied to the real world. In particular, this author is preparing a series of posts dedicated to the topological study of data. That is, we want to study the loose structure of data potentially embedded in a very high-dimensional metric space. But in studying it from a topological perspective, we aim to eliminate the dependence on specific metrics and parameters (which can be awfully constricting, and even impertinent to the overall structure of the data). In addition, topology has been used to study graphics, image analysis and 3D modelling, networks, semantics, protein folding, solving systems of polynomial equations, and loads of topics in physics.
 
-
 ## Recalling Metric Spaces, and Open Sets
-
 
 Now we turn to generalizing metric spaces. The key property which we wish to generalize is that of _open sets_. For a metric space, and the reader should be thinking of the real line, the Euclidean plane, or three-dimensional Euclidean space, the open sets are easy to find. One can think of them as just "things without a boundary." On the real line these look like open intervals $(a, b)$ and unions of open intervals. In the plane, these would be more like _open balls_ with a fixed center. In other words, it would be the interior of a disk.
 
 To characterize this more mathematically, we define an _open ball centered at _$x$_ with radius _$\varepsilon$ in the real plane to be the set
 
-
 $\displaystyle B(x, \varepsilon) = \left \{ y \in \mathbb{R}^2 | d(x,y) < \varepsilon \right \}$
 
-
-
-
 where $d$ is the usual Euclidean metric on points in the plane. Whenever someone says open ball, the reader should picture the following:
-
-
 
 [caption id="" align="aligncenter" width="255"][![](http://mathworld.wolfram.com/images/eps-gif/OpenDisk_1000.gif)
 ](http://mathworld.wolfram.com/OpenDisk.html) An open ball of radius r, centered at the point x. [Wolfram Mathworld][/caption]
 
-
 Now of course this doesn't categorize _all_ of the open sets, since we would expect the union of two of these things to also be open. In fact, it is not hard to see that even if we take an infinite (or uncountable!) union of these open balls centered at any points with any radii, we would still get something that "has no boundary."
-
-
-
 
 In addition, it appears we can also take intersections. That is, the intersection of two open balls should be open. But we have to be a bit more careful here, because we can break our intuition quite easily. In the case of the real line, I can take an intersection of open intervals which is definitely _not_ open. For example, take the set of intervals $\left \{ (1-1/n, 1+1/n) : n \in \mathbb{N} \right \}$. If we look at the intersection over all of these intervals, it is not hard to see that
 
-
-
-
 $\displaystyle \bigcap_{n \in \mathbb{N}} (1- 1/n, 1+1/n) = \left \{ 1 \right \}$
-
-
-
 
 Specifically, the number 1 is in the intersection since it is contained in all of the open intervals. But any number $x > 1$ cannot be in the intersection because for some large enough $n$ it must be that $1 + 1/n < x$ (just solve this equation for $n$ as a real number, and then take the ceiling). The case is similar case for $x < 1$, so the intersection can only be the singleton set 1. This is clearly not an open interval.
 
-
-
-
 So we just found that our intuition for open sets breaks down if we allow for infinite intersections, but everything else seems to work out. Furthermore, the definition of an open ball relied on nothing about Euclidean space except that it has a metric. We're starting to smell a good definition:
 
-
-
-
 **Definition:** Let $X$ be a metric space with metric $d$. An _open set in _$X$ is either:
-
-
-
-
-
 
 	  * A union of _any_ collection of open balls $B(x, \varepsilon)$ where $x \in X$, or
 	  * A _finite_ intersection of such open balls.
@@ -85,9 +56,7 @@ A set is _closed_ if it is the complement of an open set.
 
 In fact, this characterization of open sets is so good that we can redefine a bunch of properties of metric spaces _just in terms of open sets_. This is important because in a minute we will actually define a topological space by declaring which sets are open. Before we do that, let's remain in the friendly world of metric spaces to investigate some of those redefinitions.
 
-
 ## Neighborhoods, Sequences, and Continuous Functions
-
 
 There is an essential switch in going from metric spaces to topological spaces that one must take, and it involves the concepts of neighborhoods.
 
@@ -133,15 +102,11 @@ Naturally, the corresponding definition in terms of open sets would be something
 
 The reason this is a better definition will become apparent later (in short: a general topology need not have "good" neighborhoods of a given point $y$). But at least we can verify these three definitions all coincide for metric spaces. These dry computations are very similar to the one we gave for convergent sequences, so we leave it to those readers with a taste for blood. We will just simply mention that, for example, all polynomial functions are continuous with respect to this definition.
 
-
 ## Topological Spaces, a World without Distance
-
 
 We are now ready to define a general topological space.
 
 **Definition:** Let $X$ be any set. A _topology_ on $X$ is a family of subsets $T$ of $X$ for which the following three properties hold:
-
-
 
 	  * The empty set and the subset $X$ are both in $T$.
 	  * Any union of sets in $T$ is again in $T$.
@@ -179,9 +144,7 @@ On the other hand, given two closed sets defined by the families of polynomials 
 
 So the Zariski topology is in fact a valid topology on $\mathbb{R}^n$, and it is not hard to see that if $k$ is any field, then there is a well-defined Zariski topology on the set $k^n$. In fact, studying this topology very closely yields a numerous amount of computational tools to solve problems like robot motion planning and automated theorem proving. We plan to investigate these topics in the future of this blog once we cover a little bit of ring theory, but for now the Zariski topology serves as a wonderful example of a useful topology.
 
-
 ## Homeomorphisms
-
 
 One major aspect of mathematics is how to find the correct notion of calling two things "equivalent." In the theory of metric spaces, the strongest possible such notion is called an _isometry_. That is, two metric spaces $X, Y$ with metrics $d_X, d_Y$ are called _isometric_ if there exists a surjective function $f: X \to Y$ which preserves distance (i.e. $d_X(x,y) = d_Y(f(x), f(y))$ for all $x,y \in X$, and the image $f(X)$ is all of $Y$). It is not hard to see that such functions are automatically both continuous and injective. The function $f$ is called an _isometry_.
 

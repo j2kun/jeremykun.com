@@ -19,7 +19,6 @@ tags:
 
 ## A Puzzle is Born
 
-
 Sitting around a poolside table, in the cool air and soft light of a June evening, a few of my old friends and I played a game of Texas Hold 'Em. While we played we chatted about our times in high school, of our old teachers, friends, and, of course, our times playing poker. We even reminisced lightly about some of the more dishonest people we played with (whom we invited for want of a larger payout), but especially we recalled the times we caught them cheating. We witnessed dealing from the bottom of the deck, two people teaming up with each other to fix hands, and some very blatant deck stacking.
 
 Often having a player different from the dealer cut the deck (usually the player to the dealer's right, as the cards are dealt starting to the left) absolves the dealer of any foul play. This is tacit at the poker table, and thinking of this on that midsummer evening, a puzzle popped into my head:
@@ -30,14 +29,11 @@ Of course, my mind was initially set on answering this for Texas Hold 'Em (with 
 
 At this point I thought it might actually be a puzzle worth working on.
 
-
 ## Preliminary Thoughts
-
 
 This question can be asked of any card game, so we'll start with as simple a game as we can: Kuhn Poker. There are two players and three cards: a King, a Queen, and a Jack. Each player is dealt one card, and with after a single round of betting, the player with the highest card wins the pot. From a game-theoretic perspective, there are some [interesting results on this game](http://en.wikipedia.org/wiki/Kuhn_poker); specifically, the first player has multiple optimal betting strategies, while the second player has only one. Despite this, if the second player plays optimally, he should expect to win at a rate of 1/18th of a betting unit per hand. That is, of course, assuming the first player does not stack the deck.
 
 For this combinatorially tractable game we may analyze each of the six cases quickly. We will describe a stacking of the deck by the first letters of its cards in order, with the left end of the string being first card dealt. For example, "KQJ" represents the unique stacking for which the first dealt card is a King, the second a Queen, and the third a Jack. Then, a cut is specified by positions between cards, indexed from zero as follows: "0K1Q2J." Here cutting at 0 means the deck is left as is, which is usually an option given to the cutter. Cutting at 1 turns the deck into QJK, and at 2 we get JKQ. Here is our analysis of the game:
-
 
 KQJ: cut at 2, receiving a King against a Queen
 KJQ: cut at 1, receiving a Queen against a Jack
@@ -46,16 +42,13 @@ QJK: cut at 2, receiving a King against a Queen
 JKQ: cut at 0, receiving a King against a Jack
 JQK: cut at 0, receiving a Queen against a Jack
 
-
 So no such stacking is possible for Kuhn Poker. While this is disheartening to the cheater, the honest card player may now rest assured that with a random cut, no cheater is secure.
 
 Note that this same argument extends to any game in which each player is dealt only one card, and we do not allow a tie to result from a good stacking (i.e. the second player cuts aiming for a tie if he cannot cut to win). The only such one-card poker game I know that is actually played is [Indian Poker](http://en.wikipedia.org/wiki/Blind_man%27s_bluff_(poker)) (also known as Blind Man's Bluff), and two-player Indian Poker admits an identical analysis. Suppose we have a stacking of a deck of $n$ cards which is optimal for the first player dealt at any cut. Then card $k$ strictly beats card $k+1$ for all positions $k$ of cards in the deck. By transitivity of "beats," we have that the first card in the deck beats the last card (in fact, every card beats the last card), and hence the second player may cut at position $n-1$. Since this forces the first player to receive the last card (the worst card in the deck), the second player will not lose, contradicting our original assumption that the deck was optimally stacked.
 
 So no such optimal stacking exists for Indian Poker either. Despite the easy answer to this problem, we cannot assume the same result holds for Texas Hold 'Em. Even if a cut results in the first player being dealt low cards, there are sufficiently many rules so as to allow the first player to win (for example, he could have a low flush or straight). So let us try to invent a poker with sufficiently many rules to allow optimal deck stacking, if it is at all possible.
 
-
 ## K Poker
-
 
 We define a new game called K Poker. The K stands for "kicsi," (pronounced _kee_-chi) the Hungarian word for "small," and also for "Kun," the family name of its creator ([also Hungarian](http://en.wikipedia.org/wiki/Cuman_people)).
 
@@ -73,9 +66,7 @@ It is intractable by brute force human effort to find the other optimal stacking
 
 We chose a nine-card game specifically with this in mind. In particular, there are merely $9! = 362,880$ different permutations of the deck. Since each deck has nine cuts, we may further reduce our search to those stackings which begin with a deuce. This reduces the number of decks to $8! = 40,320$. Since we may easily determine who wins on each cut of a stacking (bringing us back up to $9!$ computations), a brute-force search is reasonable.
 
-
 ## We Came, We Sought, We Cheated
-
 
 This time, our excuse for coding in Mathematica is its lightning fast look-up table for permutations. The [Mathematica notebook is posted online](https://github.com/j2kun/optimal-stackings) (along with the code for our followup post on [optimally stacking Texas Hold 'Em](http://jeremykun.com/2012/04/09/optimal-stacking-hold-em/)) at [this blog's Github page](https://github.com/j2kun?tab=repositories). Since the code is not exactly scintillating material, we leave the reader to download it at his own discretion.
 
@@ -96,7 +87,6 @@ We found nine distinct (up to cuts) optimal stacking for player one, and merely 
     Player two:
     (2, 3, 4, 5, 6, 7, 8, 9, 10),
     (2, 5, 6, 7, 8, 9, 10, 4, 3)
-
 
 Wonderful! These are the only optimal stackings, though we admit if a stacker is willing to accept draws, there are many more admissible stackings.
 

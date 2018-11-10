@@ -49,7 +49,6 @@ To implement this algorithm in code, we used Javascript. We chose Javascript so 
        }
     }
 
-
 In words, the "numbers" array contains the complete sequence in question, the cards array is an array of arrays, where each element in the array represents one card. We then loop over all numbers (the $i$ variable), and for each number we check the sequence in decreasing order to look for membership of $i$ on a card.
 
 For the sake of brevity, we omit all of the code to deal with input and output, which comprises all of the remaining code in this program.

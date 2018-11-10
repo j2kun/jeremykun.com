@@ -26,10 +26,7 @@ tags:
 
 ## Or how to detect and correct errors
 
-
 [Last time](http://jeremykun.com/2015/02/16/a-proofless-introduction-to-information-theory/) we made a quick tour through the main theorems of Claude Shannon, which essentially solved the following two problems about communicating over a digital channel.
-
-
 
 	  1. What is the best encoding for information when you are guaranteed that your communication channel is error free?
 	  2. Are there any encoding schemes that can recover from random noise introduced during transmission?
@@ -41,9 +38,7 @@ We will assume some basic linear algebra knowledge, as detailed [our first line
 [caption id="attachment_5620" align="aligncenter" width="204"][![hamming-3](https://jeremykun.files.wordpress.com/2015/02/hamming-3.jpg?w=204)
 ](https://jeremykun.files.wordpress.com/2015/02/hamming-3.jpg) Richard Hamming, inventor of Hamming codes. [[image source](http://amturing.acm.org/)][/caption]
 
-
 ## What is a code?
-
 
 The formal definition of a code is simple: a _code_ $C$ is just a subset of $\{ 0,1 \}^n$ for some $n$. Elements of $C$ are called _codewords._
 
@@ -57,8 +52,6 @@ So coding theorists turn this mess of parameters into notation.
 
 **Definition: **A code $C$ is called an $(n, k, d)_q$-code if
 
-
-
 	  * $C \subset \Sigma^n$ for some alphabet $\Sigma$,
 	  * $k = \log |C|$,
 	  * $C$ has minimum distance $d$, and
@@ -71,13 +64,9 @@ The basic goals of coding theory are:
 
 In this post we'll see how simple linear-algebraic constructions can give optima for one of these problems, optimizing $k$ for $d=3$, and we'll state a characterization theorem for optimizing $k$ for a general $d$. Next time we'll continue with a second construction that optimizes a different bound called the Singleton bound.
 
-
 ## Linear codes and the Hamming code
 
-
 A code is called _linear_ if it can be identified with a linear subspace of some finite-dimensional vector space. In this post all of our vector spaces will be $\{ 0,1 \}^n$, that is tuples of bits under addition mod 2. But you can do the same constructions with any finite scalar field $\mathbb{F}_q$ for a prime power $q$, i.e. have your vector space be $\mathbb{F}_q^n$. We'll go back and forth between describing a binary code $q=2$ over $\{ 0,1 \}$ and a code in $\mathbb{F}_q^n$. So to say a code is linear means:
-
-
 
 	  * The zero vector is a codeword.
 	  * The sum of any two codewords is a codeword.
@@ -105,28 +94,13 @@ Before we do that, one more definition and a simple proposition about linear cod
 
 _Proof. _Consider a nonzero $x \in C$. On one hand, the zero vector is a codeword and $wt(x)$ is by definition the Hamming distance between $x$ and zero, so it is an upper bound on the minimum distance. In fact, it's also a lower bound: if $x,y$ are two nonzero codewords, then $x-y$ is also a codeword and $wt(x-y)$ is the Hamming distance between $x$ and $y$.
 
-
 $\square$
-
-
-
 
 So now we can define our first code, the Hamming code. It will be a $(n, k, 3)_2$-code. The construction is quite simple. We have fixed $d=3, q=2$, and we will also fix $l = n-k$. One can think of this as fixing $n$ and maximizing $k$, but it will only work for $n$ of a special form.
 
-
-
-
 We'll construct the Hamming code by describing a parity-check matrix $H$. In fact, we're going to see what conditions the minimum distance $d=3$ imposes on $H$, and find out those conditions are actually sufficient to get $d=3$. We'll start with 2. If we want to ensure $d \geq 2$, then you need it to be the case that no nonzero vector of Hamming weight 1 is a code word. Indeed, if $e_i$ is a vector with all zeros except a one in position $i$, then $e_i H = h_i$ is the $i$-th row of $H$. We need $e_i H \neq 0$, so this imposes the condition that no row of $H$ can be zero. It's easy to see that this is sufficient for $d \geq 2$.
 
-
-
-
 Likewise for $d \geq 3$, given a vector $y = e_i + e_j$ for some positions $i \neq j$, then $yH = h_i + h_j$ may not be zero. But because our sums are mod 2, saying that $h_i + h_j \neq 0$ is the same as saying $h_i \neq h_j$. Again it's an if and only if. So we have the two conditions.
-
-
-
-
-
 
 	  * No row of $H$ may be zero.
 	  * All rows of $H$ must be distinct.
@@ -145,9 +119,7 @@ The interesting feature is that all linear codes are systematic. The reason is a
 
 If you work out the parameters of the Hamming code, you'll see that it is a systematic code which adds $\Theta(\log n)$ check bits to a message, and we're able to correct a single error in this code. An obvious question is whether this is necessary? Could we get away with adding fewer check bits? The answer is no, and a simple "information theoretic" argument shows this. A single index out of $n$ requires $\log n$ bits to describe, and being able to correct a single error is like identifying a unique index. Without logarithmically many bits, you just don't have enough information.
 
-
 ## The Hamming bound and perfect codes
-
 
 One nice fact about Hamming codes is that they optimize a natural problem: the problem of maximizing $d$ given a fixed choice of $n$, $k$, and $q$. To get this let's define $V_n(r)$ denote the volume of a ball of radius $r$ in the space $\mathbb{F}_2^n$. I.e., if you fix any string (doesn't matter which) $x$, $V_n(r)$ is the size of the set $\{ y : d(x,y) \leq r \}$, where $d(x,y)$ is the hamming distance.
 
@@ -155,34 +127,17 @@ There is a theorem called the _Hamming bound, _which describes a limit to ho
 
 **Theorem: **If an $(n,k,d)_2$-code exists, then
 
-
 $\displaystyle 2^k V_n \left ( \left \lfloor \frac{d-1}{2} \right \rfloor \right ) \leq 2^n$
-
 
 _Proof._ The proof is quite simple. To say a code $C$ has distance $d$ means that for every string $x \in C$ there is no other string $y$ within Hamming distance $d$ of $x$. In other words, the balls centered around both $x,y$ of radius $r = \lfloor (d-1)/2 \rfloor$ are disjoint. The extra difference of one is for odd $d$, e.g. when $d=3$ you need balls of radius 1 to guarantee no overlap. Now $|C| = 2^k$, so the total number of strings covered by all these balls is the left-hand side of the expression. But there are at most $2^n$ strings in $\mathbb{F}_2^n$, establishing the desired inequality.
 
-
 $\square$
-
-
-
 
 Now a code is called _perfect _if it actually meets the Hamming bound exactly. As you probably guessed, the Hamming codes are perfect codes. It's not hard to prove this, and I'm leaving it as an exercise to the reader.
 
-
-
-
 The obvious follow-up question is whether there are any other perfect codes. The answer is yes, some of which are nonlinear. But some of them are "trivial." For example, when $d=1$ you can just use the identity encoding to get the code $C = \mathbb{F}_2^n$. You can also just have a code which consists of a single codeword. There are also some codes that encode by repeating the message multiple times. These are called "repetition codes," and all three of these examples are called _trivial _(as a definition). Now there are some nontrivial and nonlinear perfect codes I won't describe here, but here is the nice characterization theorem.
 
-
-
-
 **Theorem [van Lint '71, Tietavainen '73]:** Let $C$ be a nontrivial perfect $(n,d,k)_q$ code. Then the parameters must either be that of a Hamming code, or one of the two:
-
-
-
-
-
 
 	  * A $(23, 12, 7)_2$-code
 	  * A $(11, 6, 5)_3$-code
@@ -196,8 +151,6 @@ Next time we'll discuss the Singleton bound, which optimizes for a different qu
 Until then!
 
 Posts in this series:
-
-
 
 	  * [A Proofless Introduction to Coding Theory](https://jeremykun.com/2015/02/16/a-proofless-introduction-to-information-theory/)
 	  * [Hamming's Code](https://jeremykun.com/2015/03/02/hammings-code/)

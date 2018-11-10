@@ -30,34 +30,23 @@ Now what if instead of aiming for each individual's maximum happiness we instead
 
 As usual, [all of the code](https://github.com/j2kun/stable-marriages) used in this post is available for download at [this blog's Github page](https://github.com/j2kun).
 
-
 ## Historical Notes
-
 
 The original algorithm for computing stable marriages was discovered by [Lloyd Shapley](http://en.wikipedia.org/wiki/Lloyd_Shapley) and [David Gale](http://en.wikipedia.org/wiki/David_Gale) in the early 1960's. Shapely and [Alvin Roth](http://en.wikipedia.org/wiki/Alvin_E._Roth) went on to dedicate much of their career to designing markets and applying the stable marriage problem and its generalizations to such problems. In 2012 they jointly received the Nobel prize in economics for their work on this problem. If you want to know more about what "market design" means and why it's needed (and you have an hour to spare), consider watching the talk below by Alvin Roth at the Simons Institute's 2013 Symposium on the Visions of the Theory of Computing. Roth spends most of his time discussing the state of one particular economy, medical students and residence positions at hospitals, which he was asked to redesign. It's quite a fascinating tale, although some of the deeper remarks assume knowledge of the algorithm we cover in this post.
 
-
 [youtube=http://www.youtube.com/watch?v=wvG5b2gmk70]
-
 
 Alvin Roth went on to apply the ideas presented in the video to economic systems in Boston and New York City public schools, kidney exchanges, and others. They all had the same sort of structure: both parties have preferences and stability makes sense. So he actually imposed the protocol we're about to describe in order to guarantee that the process terminates to a stable arrangement (and automating it saves everyone involved a lot of time, stress, and money! Watch the video above for more on that).
 
-
 ## The Monogamous Stable Marriage Algorithm
-
 
 Let's formally set up the problem. Let $X = \left \{ 1, 2, \dots, n \right \}$ be a set of $n$ suitors and $Y = \left \{ 1,2,\dots ,n \right \}$ be a set of $n$ "suited." Let $\textup{pref}_{X \to Y}: X \to S_n$ be a list of preferences for the suitors. In words, $\textup{pref}_{X \to Y}$ accepts as input a suitor, and produces as output an ordering on the suited members of $Y$. We denote the output set as $S_n$, which the group theory folks will recognize as the permutation group on $1, \dots, n$. Likewise, there is a function $\textup{pref}_{Y \to X}: Y \to S_n$ describing the preferences of each of the suited.
 
 An example will help clarify these stuffy definitions. If $X = \left \{ 1, 2, 3 \right \}$ and $Y = \left \{ 1, 2, 3 \right \}$, then to say that
 
-
 $\textup{pref}_{X \to Y}(2) = (3, 1, 2)$
 
-
-
-
 is to say that the second suitor prefers the third member of $Y$ the most, and then the first member of $Y$, and then the second. The programmer might imagine that the datum of the problem consists of two dictionaries (one for $X$ and one for $Y$) whose keys are integers and whose values are lists of integers which contain 1 through $n$ in some order.
-
 
 A solution to the problem, then, is a way to match (or marry) suitors with suited. Specifically, a _matching _is a bijection $m: X \to Y$, so that $x$ is matched with $m(x)$. The reason we use a bijection is because the marriages are monogamous: only one suitor can be matched with one suited and vice versa. Later we'll see this condition dropped so we can apply it to a more realistic problem of institutions (suited) which can accommodate many applicants (suitors). Because suitor and suited are awkward to say, we'll use the familiar, antiquated, and politically incorrect terms "men and women."
 
@@ -76,9 +65,7 @@ It's easy to argue such a process must eventually converge. Indeed, the contra
 
 Rather than mathematically implement the algorithm in pseudocode, let's produce the entire algorithm in Python to make the ideas completely concrete.
 
-
 ## Python Implementation
-
 
 We start off with some simple data definitions for the two parties which, in the renewed interest of generality, refer to as Suitor and Suited.
 
@@ -193,15 +180,11 @@ True
 
 We encourage the reader to check this by hand (this one only took two rounds). Even better, answer the question of whether the algorithm could ever require $n$ steps to converge for $2n$ individuals, where you get to pick the preference list to try to make this scenario happen.
 
-
 ## Stable Marriages with Capacity
-
 
 We can extend this algorithm to work for "polygamous" marriages in which one Suited can accept multiple Suitors. In fact, the two problems are entirely the same! Just imagine duplicating a Suited with large capacity into many Suiteds with capacity of 1. This particular reduction is not very efficient, but it allows us to see that the same proof of convergence and correctness applies. We can then modify our classes and algorithm to account for it, so that (for example) instead of a Suited "holding" a single Suitor, she holds a set of Suitors. We encourage the reader to try extending our code above to the polygamous case as an exercise, and we've provided the solution in [the code repository for this post](https://github.com/j2kun/stable-marriages) on [this blog's Github page](https://github.com/j2kun).
 
-
 ## Ways to Make it Harder
-
 
 When you study algorithmic graph problems as much as I do, you start to get disheartened. It seems like every problem is NP-hard or worse. So when we get a situation like this, a nice, efficient algorithm with very real consequences and interpretations, you start to get very excited. In between our heaves of excitement, we imagine all the other versions of this problem that we could solve and Nobel prizes we could win. Unfortunately the landscape is bleaker than that, and most extensions of stable marriage problems are NP-complete.
 

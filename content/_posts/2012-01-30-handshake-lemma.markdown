@@ -17,19 +17,11 @@ tags:
 
 **Solution**: Let $P$ be the set of all people, and for any person $p \in P$, let $d(p)$ be the number of friends that person has. Let $f$ be the total number of friendships between pairs of people at the party. Since each friendship among two friends at the party concerns exactly two people, we see that the following is true:
 
-
 $\displaystyle \sum_{p \in P} d(p) = 2f$
-
-
-
 
 In other words, counting up all of the number of friends that each person has will always be twice the number of total friendships. In particular, this number is always even. If there were an odd number of people with an odd number of friends at the party, and everyone else had an even number of friends, then the total number $\sum_{p \in P} d(p)$ would necessarily be odd.
 
-
-
-
 Hence, there can only be an even number of people with an odd number of friends at the party. $\square$
-
 
 **Discussion**: This is a proof by "double-counting," so to speak. Double counting proves an identity by showing that each side of the equality can be thought of as a different way of counting elements in the same set. In the above proof, we are counting the set of one-sided friendships in two different ways.
 

@@ -22,9 +22,7 @@ A while back we featured a post about [why learning mathematics can be hard for 
 
 So in continuing our series of methods of proof, we'll move up to some of the more advanced methods of proof. And in keeping with the spirit of the series, we'll spend most of our time discussing the structural form of the proofs. This time, diagonalization.
 
-
 ## Diagonalization
-
 
 Perhaps one of the most famous methods of proof after the basic four is proof by diagonalization. Why do they call it diagonalization? Because the idea behind diagonalization is to write out a table that describes how a collection of objects behaves, and then to manipulate the "diagonal" of that table to get a new object that you can prove isn't in the table.
 
@@ -54,47 +52,21 @@ Here's how I'll come up with such a number $N$ (this is the diagonalization part
 
 Now we show that $N$ isn't in the table. If it were, then it would have to be $N = f(m)$ for some $m$, i.e. be the $m$-th row in the table. Moreover, by the way we built the table, the $m$-th digit of $N$ would be $b_{m,m}$. But we _defined _$N$ so that it's $m$-th digit was actually $1-b_{m,m}$. This is very embarrassing for $N$ (it's a contradiction!). So $N$ isn't in the table.
 
-
 $\square$
-
-
-
 
 It's the kind of proof that blows your mind the first time you see it, because it says that _there is more than one kind of infinity_. Not something you think about every day, right?
 
-
-
-
-
 ## The Halting Problem
-
-
-
 
 The second example we'll show of a proof by diagonalization is the Halting Theorem, proved originally by Alan Turing, which says that there are some problems that computers can't solve, even if given unbounded space and time to perform their computations. The formal mathematical model is called a Turing machine, but for simplicity you can think of "Turing machines" and "algorithms described in words" as the same thing. Or if you want it can be "programs written in programming language X." So we'll use the three words "Turing machine," "algorithm," and "program" interchangeably.
 
-
-
-
 The proof works by actually defining a problem and proving it can't be solved. The problem is called _the halting problem_, and it is the problem of deciding: given a program $P$ and an input $x$ to that program, will $P$ ever stop running when given $x$ as input? What I mean by "decide" is that any program that claims to solve the halting problem is itself required to halt for every possible input with the correct answer. A "halting problem solver" can't loop infinitely!
-
-
-
 
 So first we'll give the standard proof that the halting problem can't be solved, and then we'll inspect the form of the proof more closely to see why it's considered a diagonalization argument.
 
-
-
-
 **Theorem: **The halting program cannot be solved by Turing machines.
 
-
-
-
 _Proof. _Suppose to the contrary that $T$ is a program that solves the halting problem. We'll use $T$ as a black box to come up with a new program I'll call meta-$T$, defined in pseudo-python as follows.
-
-
-
 
 {{< highlight python >}}
 def metaT(P):
@@ -115,34 +87,17 @@ metaT(metaT)
 
 So meta. The question is what is the output of this call? The meta-$T$ program uses $T$ to determine whether meta-$T$ halts when given itself as input. So let's say that the answer to this question is "yes, it does halt." Then by the definition of meta-$T$, the program proceeds to loop forever. But this is a problem, because it means that `metaT(metaT)` (which is the original thing we ran) actually does not halt, contradicting $T$'s answer! Likewise, if $T$ says that `metaT(metaT)` should loop infinitely, that will cause meta-$T$ to halt, a contradiction. So $T$ cannot be correct, and the halting problem can't be solved.
 
-
 $\square$
-
-
-
 
 This theorem is deep because it says that you can't possibly write a program to which can always detect bugs in other programs. Infinite loops are just one special kind of bug.
 
-
-
-
 But let's take a closer look and see why this is a proof by diagonalization. The first thing we need to convince ourselves is that the set of all programs is countable (that is, there is a bijection from $\mathbb{N}$ to the set of all programs). This shouldn't be so hard to see: you can list all programs in [lexicographic](http://en.wikipedia.org/wiki/Lexicographical_order) order, since the set of all strings is countable, and then throw out any that are not syntactically valid programs. Likewise, the set of all inputs, really just all strings, is countable.
-
-
-
 
 The second thing we need to convince ourselves of is that a _problem_ corresponds to an infinite binary string. To do this, we'll restrict our attention to problems with yes/no answers, that is where the goal of the program is to output a single bit corresponding to yes or no for a given input. Then if we list all possible inputs in increasing lexicographic order, a problem can be represented by the infinite list of bits that are the correct outputs to each input.
 
-
-
-
 For example, if the problem is to determine whether a given binary input string corresponds to an even number, the representation might look like this:
 
-
-
-
 `010101010101010101...`
-
 
 Of course this all depends on the details of how one encodes inputs, but the point is that if you wanted to you could nail all this down precisely. More importantly for us we can represent the halting problem as an infinite _table_ of bits. If the columns of the table are all programs (in lex order), and the rows of the table correspond to inputs (in lex order), then the table would have at entry $(x,P)$ a 1 if $P(x)$ halts and a 0 otherwise.
 
